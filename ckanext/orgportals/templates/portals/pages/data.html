@@ -1,5 +1,9 @@
 {% extends 'portals/index.html' %}
 
 {% block content %}
-  DATA
+  <ul class="subdashboards-container">
+    {% for item in [0, 1, 2, 3, 4, 5] %}
+      {% snippet 'portals/snippets/subdashboard_item.html' %}
+    {% endfor %}
+  </ul>
 {% endblock %}
