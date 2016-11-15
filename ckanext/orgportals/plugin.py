@@ -16,7 +16,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
     # IRoutes
 
     def before_map(self, map):
-        ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsControler'
+        ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
         map.connect('/organization/{name}/home', controller=ctrl,
                     action='homepage_show')

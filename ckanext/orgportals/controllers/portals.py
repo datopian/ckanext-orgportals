@@ -2,7 +2,7 @@ from ckan.controllers.package import PackageController
 from ckan import plugins
 
 
-class OrgportalsControler(PackageController):
+class OrgportalsController(PackageController):
     def homepage_show(self, name):
         return plugins.toolkit.render('portals/pages/home.html')
 
