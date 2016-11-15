@@ -1,0 +1,16 @@
+{% ckan_extends %}
+
+{% block content_action %}
+  {{ super() }}
+
+  {% if c.group_dict.orgportals_secondary_language and c.group_dict.orgportals_secondary_language == 'en' %}
+    {% set locale = h.orgportals_get_secondary_language(c.group_dict.orgportals_secondary_dashboard) %}
+  {% else %}
+    {% set locale = 'en' %}
+  {% endif %}
+
+  <a class="btn" href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
+                                  action='homepage_show',
+                                  locale=locale,
+                                  name=c.group_dict.name %}" target="_blank"><i class="icon-globe"></i> View portal</a>
+{% endblock %}
