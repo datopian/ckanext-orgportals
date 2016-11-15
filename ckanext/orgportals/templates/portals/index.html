@@ -1,9 +1,11 @@
 {% extends 'page.html' %}
 
 {% block styles %}
+  {% resource 'orgportals/main' %}
 {% endblock %}
 
 {% block page %}
+  <div class="boxed-layout">
 
     {% block header %}
       {% snippet 'portals/snippets/header.html' %}
@@ -13,4 +15,9 @@
 
     {% endblock %}
 
+    {% block footer %}
+      {% snippet 'portals/snippets/footer.html' %}
+    {% endblock %}
+
+  </div>
 {% endblock %}
