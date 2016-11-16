@@ -1,11 +1,14 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
+from ckanext.orgportals import helpers
+
 
 class OrgportalsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.ITemplateHelpers)
 
     # IConfigurer
 
@@ -43,6 +46,18 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
         action_functions = _get_logic_functions(module_root)
 
         return action_functions
+
+    # ITemplateHelpers
+
+    def get_helpers(self):
+        return {
+            'orgportals_get_newly_released_data':
+                helpers.orgportals_get_newly_released_data,
+            'orgportals_convert_time_format':
+                helpers.orgportals_convert_time_format,
+            'orgportals_get_resource_view_url':
+                helpers.orgportals_get_resource_view_url
+        }
 
 
 def _get_logic_functions(module_root, logic_functions={}):

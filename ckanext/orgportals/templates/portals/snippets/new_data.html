@@ -1,0 +1,17 @@
+<div class="new-data">
+  <h2 class="data-block-heading" style="color: {{ font_base_color }}">{{ _('Newly Released Data') }}
+    <a id="newly-released-data-btn" type="button">
+      <i class="fa fa-expand pull-right"></i>
+    </a>
+  </h2>
+
+  {% set organization_name = c.name %}
+  {% set font_new_data_color = 'blue' %}
+
+  <div id="newly-released-data" class="hidden" style="border-top: 3px solid {{ base_color }}; border-bottom: 3px solid {{ base_color }}">
+    {{ h.snippet('portals/snippets/show_datasets.html',
+          packages=h.orgportals_get_newly_released_data(organization_name),
+          datasets_group_name='newdata',
+          color=font_new_data_color) }}
+  </div>
+</div>
