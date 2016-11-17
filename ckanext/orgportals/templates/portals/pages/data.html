@@ -9,4 +9,9 @@
 
   {% snippet 'portals/snippets/new_data.html' %}
   {% snippet 'portals/snippets/all_data.html' %}
+  {% snippet 'portals/snippets/pagination.html',
+    current=c.page.page,
+    per_page=c.page.items_per_page,
+    total=c.page.item_count
+  %}
 {% endblock %}

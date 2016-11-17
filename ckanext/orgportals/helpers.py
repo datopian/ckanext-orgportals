@@ -76,3 +76,22 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
               for k, v in params]
 
     return url + u'?' + urlencode(params)
+
+
+def orgportals_get_current_url(page, params, controller, action, name,
+                               exclude_param=''):
+    url = lib_helpers.url_for(controller=controller, action=action, name=name)
+
+    for k, v in params:
+        if k == exclude_param:
+            params.remove((k, v))
+
+    params = [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
+              for k, v in params]
+
+    if (params):
+        url = url + u'?page=' + str(page) + '&' + urlencode(params)
+    else:
+        url = url + u'?page=' + str(page)
+
+    return url

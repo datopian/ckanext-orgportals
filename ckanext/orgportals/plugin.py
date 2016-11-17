@@ -62,7 +62,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
             'orgportals_get_facet_items_dict':
                 helpers.orgportals_get_facet_items_dict,
             'orgportals_replace_or_add_url_param':
-                helpers.orgportals_replace_or_add_url_param
+                helpers.orgportals_replace_or_add_url_param,
+            'orgportals_get_current_url':
+                helpers.orgportals_get_current_url
         }
 
 
