@@ -7507,3 +7507,14 @@ footer .container {
 .subdashboards-container li a {
   display: block;
 }
+
+.content-page-container__header {
+  text-align: center;
+}
+
+.content-page-container__text {
+  margin-top: 100px;
+  margin-bottom: 50px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
