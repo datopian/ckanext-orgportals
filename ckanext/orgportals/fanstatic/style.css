@@ -7500,7 +7500,7 @@ footer .container {
 }
 
 .subdashboards-container img {
-  width: 100px;
+  width: 150px;
   height: 90px;
 }
 
@@ -7517,4 +7517,104 @@ footer .container {
   margin-bottom: 50px;
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.contact-form-container {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+#contact-form-container__form {
+  background: #F9F9F9;
+  padding: 25px;
+  margin: 50px 0;
+  border: 1px solid #a3a3a3;
+}
+
+#contact-form-container__form h3 {
+  color: black;
+  display: block;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+#contact-form-container__form h4 {
+  margin: 5px 0 15px;
+  display: block;
+  font-size: 13px;
+}
+
+fieldset {
+  border: medium none !important;
+  margin: 0 0 10px;
+  min-width: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+#contact-form-container__form input[type="text"],
+#contact-form-container__form input[type="email"],
+#contact-form-container__form textarea {
+  width: 100%;
+  border: 1px solid #CCC;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+}
+
+#contact-form-container__form input[type="text"]:hover,
+#contact-form-container__form input[type="email"]:hover,
+#contact-form-container__form textarea:hover {
+  transition: border-color 0.3s ease-in-out;
+  border: 1px solid #AAA;
+}
+
+#contact-form-container__form textarea {
+  height: 100px;
+  max-width: 100%;
+  resize: none;
+}
+
+#contact-form-container__form button[type="submit"] {
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: #0a576a;
+  color: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+#contact-form-container__form button[type="submit"]:hover {
+  background: #1e8ba5;
+  transition:background-color 0.3s ease-in-out;
+}
+
+#contact-form-container__form button[type="submit"]:active {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+#contact-form-container__form input:focus,
+#contact-form-container__form textarea:focus {
+  outline: 0;
+  border: 1px solid #999;
+}
+
+::-webkit-input-placeholder {
+ color:#888;
+}
+
+:-moz-placeholder {
+ color:#888;
+}
+
+::-moz-placeholder {
+ color:#888;
+}
+
+:-ms-input-placeholder {
+ color:#888;
 }

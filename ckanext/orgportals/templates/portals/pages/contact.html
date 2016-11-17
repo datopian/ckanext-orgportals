@@ -1,5 +1,22 @@
 {% extends 'portals/index.html' %}
 
 {% block content %}
-  CONTACT
+  <div class="contact-form-container">
+    <form id="contact-form-container__form"">
+      <h3>Contact us</h3>
+      <h4>Lorem ipsum</h4>
+      <fieldset>
+        <input type="text" placeholder="Your name" tabindex="1" required autofocus />
+      </fieldset>
+      <fieldset>
+        <input type="email" placeholder="Your email address" tabindex="2" required />
+      </fieldset>
+      <fieldset>
+        <textarea placeholder="Type your message here...." tabindex="3" required></textarea>
+      </fieldset>
+      <fieldset>
+        <button name="submit" type="submit" id="contact-submit">Submit</button>
+      </fieldset>
+    </form>
+  </div>
 {% endblock %}
