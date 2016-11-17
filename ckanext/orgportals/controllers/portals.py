@@ -5,7 +5,6 @@ from urllib import urlencode
 from pylons import config
 from paste.deploy.converters import asbool
 
-from ckan.controllers.package import PackageController
 from ckan import plugins
 import ckan.model as model
 from ckan.common import OrderedDict, _, json, request, c, g, response
