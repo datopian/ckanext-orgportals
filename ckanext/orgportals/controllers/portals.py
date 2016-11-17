@@ -25,6 +25,7 @@ render = base.render
 abort = base.abort
 redirect = base.redirect
 
+NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
 check_access = logic.check_access
@@ -38,6 +39,29 @@ logger = getLogger(__name__)
 
 
 class OrgportalsController(PackageController):
+
+    group_types = ['organization']
+
+    def portal_show(self, id):
+
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'save': 'save' in request.params,
+                   'for_edit': True,
+                   'parent': request.params.get('parent', None)
+                   }
+        data_dict = {'id': id, 'include_datasets': False}
+
+        try:
+            c.group_dict = get_action('organization_show')(context, data_dict)
+        except NotAuthorized:
+            abort(401, _('Unauthorized to delete group %s') % '')
+        except NotFound:
+            abort(404, _('Group not found'))
+
+        return plugins.toolkit.render('organization/portal.html')
+
+
     def homepage_show(self, name):
         return plugins.toolkit.render('portals/pages/home.html')
 

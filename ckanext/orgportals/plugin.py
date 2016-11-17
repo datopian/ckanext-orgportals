@@ -22,6 +22,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
     def before_map(self, map):
         ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
+        map.connect('organization_portal', '/organization/portal/{id}', controller=ctrl,
+                    action='portal_show', ckan_icon='file')
         map.connect('/organization/{name}/home', controller=ctrl,
                     action='homepage_show')
         map.connect('/organization/{name}/data', controller=ctrl,
