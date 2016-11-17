@@ -1,0 +1,66 @@
+<div class="all-data" id="search-data">
+  {% set group_entity_name = h.orgportals_get_group_entity_name() %}
+
+  {% if group_entity_name == 'group' %}
+    {% set group_filter_name = _('Groups') %}
+  {% elif group_entity_name == 'theme' %}
+    {% set group_filter_name = _('Themes') %}
+  {% endif %}
+
+  {% set facets = {
+    'fields': c.fields_grouped,
+    'search': c.search_facets,
+    'titles': [{'value': 'groups', 'name': group_filter_name},
+               {'value': 'tags', 'name': _('Tags')},
+               {'value': 'res_format', 'name': _('Resource Format')},
+               {'value': 'license_id', 'name': _('Licenses')},
+               {'value': 'author', 'name': _('Authors')},],
+    'translated_fields': c.translated_fields,
+    'remove_field': c.remove_field
+  } %}
+
+  {% set sorting = [
+    (_('Relevance'), 'score desc, metadata_modified desc'),
+    (_('Name Ascending'), 'title_string asc'),
+    (_('Name Descending'), 'title_string desc'),
+    (_('Last Modified'), 'metadata_modified desc'),
+    (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false)
+  ] %}
+
+  {% snippet 'portals/snippets/search_form.html',
+    form_id='dataset-search-form',
+    type='dataset',
+    query=c.q,
+    sorting=sorting,
+    sorting_selected=c.sort_by_selected,
+    count=c.page.item_count,
+    facets=facets,
+    show_empty=request.params,
+    error=c.query_error,
+    fields=c.fields,
+    font_base_color='#FBA906',
+    base_color='#FBA906',
+    secondary_color='#FBA906'
+  %}
+
+  <div class="data-block-header">
+    <div class="row">
+      <div class="col-md-2">
+        <h3 class="data-block-heading" style="color: {{ font_base_color }}">{{ _('Filter Data by') }}:</h3>
+      </div>
+      {% for facet in facets.titles %}
+        {{ h.snippet('portals/snippets/facet_list.html', name=facet, organization_name=c.name) }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="data-block">
+    {% set font_all_data_color = '#FBA906' %}
+
+    {{ h.snippet('portals/snippets/show_datasets.html',
+      packages=c.page.items,
+      datasets_group_name='search',
+      color=font_all_data_color)
+    }}
+  </div>
+</div>

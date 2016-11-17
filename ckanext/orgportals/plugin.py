@@ -56,7 +56,13 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
             'orgportals_convert_time_format':
                 helpers.orgportals_convert_time_format,
             'orgportals_get_resource_view_url':
-                helpers.orgportals_get_resource_view_url
+                helpers.orgportals_get_resource_view_url,
+            'orgportals_get_group_entity_name':
+                helpers.orgportals_get_group_entity_name,
+            'orgportals_get_facet_items_dict':
+                helpers.orgportals_get_facet_items_dict,
+            'orgportals_replace_or_add_url_param':
+                helpers.orgportals_replace_or_add_url_param
         }
 
 

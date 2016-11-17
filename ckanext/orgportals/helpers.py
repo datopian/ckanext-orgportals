@@ -1,7 +1,11 @@
 from datetime import datetime
+from urllib import urlencode
+
+from pylons import config
 
 from ckan.plugins import toolkit
 from ckan.lib import search
+import ckan.lib.helpers as lib_helpers
 
 
 def orgportals_get_newly_released_data(organization_name, limit=4):
@@ -38,3 +42,37 @@ def orgportals_convert_time_format(package):
 
 def orgportals_get_resource_view_url(id, dataset):
     return '/dataset/{0}/resource/{1}'.format(dataset, id)
+
+
+def orgportals_get_group_entity_name():
+    return config.get('ckanext.orgportals.group_entity_name', 'group')
+
+
+def orgportals_get_facet_items_dict(value):
+    try:
+        return lib_helpers.get_facet_items_dict(value)
+    except:
+        return None
+
+
+def orgportals_replace_or_add_url_param(name, value, params, controller,
+                                        action, context_name):
+    for k, v in params:
+        # Reset the page to the first one
+        if k == 'page':
+            params.remove((k, v))
+            params.insert(0, ('page', '1'))
+        if k != name:
+            continue
+        params.remove((k, v))
+
+    params.append((name, value))
+
+    url = lib_helpers.url_for(controller=controller,
+                              action=action,
+                              name=context_name)
+
+    params = [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
+              for k, v in params]
+
+    return url + u'?' + urlencode(params)
