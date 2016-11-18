@@ -3,12 +3,18 @@ import ckan.plugins.toolkit as toolkit
 
 from ckanext.orgportals import helpers
 
+import db
+
 
 class OrgportalsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
+
+    def __init__(self, name='OrgportalsPlugin'):
+        db.init()
+        db.Portal()
 
     # IConfigurer
 
