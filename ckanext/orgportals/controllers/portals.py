@@ -41,7 +41,7 @@ class OrgportalsController(PackageController):
 
     group_types = ['organization']
 
-    def portal_show(self, id):
+    def portal_read(self, id):
 
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author,
@@ -49,8 +49,10 @@ class OrgportalsController(PackageController):
                    'for_edit': True,
                    'parent': request.params.get('parent', None)
                    }
-        data_dict = {'id': id, 'include_datasets': False}
-
+        data_dict = {'id': id,
+                     'include_datasets': False,
+                     'include_extras': True
+                     }
         try:
             c.group_dict = get_action('organization_show')(context, data_dict)
         except NotAuthorized:
@@ -61,7 +63,11 @@ class OrgportalsController(PackageController):
         return plugins.toolkit.render('organization/portal.html')
 
 
-    def homepage_show(self, name):
+    def view_portal(self, name):
+        org = get_action('organization_show')({}, {'id': name, 'include_extras': True})
+
+        if 'orgdashboards_is_active' in org and org['orgdashboards_is_active'] == '0':
+            return plugins.toolkit.render('dashboards/snippets/not_active.html')
         return plugins.toolkit.render('portals/pages/home.html')
 
     def datapage_show(self, name):

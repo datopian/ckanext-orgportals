@@ -1,0 +1,75 @@
+<fieldset>
+<legend>{{ _('Portal colors') }}</legend>
+
+<div class="control-group control-full">
+  <label class="control-label" for="orgportals_base_color">Base color</label>
+  <div class="controls ">
+    {% if data.orgportals_base_color %}
+      <input id="orgportals_base_color" name="orgportals_base_color" class="jscolor"
+           value="{{ data.orgportals_base_color }}">
+    {% else %}
+      <input id="orgportals_base_color" name="orgportals_base_color" class="jscolor"
+           value="000000">
+    {% endif %}
+  </div>
+</div>
+
+<div class="control-group control-full">
+  <label class="control-label" for=orgportals_secondary_color">Secondary color</label>
+  <div class="controls ">
+    {% if data.orgportals_secondary_color %}
+      <input id="orgportals_secondary_color" name="orgportals_secondary_color" class="jscolor"
+           value="{{ data.orgportals_secondary_color }}">
+    {% else %}
+      <input id="orgportals_secondary_color" name="orgportals_secondary_color" class="jscolor"
+           value="000000">
+    {% endif %}
+  </div>
+</div>
+
+</fieldset>
+
+<fieldset>
+<legend>{{ _('Text colors') }}</legend>
+
+<div class="control-group control-full">
+  <label class="control-label" for="orgportals_main_color">Main color</label>
+  <div class="controls ">
+    {% if data.orgportals_main_color %}
+      <input id="orgportals_main_color" name="orgportals_main_color" class="jscolor"
+           value="{{ data.orgdashboards_main_color }}">
+    {% else %}
+      <input id="orgportals_main_color" name="orgportals_main_color" class="jscolor"
+           value="818181">
+    {% endif %}
+  </div>
+</div>
+
+<div class="control-group control-full">
+  <label class="control-label" for="orgportals_new_data_color">New data color</label>
+  <div class="controls ">
+    {% if data.orgportals_new_data_color %}
+      <input id="orgportals_new_data_color" name="orgportals_new_data_color" class="jscolor"
+           value="{{ data.orgportals_new_data_color }}">
+    {% else %}
+       <input id="orgportals_new_data_color" name="orgportals_new_data_color" class="jscolor"
+           value="000000">
+    {% endif %}
+  </div>
+</div>
+
+<div class="control-group control-full">
+  <label class="control-label" for="orgportals_all_data_color">All data color</label>
+  <div class="controls ">
+    {% if data.orgportals_all_data_color %}
+      <input id="orgportals_all_data_color" name="orgportals_all_data_color" class="jscolor"
+           value="{{ data.orgportals_all_data_color }}">
+    {% else %}
+      <input id="orgportals_all_data_color" name="orgportals_all_data_color" class="jscolor"
+           value="000000">
+    {% endif %}
+
+  </div>
+</div>
+
+</fieldset>

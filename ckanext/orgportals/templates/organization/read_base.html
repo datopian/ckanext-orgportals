@@ -10,7 +10,7 @@
   {% endif %}
 
   <a class="btn" href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
-                                  action='homepage_show',
+                                  action='view_portal',
                                   locale=locale,
                                   name=c.group_dict.name %}" target="_blank"><i class="icon-globe"></i> View portal</a>
 {% endblock %}
