@@ -1,11 +1,21 @@
-import datetime
-import json
-
 import ckan.plugins as p
-import ckan.lib.helpers as h
 from ckan.plugins import toolkit as tk
+import ckan.logic.action.create as create_core
+import ckan.logic.action.update as update_core
+from ckan import model
 
 import db
+
+
+def organization_create(context, data_dict):
+    try:
+        org = create_core.organization_create(context, data_dict)
+        _create_portal(data_dict['name'])
+
+        return org
+    except p.toolkit.ValidationError:
+        return create_core.organization_create(context, data_dict)
+
 
 def page_name_validator(key, data, errors, context):
     session = context['session']
@@ -28,8 +38,9 @@ def _pages_show(context, data_dict):
 
 def _pages_list(context, data_dict):
     """TODO get all pages for organisation from db"""
-    pages_list = {}
-    return pages_list
+    pages = db.Page.get_pages()
+
+    return pages
 
 def _pages_delete(context, data_dict):
     """TODO delete requested page from db"""
@@ -46,6 +57,29 @@ def _pages_update(context, data_dict):
         session = context['session']
         session.delete(page)
         session.commit()
+
+
+def _create_portal(org_name):
+    pages = [
+        {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home'},
+        {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data'},
+        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact'},
+        {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help'},
+        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources'},
+        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About'},
+        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary'}
+    ]
+
+    for page in pages:
+        out = db.Page()
+        out.name = page['name']
+        out.org_name = page['org_name']
+        out.type = page['type']
+        out.title = page['title']
+        out.save()
+        model.Session.add(out)
+
+    model.Session.commit()
 
 
 @tk.side_effect_free

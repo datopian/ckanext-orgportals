@@ -19,7 +19,6 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
 
     def __init__(self, name='OrgportalsPlugin'):
         db.init()
-        db.Pages()
 
     # IConfigurer
 
@@ -70,7 +69,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_pages_show': actions.pages_show,
             'orgportals_pages_update': actions.pages_update,
             'orgportals_pages_delete': actions.pages_delete,
-            'orgportals_pages_list': actions.pages_list
+            'orgportals_pages_list': actions.pages_list,
+            'organization_create': actions.organization_create
         }
         return actions_dict
 
