@@ -3,6 +3,6 @@
 {% block subtitle %}{{ _('Edit Page')}} {% endblock %}
 
 {% block primary_content_inner %}
-  {% snippet 'organization/base_form.html', page=page %}
+  {% snippet 'organization/base_form.html', page=page, org_name=c.group_dict.name %}
 {% endblock %}
 
