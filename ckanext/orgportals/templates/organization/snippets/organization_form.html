@@ -70,11 +70,6 @@
     {{ form.select('orgportals_is_active', 'orgportals_is_active', _('Is portal active?'), options=[{'value': '1', 'text': 'Yes'}, {'value': '0', 'text': 'No'}], selected=data.orgportals_is_active) }}
 
     {{ form.select('orgportals_lang_is_active', 'orgportals_lang_is_active', _('Show language selector'), options=[{'value': '0', 'text': 'No'}, {'value': '1', 'text': 'Yes'}], selected=data.orgportals_lang_is_active) }}
-    {{ form.markdown('orgportals_header', label=_('Portal header'), id='orgportals_header', placeholder=_('Set the portal header text'), value=data.orgportals_header, error=errors.orgportals_header) }}
-
-    {{ form.markdown('orgportals_footer', label=_('Portal footer'), id='orgportals_footer', placeholder=_('Set the portals footer'), value=data.orgportals_footer, error=errors.orgportals_footer) }}
-
-    {{ form.markdown('orgportals_description', label=_('Portal description'), id='orgportals_description', placeholder=('Set the portal description'), value=data.orgportals_description, error=errors.orgportals_description) }}
 
     {{ form.markdown('orgportals_copyright', label=_('Portal copyright'), id='orgportals_copyright', placeholder=_('Set the portal copyright'), value=data.orgportals_copyright, error=errors.orgportals_copyright) }}
 
