@@ -1,5 +1,6 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+import ckan.lib.plugins as lib_plugins
 
 import helpers
 import db
@@ -7,16 +8,18 @@ import actions
 import auth
 
 
-class OrgportalsPlugin(plugins.SingletonPlugin):
+class OrgportalsPlugin(plugins.SingletonPlugin,
+                       lib_plugins.DefaultOrganizationForm):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IAuthFunctions, inherit=True)
+    plugins.implements(plugins.IGroupForm, inherit=True)
 
     def __init__(self, name='OrgportalsPlugin'):
         db.init()
-        db.Portal()
+        db.Pages()
 
     # IConfigurer
 
@@ -96,5 +99,96 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
             'orgportals_replace_or_add_url_param':
                 helpers.orgportals_replace_or_add_url_param,
             'orgportals_get_current_url':
-                helpers.orgportals_get_current_url
+                helpers.orgportals_get_current_url,
+            'orgportals_get_copyright_text':
+                helpers.orgportals_get_copyright_text
         }
+
+    # IGroupForm
+
+    def is_fallback(self):
+        return False
+
+    def group_types(self):
+        return ['organization']
+
+    def form_to_db_schema_options(self, options):
+        ''' This allows us to select different schemas for different
+        purpose eg via the web interface or via the api or creation vs
+        updating. It is optional and if not available form_to_db_schema
+        should be used.
+        If a context is provided, and it contains a schema, it will be
+        returned.
+        '''
+        schema = options.get('context', {}).get('schema', None)
+        if schema:
+            return schema
+
+        if options.get('api'):
+            if options.get('type') == 'create':
+                return self.form_to_db_schema_api_create()
+            else:
+                return self.form_to_db_schema_api_update()
+        else:
+            return self.form_to_db_schema()
+
+    def form_to_db_schema_api_create(self):
+        schema = super(OrgportalsPlugin, self).form_to_db_schema_api_create()
+        schema = self._modify_group_schema(schema)
+        return schema
+
+    def form_to_db_schema_api_update(self):
+        schema = super(OrgportalsPlugin, self).form_to_db_schema_api_update()
+        schema = self._modify_group_schema(schema)
+        return schema
+
+    def form_to_db_schema(self):
+        schema = super(OrgportalsPlugin, self).form_to_db_schema()
+        schema = self._modify_group_schema(schema)
+        return schema
+
+    def _modify_group_schema(self, schema):
+
+        # Import core converters and validators
+        _convert_to_extras = toolkit.get_converter('convert_to_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
+
+        default_validators = [_ignore_missing, _convert_to_extras]
+
+        schema.update({
+            'orgportals_is_active': default_validators,
+            'orgportals_copyright': default_validators,
+            'orgportals_lang_is_active': default_validators,
+            'orgportals_base_color': default_validators,
+            'orgportals_secondary_color': default_validators,
+            'orgportals_main_color': default_validators,
+            'orgportals_new_data_color': default_validators,
+            'orgportals_all_data_color': default_validators
+        })
+
+        return schema
+
+    def db_to_form_schema(self):
+
+        # Import core converters and validators
+        _convert_from_extras = toolkit.get_converter('convert_from_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
+        _not_empty = toolkit.get_validator('not_empty')
+
+        schema = super(OrgportalsPlugin, self).form_to_db_schema()
+
+        default_validators = [_convert_from_extras, _ignore_missing]
+        schema.update({
+            'orgportals_is_active': default_validators,
+            'orgportals_copyright': default_validators,
+            'orgportals_lang_is_active': default_validators,
+            'orgportals_base_color': default_validators,
+            'orgportals_secondary_color': default_validators,
+            'orgportals_main_color': default_validators,
+            'orgportals_new_data_color': default_validators,
+            'orgportals_all_data_color': default_validators,
+            'num_followers': [_not_empty],
+            'package_count': [_not_empty],
+        })
+
+        return schema
