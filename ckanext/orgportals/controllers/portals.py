@@ -47,15 +47,9 @@ class OrgportalsController(PackageController):
         """
         TODO Get all pages for organization portal
         """
-        pages = [{'type': 'home', 'title': 'Home'},
-                 {'type': 'data', 'title': 'Data'},
-                 {'type': 'contact', 'title': 'Contact'},
-                 {'type': 'help', 'title': 'Help'},
-                 {'type': 'resources', 'title': 'Resources'},
-                 {'type': 'about', 'title': 'About'},
-                 {'type': 'custom', 'title': 'Custom 1'},
-                 {'type': 'custom', 'title': 'Custom 2'}
-                 ]
+
+        data_dict = {'name': name}
+        pages = get_action('orgportals_pages_list')(data_dict)
         c.pages = pages
         c.group_dict = self._get_group_dict(name)
 
