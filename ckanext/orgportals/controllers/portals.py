@@ -110,17 +110,18 @@ class OrgportalsController(PackageController):
 
         return p.toolkit.render('organization/nav_bar.html')
 
-
     def view_portal(self, name):
-        org = get_action('organization_show')({}, {'id': name, 'include_extras': True})
+        if not _is_portal_active(name):
+            return p.toolkit.render('portals/snippets/not_active.html')
 
-        if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
-            return p.toolkit.render('portal/snippets/not_active.html')
         return p.toolkit.render('portals/pages/home.html')
 
     def datapage_show(self, name):
         data_dict = {'id': name, 'include_extras': True}
         org = get_action('organization_show')({}, data_dict)
+
+        if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
+            return p.toolkit.render('portals/snippets/not_active.html')
 
         package_type = 'dataset'
 
@@ -313,21 +314,41 @@ class OrgportalsController(PackageController):
         self._setup_template_variables(context, {},
                                        package_type=package_type)
 
-        return p.toolkit.render('portals/pages/data.html')
+        extra_vars = {
+            'organization': org
+        }
+
+        return p.toolkit.render('portals/pages/data.html',
+                                extra_vars=extra_vars)
 
     def aboutpage_show(self, name):
+        if not _is_portal_active(name):
+            return p.toolkit.render('portals/snippets/not_active.html')
+
         return p.toolkit.render('portals/pages/about.html')
 
     def contactpage_show(self, name):
+        if not _is_portal_active(name):
+            return p.toolkit.render('portals/snippets/not_active.html')
+
         return p.toolkit.render('portals/pages/contact.html')
 
     def glossarypage_show(self, name):
+        if not _is_portal_active(name):
+            return p.toolkit.render('portals/snippets/not_active.html')
+
         return p.toolkit.render('portals/pages/glossary.html')
 
     def helppage_show(self, name):
+        if not _is_portal_active(name):
+            return p.toolkit.render('portals/snippets/not_active.html')
+
         return p.toolkit.render('portals/pages/help.html')
 
     def resourcespage_show(self, name):
+        if not _is_portal_active(name):
+            return p.toolkit.render('portals/snippets/not_active.html')
+
         return p.toolkit.render('portals/pages/resources.html')
 
     def _get_full_name_authors(self, context, name):
@@ -357,3 +378,13 @@ class OrgportalsController(PackageController):
             })
 
         return authors_list
+
+
+def _is_portal_active(orgnization_name):
+    data_dict = {'id': orgnization_name, 'include_extras': True}
+    org = get_action('organization_show')({}, data_dict)
+
+    if 'orgportals_is_active' in org and org['orgportals_is_active'] == '1':
+        return True
+    else:
+        return False
