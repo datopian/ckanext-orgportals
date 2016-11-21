@@ -3,14 +3,16 @@
 {% block content_action %}
   {{ super() }}
 
-  {% if c.group_dict.orgportals_secondary_language and c.group_dict.orgportals_secondary_language == 'en' %}
-    {% set locale = h.orgportals_get_secondary_language(c.group_dict.orgportals_secondary_dashboard) %}
-  {% else %}
-    {% set locale = 'en' %}
-  {% endif %}
+  {% if c.group_dict.orgportals_is_active == '1' or c.group_dict.orgportals_is_active is undefined %}
+    {% if c.group_dict.orgportals_secondary_language and c.group_dict.orgportals_secondary_language == 'en' %}
+      {% set locale = h.orgportals_get_secondary_language(c.group_dict.orgportals_secondary_dashboard) %}
+    {% else %}
+      {% set locale = 'en' %}
+    {% endif %}
 
-  <a class="btn" href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
-                                  action='view_portal',
-                                  locale=locale,
-                                  name=c.group_dict.name %}" target="_blank"><i class="icon-globe"></i>View portal</a>
+    <a class="btn" href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
+                                    action='view_portal',
+                                    locale=locale,
+                                    name=c.group_dict.name %}" target="_blank"><i class="icon-globe"></i>View portal</a>
+  {% endif %}
 {% endblock %}
