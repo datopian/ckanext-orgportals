@@ -95,3 +95,13 @@ def orgportals_get_current_url(page, params, controller, action, name,
         url = url + u'?page=' + str(page)
 
     return url
+
+
+def orgportals_get_copyright_text(organization_name):
+    data_dict = {
+        'id': organization_name,
+        'include_extras': True
+    }
+    organization = toolkit.get_action('organization_show')(data_dict=data_dict)
+
+    return organization['orgportals_copyright']
