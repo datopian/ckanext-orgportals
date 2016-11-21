@@ -1,74 +1,122 @@
 import logging
-from logging import getLogger
 from urllib import urlencode
 
 from pylons import config
 from paste.deploy.converters import asbool
 
-from ckan import plugins
 import ckan.model as model
-from ckan.common import OrderedDict, _, json, request, c, g, response
+from ckan.common import OrderedDict, _, request, c, g, response
 from ckan.controllers.package import (PackageController,
-                                      url_with_params,
                                       _encode_params)
 import ckan.lib.base as base
 import ckan.logic as logic
-from ckan.lib.plugins import lookup_package_plugin
+import ckan.plugins as p
 import ckan.lib.helpers as h
 from ckan.lib.search import SearchError
 import ckan.lib.maintain as maintain
 
 log = logging.getLogger(__name__)
 
-render = base.render
-abort = base.abort
-redirect = base.redirect
-
-NotFound = logic.NotFound
-NotAuthorized = logic.NotAuthorized
-ValidationError = logic.ValidationError
 check_access = logic.check_access
 get_action = logic.get_action
-tuplize_dict = logic.tuplize_dict
-clean_dict = logic.clean_dict
-parse_params = logic.parse_params
-flatten_to_string_key = logic.flatten_to_string_key
-
-logger = getLogger(__name__)
 
 
 class OrgportalsController(PackageController):
+    ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
-    group_types = ['organization']
-
-    def portal_read(self, id):
-
+    def _get_group_dict(self, name):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author,
-                   'save': 'save' in request.params,
-                   'for_edit': True,
-                   'parent': request.params.get('parent', None)
                    }
-        data_dict = {'id': id,
+        data_dict = {'id': name,
                      'include_datasets': False,
                      'include_extras': True
                      }
-        try:
-            c.group_dict = get_action('organization_show')(context, data_dict)
-        except NotAuthorized:
-            abort(401, _('Unauthorized to delete group %s') % '')
-        except NotFound:
-            abort(404, _('Group not found'))
 
-        return plugins.toolkit.render('organization/portal.html')
+        try:
+            group_dict = get_action('organization_show')(context, data_dict)
+        except p.toolkit.NotAuthorized:
+            p.toolkit.abort(401, _('Unauthorized to see organization'))
+        except p.toolkit.ObjectNotFound:
+            p.toolkit.abort(404, _('Group not found'))
+        return group_dict
+
+
+    def pages_index(self, name):
+
+        """
+        TODO Get all pages for organization portal
+        """
+        pages = [{'type': 'home', 'title': 'Home'},
+                 {'type': 'data', 'title': 'Data'},
+                 {'type': 'contact', 'title': 'Contact'},
+                 {'type': 'help', 'title': 'Help'},
+                 {'type': 'resources', 'title': 'Resources'},
+                 {'type': 'about', 'title': 'About'},
+                 {'type': 'custom', 'title': 'Custom 1'},
+                 {'type': 'custom', 'title': 'Custom 2'}
+                 ]
+        c.pages = pages
+        c.group_dict = self._get_group_dict(name)
+
+        return p.toolkit.render('organization/pages_list.html')
+
+    def pages_edit(self, name, page=None, data=None):
+
+        if page:
+            page = page[1:]
+            _page = {'type': page, 'title': 'Page title'}
+        else:
+            _page = {}
+
+        """
+        TODO Get page if page param included and show edit form else show create form
+        """
+        c.group_dict = self._get_group_dict(name)
+
+        vars = {'page': _page}
+
+        return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
+
+    def pages_delete(self, name, page):
+        """
+        TODO refactor delete
+        """
+        page = page[1:]
+        if 'cancel' in p.toolkit.request.params:
+            p.toolkit.redirect_to(controller=self.ctrl, action='pages_edit', name=name, page='/' + page)
+
+
+
+        try:
+            if p.toolkit.request.method == 'POST':
+                p.toolkit.get_action('orgpages_pages_delete')({}, {'page': page})
+                p.toolkit.redirect_to(controller=self.ctrl, action='pages_index', name=name)
+            else:
+                p.toolkit.abort(404, _('Page Not Found'))
+        except p.toolkit.NotAuthorized:
+            p.toolkit.abort(401, _('Unauthorized to delete page'))
+        except p.toolkit.ObjectNotFound:
+            p.toolkit.abort(404, _('Group not found'))
+        return p.toolkit.render('organization/confirm_delete.html', {'page': page})
+
+    def nav_bar(self, name):
+
+        """
+        Get navigation bar for organization portal
+        """
+        c.group_dict = self._get_group_dict(name)
+
+
+        return p.toolkit.render('organization/nav_bar.html')
 
 
     def view_portal(self, name):
         org = get_action('organization_show')({}, {'id': name, 'include_extras': True})
 
-        if 'orgdashboards_is_active' in org and org['orgdashboards_is_active'] == '0':
-            return plugins.toolkit.render('dashboards/snippets/not_active.html')
-        return plugins.toolkit.render('portals/pages/home.html')
+        if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
+            return p.toolkit.render('portal/snippets/not_active.html')
+        return p.toolkit.render('portals/pages/home.html')
 
     def datapage_show(self, name):
         data_dict = {'id': name, 'include_extras': True}
@@ -84,8 +132,8 @@ class OrgportalsController(PackageController):
             }
 
             check_access('site_read', context)
-        except NotAuthorized:
-            abort(401, _('Not authorized to see this page'))
+        except p.toolkit.NotAuthorized:
+            p.toolkit.abort(401, _('Not authorized to see this page'))
 
         # unicode format (decoded from utf8)
         q = c.q = request.params.get('q', u'')
@@ -206,7 +254,7 @@ class OrgportalsController(PackageController):
             facets['author'] = _('Authors')
 
             # Facet titles
-            for plugin in plugins.PluginImplementations(plugins.IFacets):
+            for plugin in p.PluginImplementations(p.IFacets):
                 facets = plugin.dataset_facets(facets, package_type)
 
             c.facet_titles = facets
@@ -253,7 +301,7 @@ class OrgportalsController(PackageController):
                 limit = int(request.params.get('_%s_limit' % facet,
                                                g.facets_default_number))
             except ValueError:
-                abort(400, _('Parameter "{parameter_name}" is not '
+                p.toolkit.abort(400, _('Parameter "{parameter_name}" is not '
                              'an integer').format(
                     parameter_name='_%s_limit' % facet))
             c.search_facets_limits[facet] = limit
@@ -265,22 +313,22 @@ class OrgportalsController(PackageController):
         self._setup_template_variables(context, {},
                                        package_type=package_type)
 
-        return plugins.toolkit.render('portals/pages/data.html')
+        return p.toolkit.render('portals/pages/data.html')
 
     def aboutpage_show(self, name):
-        return plugins.toolkit.render('portals/pages/about.html')
+        return p.toolkit.render('portals/pages/about.html')
 
     def contactpage_show(self, name):
-        return plugins.toolkit.render('portals/pages/contact.html')
+        return p.toolkit.render('portals/pages/contact.html')
 
     def glossarypage_show(self, name):
-        return plugins.toolkit.render('portals/pages/glossary.html')
+        return p.toolkit.render('portals/pages/glossary.html')
 
     def helppage_show(self, name):
-        return plugins.toolkit.render('portals/pages/help.html')
+        return p.toolkit.render('portals/pages/help.html')
 
     def resourcespage_show(self, name):
-        return plugins.toolkit.render('portals/pages/resources.html')
+        return p.toolkit.render('portals/pages/resources.html')
 
     def _get_full_name_authors(self, context, name):
 

@@ -1,9 +1,10 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-from ckanext.orgportals import helpers
-
+import helpers
 import db
+import actions
+import auth
 
 
 class OrgportalsPlugin(plugins.SingletonPlugin):
@@ -11,6 +12,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IAuthFunctions, inherit=True)
 
     def __init__(self, name='OrgportalsPlugin'):
         db.init()
@@ -28,8 +30,20 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
     def before_map(self, map):
         ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
-        map.connect('organization_portal', '/organization/portal/{id}', controller=ctrl,
-                    action='portal_read', ckan_icon='file')
+        map.connect('orgportal_pages_delete', '/organization/{name}/pages_delete{page:/.*|}',
+                    action='pages_delete', ckan_icon='delete', controller=ctrl)
+
+        map.connect('orgportal_pages_edit', '/organization/{name}/pages_edit{page:/.*|}',
+                    action='pages_edit', ckan_icon='edit', controller=ctrl)
+
+        map.connect('orgportal_pages_index', '/organization/{name}/pages',
+                    action='pages_index', ckan_icon='file', controller=ctrl,
+                    highlight_actions='pages_edit pages_index')
+
+        map.connect('orgportals_nav_bar', '/organization/{name}/nav', controller=ctrl,
+                    action='nav_bar', ckan_icon='list')
+
+
         map.connect('/organization/{name}/home', controller=ctrl,
                     action='view_portal')
         map.connect('/organization/{name}/data', controller=ctrl,
@@ -48,15 +62,25 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
         return map
 
     # IActions
-
     def get_actions(self):
-        module_root = 'ckanext.orgportals.logic.action'
-        action_functions = _get_logic_functions(module_root)
+        actions_dict = {
+            'orgportals_pages_show': actions.pages_show,
+            'orgportals_pages_update': actions.pages_update,
+            'orgportals_pages_delete': actions.pages_delete,
+            'orgportals_pages_list': actions.pages_list
+        }
+        return actions_dict
 
-        return action_functions
+    # IAuthFunctions
+    def get_auth_functions(self):
+        return {
+            'orgportals_pages_show': auth.pages_show,
+            'orgportals_pages_update': auth.pages_update,
+            'orgportals_pages_delete': auth.pages_delete,
+            'orgportals_pages_list': auth.pages_list
+       }
 
     # ITemplateHelpers
-
     def get_helpers(self):
         return {
             'orgportals_get_newly_released_data':
@@ -74,17 +98,3 @@ class OrgportalsPlugin(plugins.SingletonPlugin):
             'orgportals_get_current_url':
                 helpers.orgportals_get_current_url
         }
-
-
-def _get_logic_functions(module_root, logic_functions={}):
-    module = __import__(module_root)
-
-    for part in module_root.split('.')[1:]:
-        module = getattr(module, part)
-
-    for key, value in module.__dict__.items():
-        if not key.startswith('_') and hasattr(value, '__call__')\
-                and (value.__module__ == module_root):
-                    logic_functions[key] = value
-
-    return logic_functions

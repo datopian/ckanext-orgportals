@@ -1,0 +1,14 @@
+{% extends "organization/edit_base.html" %}
+
+{% block subtitle %}{{ _('Portal pages') }} - {{ super() }}{% endblock %}
+
+{% block page_primary_action %}
+  {% link_for _('Add Page'), controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='pages_edit', page='', name=c.group_dict.name, class_='btn btn-primary', icon='plus-sign-alt' %}
+{% endblock %}
+
+{% block primary_content_inner %}
+  <legend>
+  <h2>{{ _('Portal pages') }}</h2>
+  </legend>
+  {% snippet 'organization/snippets/pages_list.html', pages=c.pages %}
+{% endblock %}

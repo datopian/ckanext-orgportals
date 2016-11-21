@@ -1,0 +1,20 @@
+{% if pages %}
+
+  {% for page in pages %}
+
+    <div class="row page-list-item dataset-item">
+      <div class="span11">
+        <h3 class="dataset-heading">
+          <a href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
+                                                               action='pages_edit',
+                                                               name=c.group_dict.name,
+                                                               page='/' + page.type%}" >{{ page.title }}</a>
+        </h3>
+      </div>
+    </div>
+
+  {% endfor %}
+
+{% else %}
+  <p class="empty">{{ _('There are currently no pages here') }}</p>
+{% endif %}
