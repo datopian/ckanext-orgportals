@@ -1,0 +1,24 @@
+{% set url = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController',
+                       action='pages_edit',
+                       org_name=c.group_dict.name,
+                       page='/' + page.type) %}
+{% block item %}
+<li class="media-item">
+  {% block item_inner %}
+    {% block image %}
+      <img src="{{ page.image or h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ page.name }}" class="media-image">
+    {% endblock %}
+    {% block title %}
+      <h3 class="media-heading">{{ page.title }}</h3>
+    {% endblock %}
+    {% block link %}
+      <a href="{{ url }}" class="media-view">
+        <span>test</span>
+      </a>
+    {% endblock %}
+  {% endblock %}
+</li>
+{% endblock %}
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}
