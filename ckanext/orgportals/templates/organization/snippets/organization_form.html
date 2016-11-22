@@ -68,7 +68,7 @@
     </h2>
     </legend>
 
-    {% if not data.orgportals_portal_created %}
+    {% if data.id and not data.orgportals_portal_created %}
       <p><b>Note: Press the <i>Update Organization</i> button in order to create the portal.</b></p><br>
     {% endif %}
 
