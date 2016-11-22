@@ -19,20 +19,30 @@
     {{ form.errors(error_summary) }}
   {% endblock %}
 
-  {{ form.input('title', id='field-title', label=_('Title'), placeholder=title_placeholder, value=page.title, classes=['control-full', 'control-large'], is_required=true) }}
+  {% if page.id is undefined or (page.type != 'data') %}
+    {{ form.input('title', id='field-title', label=_('Title'), placeholder=title_placeholder, value=page.title, classes=['control-full', 'control-large'], is_required=true) }}
+  {% endif %}
+
+  {% if page.type == 'home' %}
+    {{ form.input('text_box', id='field-title', label=_('Text box'), value=page.text_box, classes=['control-full'], is_required=true) }}
+  {% endif %}
 
   {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='custompage_show', org_name=org_name, page_name='') %}
   {% set attrs = {'data-module': 'slug-preview-target'} %}
 
-  {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-page'), value=page.name, attrs=attrs, is_required=true) }}
+  {% if page.id is undefined or page.type == 'custom' %}
+    {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-page'), value=page.name, attrs=attrs, is_required=true) }}
+  {% endif %}
 
-  {{ form.markdown('content', id='field-content', label=_('Content'), placeholder=_('Enter content here'), value=page.type) }}
+  {% if page.id is undefined or page.type == 'custom' or (page.type == 'default' and page.name != 'contact') %}
+    {{ form.markdown('content', id='field-content', label=_('Content'), placeholder=_('Enter content here'), value=page.content) }}
+  {% endif %}
 
   {% set is_upload = page.image and not page.image.startswith('http') %}
   {% set is_url = page.image and page.image.startswith('http') %}
   {% set errors = {} %}
 
-  {{ form.image_upload(page, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
+  {# {{ form.image_upload(page, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} #}
 
   <div class="form-actions">
     {% if not page %}
