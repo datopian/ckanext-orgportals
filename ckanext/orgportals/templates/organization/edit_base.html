@@ -22,8 +22,10 @@
   {{ h.build_nav_icon('organization_edit', _('Edit'), id=c.group_dict.name) }}
   {{ h.build_nav_icon('organization_bulk_process', _('Datasets'), id=c.group_dict.name) }}
   {{ h.build_nav_icon('organization_members', _('Members'), id=c.group_dict.name) }}
-  {{ h.build_nav_icon('orgportals_pages_index', _('Pages'), org_name=c.group_dict.name) }}
-  {{ h.build_nav_icon('orgportals_nav_bar', _('Nav Menu'), org_name=c.group_dict.name) }}
+  {% if c.group_dict.orgportals_portal_created == '1' %}
+    {{ h.build_nav_icon('orgportals_pages_index', _('Pages'), org_name=c.group_dict.name) }}
+    {{ h.build_nav_icon('orgportals_nav_bar', _('Nav Menu'), org_name=c.group_dict.name) }}
+  {% endif %}
 {% endblock %}
 
 {% block secondary_content %}
