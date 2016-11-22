@@ -1,7 +1,7 @@
 {% set url = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController',
                        action='pages_edit',
                        org_name=c.group_dict.name,
-                       page='/' + page.type) %}
+                       page='/' + page.name) %}
 {% block item %}
 <li class="media-item">
   {% block item_inner %}
