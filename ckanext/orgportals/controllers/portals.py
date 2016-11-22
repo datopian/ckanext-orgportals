@@ -52,21 +52,27 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('organization/pages_list.html')
 
     def pages_edit(self, org_name, page=None, data=None):
+        if p.toolkit.request.method == 'GET':
+            if page:
+                page_name = page[1:]
+                data_dict = {
+                    'org_name': org_name,
+                    'page_name': page_name
+                }
+                _page = get_action('orgportals_pages_show')({}, data_dict)
+            else:
+                _page = {}
 
-        if page:
-            page = page[1:]
-            _page = {'type': page, 'title': 'Page title'}
-        else:
-            _page = {}
+            """
+            TODO Get page if page param included and show edit form else show create form
+            """
+            c.group_dict = self._get_group_dict(org_name)
+            print 'page: ', _page
+            vars = {'page': _page}
 
-        """
-        TODO Get page if page param included and show edit form else show create form
-        """
-        c.group_dict = self._get_group_dict(org_name)
-
-        vars = {'page': _page}
-
-        return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
+            return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
+        elif p.toolkit.request.method == 'POST':
+            pass
 
     def pages_delete(self, org_name, page):
         """
