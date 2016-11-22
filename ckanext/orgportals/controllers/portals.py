@@ -341,6 +341,12 @@ class OrgportalsController(PackageController):
 
         return p.toolkit.render('portals/pages/resources.html')
 
+    def custompage_show(self, org_name, page_name):
+        if not _is_portal_active(org_name):
+            return p.toolkit.render('portals/snippets/not_active.html')
+
+        return p.toolkit.render('portals/pages/custom.html')
+
     def _get_full_name_authors(self, context, org_name):
 
         # "rows" is set to a big number because by default Solr will
