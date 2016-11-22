@@ -38,28 +38,30 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('orgportals_pages_edit', '/organization/{org_name}/pages_edit{page:/.*|}',
                     action='pages_edit', ckan_icon='edit', controller=ctrl)
 
-        map.connect('orgportals_pages_index', '/organization/{org_name}/pages',
+        map.connect('orgportals_pages_index', '/organization/pages/{org_name}',
                     action='pages_index', ckan_icon='file', controller=ctrl,
                     highlight_actions='pages_edit pages_index')
 
-        map.connect('orgportals_nav_bar', '/organization/{org_name}/nav', controller=ctrl,
+        map.connect('orgportals_nav_bar', '/organization/nav/{org_name}', controller=ctrl,
                     action='nav_bar', ckan_icon='list')
 
 
-        map.connect('/organization/{org_name}/home', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/home', controller=ctrl,
                     action='view_portal')
-        map.connect('/organization/{org_name}/data', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/data', controller=ctrl,
                     action='datapage_show')
-        map.connect('/organization/{org_name}/contact', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/contact', controller=ctrl,
                     action='contactpage_show')
-        map.connect('/organization/{org_name}/about', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/about', controller=ctrl,
                     action='aboutpage_show')
-        map.connect('/organization/{org_name}/help', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/help', controller=ctrl,
                     action='helppage_show')
-        map.connect('/organization/{org_name}/resources', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/resources', controller=ctrl,
                     action='resourcespage_show')
-        map.connect('/organization/{org_name}/glossary', controller=ctrl,
+        map.connect('/organization/{org_name}/portal/glossary', controller=ctrl,
                     action='glossarypage_show')
+        map.connect('/organization/{org_name}/portal/{page_name}', controller=ctrl,
+                    action='custompage_show')
 
         return map
 
