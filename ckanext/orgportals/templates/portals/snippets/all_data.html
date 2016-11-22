@@ -49,7 +49,7 @@
         <h3 class="data-block-heading" style="color: {{ font_base_color }}">{{ _('Filter Data by') }}:</h3>
       </div>
       {% for facet in facets.titles %}
-        {{ h.snippet('portals/snippets/facet_list.html', name=facet, organization_name=c.name) }}
+        {{ h.snippet('portals/snippets/facet_list.html', name=facet, organization_name=c.org_name) }}
       {% endfor %}
     </div>
   </div>

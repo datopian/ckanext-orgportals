@@ -7,7 +7,7 @@
 {% set params = request.params.items() %}
 {% set controller = c.controller %}
 {% set action = c.action %}
-{% set name = c.name %}
+{% set name = c.org_name %}
   <ul class="pagination pull-right">
     {% if current != 1 %}<li><a href="{{ h.orgportals_get_current_url(current - 1, params, controller, action, name, exclude_param='page') }}#search-data" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>{% endif %}
     {% for index in range(1, end+1) %}
