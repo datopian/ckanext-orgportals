@@ -37,8 +37,8 @@ def _pages_show(context, data_dict):
     return page
 
 def _pages_list(context, data_dict):
-    """TODO get all pages for organisation from db"""
-    pages = db.Page.get_pages()
+    org_name = data_dict['org_name']
+    pages = db.Page.get_pages_for_org(org_name=org_name)
 
     return pages
 

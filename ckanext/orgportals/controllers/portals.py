@@ -43,13 +43,9 @@ class OrgportalsController(PackageController):
 
 
     def pages_index(self, org_name):
+        data_dict = {'org_name': org_name}
+        pages = get_action('orgportals_pages_list')({}, data_dict)
 
-        """
-        TODO Get all pages for organization portal
-        """
-
-        data_dict = {'name': org_name}
-        pages = get_action('orgportals_pages_list')(data_dict)
         c.pages = pages
         c.group_dict = self._get_group_dict(org_name)
 
