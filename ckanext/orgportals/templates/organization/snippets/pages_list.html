@@ -7,7 +7,7 @@
         <h3 class="dataset-heading">
           <a href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
                                                                action='pages_edit',
-                                                               name=c.group_dict.name,
+                                                               org_name=c.group_dict.name,
                                                                page='/' + page.type%}" >{{ page.title }}</a>
         </h3>
       </div>

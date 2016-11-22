@@ -24,11 +24,11 @@ get_action = logic.get_action
 class OrgportalsController(PackageController):
     ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
-    def _get_group_dict(self, name):
+    def _get_group_dict(self, org_name):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author,
                    }
-        data_dict = {'id': name,
+        data_dict = {'id': org_name,
                      'include_datasets': False,
                      'include_extras': True
                      }
@@ -42,20 +42,20 @@ class OrgportalsController(PackageController):
         return group_dict
 
 
-    def pages_index(self, name):
+    def pages_index(self, org_name):
 
         """
         TODO Get all pages for organization portal
         """
 
-        data_dict = {'name': name}
+        data_dict = {'name': org_name}
         pages = get_action('orgportals_pages_list')(data_dict)
         c.pages = pages
-        c.group_dict = self._get_group_dict(name)
+        c.group_dict = self._get_group_dict(org_name)
 
         return p.toolkit.render('organization/pages_list.html')
 
-    def pages_edit(self, name, page=None, data=None):
+    def pages_edit(self, org_name, page=None, data=None):
 
         if page:
             page = page[1:]
@@ -66,26 +66,26 @@ class OrgportalsController(PackageController):
         """
         TODO Get page if page param included and show edit form else show create form
         """
-        c.group_dict = self._get_group_dict(name)
+        c.group_dict = self._get_group_dict(org_name)
 
         vars = {'page': _page}
 
         return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
 
-    def pages_delete(self, name, page):
+    def pages_delete(self, org_name, page):
         """
         TODO refactor delete
         """
         page = page[1:]
         if 'cancel' in p.toolkit.request.params:
-            p.toolkit.redirect_to(controller=self.ctrl, action='pages_edit', name=name, page='/' + page)
+            p.toolkit.redirect_to(controller=self.ctrl, action='pages_edit', org_name=org_name, page='/' + page)
 
 
 
         try:
             if p.toolkit.request.method == 'POST':
                 p.toolkit.get_action('orgpages_pages_delete')({}, {'page': page})
-                p.toolkit.redirect_to(controller=self.ctrl, action='pages_index', name=name)
+                p.toolkit.redirect_to(controller=self.ctrl, action='pages_index', org_name=org_name)
             else:
                 p.toolkit.abort(404, _('Page Not Found'))
         except p.toolkit.NotAuthorized:
@@ -94,24 +94,24 @@ class OrgportalsController(PackageController):
             p.toolkit.abort(404, _('Group not found'))
         return p.toolkit.render('organization/confirm_delete.html', {'page': page})
 
-    def nav_bar(self, name):
+    def nav_bar(self, org_name):
 
         """
         Get navigation bar for organization portal
         """
-        c.group_dict = self._get_group_dict(name)
+        c.group_dict = self._get_group_dict(org_name)
 
 
         return p.toolkit.render('organization/nav_bar.html')
 
-    def view_portal(self, name):
-        if not _is_portal_active(name):
+    def view_portal(self, org_name):
+        if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
         return p.toolkit.render('portals/pages/home.html')
 
-    def datapage_show(self, name):
-        data_dict = {'id': name, 'include_extras': True}
+    def datapage_show(self, org_name):
+        data_dict = {'id': org_name, 'include_extras': True}
         org = get_action('organization_show')({}, data_dict)
 
         if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
@@ -254,7 +254,7 @@ class OrgportalsController(PackageController):
 
             c.facet_titles = facets
 
-            fq += ' +organization:"{}"'.format(name)
+            fq += ' +organization:"{}"'.format(org_name)
 
             data_dict = {
                 'q': q,
@@ -270,7 +270,7 @@ class OrgportalsController(PackageController):
 
             # Override the "author" list, to include full name authors
             query['search_facets']['author']['items'] =\
-                self._get_full_name_authors(context, name)
+                self._get_full_name_authors(context, org_name)
 
             c.sort_by_selected = query['sort']
 
@@ -315,42 +315,42 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('portals/pages/data.html',
                                 extra_vars=extra_vars)
 
-    def aboutpage_show(self, name):
-        if not _is_portal_active(name):
+    def aboutpage_show(self, org_name):
+        if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
         return p.toolkit.render('portals/pages/about.html')
 
-    def contactpage_show(self, name):
-        if not _is_portal_active(name):
+    def contactpage_show(self, org_name):
+        if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
         return p.toolkit.render('portals/pages/contact.html')
 
-    def glossarypage_show(self, name):
-        if not _is_portal_active(name):
+    def glossarypage_show(self, org_name):
+        if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
         return p.toolkit.render('portals/pages/glossary.html')
 
-    def helppage_show(self, name):
-        if not _is_portal_active(name):
+    def helppage_show(self, org_name):
+        if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
         return p.toolkit.render('portals/pages/help.html')
 
-    def resourcespage_show(self, name):
-        if not _is_portal_active(name):
+    def resourcespage_show(self, org_name):
+        if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
         return p.toolkit.render('portals/pages/resources.html')
 
-    def _get_full_name_authors(self, context, name):
+    def _get_full_name_authors(self, context, org_name):
 
         # "rows" is set to a big number because by default Solr will
         # return only 10 rows, and we need all datasets
         all_packages_dict = {
-            'fq': '+dataset_type:dataset +organization:' + name,
+            'fq': '+dataset_type:dataset +organization:' + org_name,
             'rows': 10000000
         }
 

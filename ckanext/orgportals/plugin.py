@@ -32,33 +32,33 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
     def before_map(self, map):
         ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
-        map.connect('orgportals_pages_delete', '/organization/{name}/pages_delete{page:/.*|}',
+        map.connect('orgportals_pages_delete', '/organization/{org_name}/pages_delete{page:/.*|}',
                     action='pages_delete', ckan_icon='delete', controller=ctrl)
 
-        map.connect('orgportals_pages_edit', '/organization/{name}/pages_edit{page:/.*|}',
+        map.connect('orgportals_pages_edit', '/organization/{org_name}/pages_edit{page:/.*|}',
                     action='pages_edit', ckan_icon='edit', controller=ctrl)
 
-        map.connect('orgportals_pages_index', '/organization/{name}/pages',
+        map.connect('orgportals_pages_index', '/organization/{org_name}/pages',
                     action='pages_index', ckan_icon='file', controller=ctrl,
                     highlight_actions='pages_edit pages_index')
 
-        map.connect('orgportals_nav_bar', '/organization/{name}/nav', controller=ctrl,
+        map.connect('orgportals_nav_bar', '/organization/{org_name}/nav', controller=ctrl,
                     action='nav_bar', ckan_icon='list')
 
 
-        map.connect('/organization/{name}/home', controller=ctrl,
+        map.connect('/organization/{org_name}/home', controller=ctrl,
                     action='view_portal')
-        map.connect('/organization/{name}/data', controller=ctrl,
+        map.connect('/organization/{org_name}/data', controller=ctrl,
                     action='datapage_show')
-        map.connect('/organization/{name}/contact', controller=ctrl,
+        map.connect('/organization/{org_name}/contact', controller=ctrl,
                     action='contactpage_show')
-        map.connect('/organization/{name}/about', controller=ctrl,
+        map.connect('/organization/{org_name}/about', controller=ctrl,
                     action='aboutpage_show')
-        map.connect('/organization/{name}/help', controller=ctrl,
+        map.connect('/organization/{org_name}/help', controller=ctrl,
                     action='helppage_show')
-        map.connect('/organization/{name}/resources', controller=ctrl,
+        map.connect('/organization/{org_name}/resources', controller=ctrl,
                     action='resourcespage_show')
-        map.connect('/organization/{name}/glossary', controller=ctrl,
+        map.connect('/organization/{org_name}/glossary', controller=ctrl,
                     action='glossarypage_show')
 
         return map
