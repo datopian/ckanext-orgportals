@@ -48,8 +48,10 @@ def page_name_validator(key, data, errors, context):
 
 
 def _pages_show(context, data_dict):
-    """TODO get requested page from db """
-    page = {}
+    org_name = data_dict['org_name']
+    page_name = data_dict['page_name']
+    page = db.Page.get_page_for_org(org_name, page_name)
+
     return page
 
 def _pages_list(context, data_dict):
