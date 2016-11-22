@@ -32,10 +32,10 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
     def before_map(self, map):
         ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
-        map.connect('orgportals_pages_delete', '/organization/{org_name}/pages_delete{page:/.*|}',
+        map.connect('orgportals_pages_delete', '/organization/pages_delete/{org_name}{page:/.*|}',
                     action='pages_delete', ckan_icon='delete', controller=ctrl)
 
-        map.connect('orgportals_pages_edit', '/organization/{org_name}/pages_edit{page:/.*|}',
+        map.connect('orgportals_pages_edit', '/organization/pages_edit/{org_name}{page:/.*|}',
                     action='pages_edit', ckan_icon='edit', controller=ctrl)
 
         map.connect('orgportals_pages_index', '/organization/pages/{org_name}',
