@@ -70,7 +70,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_pages_update': actions.pages_update,
             'orgportals_pages_delete': actions.pages_delete,
             'orgportals_pages_list': actions.pages_list,
-            'organization_create': actions.organization_create
+            'organization_create': actions.organization_create,
+            'organization_update': actions.organization_update
         }
         return actions_dict
 
@@ -163,7 +164,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_secondary_color': default_validators,
             'orgportals_main_color': default_validators,
             'orgportals_new_data_color': default_validators,
-            'orgportals_all_data_color': default_validators
+            'orgportals_all_data_color': default_validators,
+            'orgportals_portal_created': default_validators
         })
 
         return schema
@@ -187,6 +189,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_main_color': default_validators,
             'orgportals_new_data_color': default_validators,
             'orgportals_all_data_color': default_validators,
+            'orgportals_portal_created': default_validators,
             'num_followers': [_not_empty],
             'package_count': [_not_empty],
         })

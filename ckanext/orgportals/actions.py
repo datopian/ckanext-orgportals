@@ -9,12 +9,28 @@ import db
 
 def organization_create(context, data_dict):
     try:
+        data_dict.update({'orgportals_portal_created': '1'})
         org = create_core.organization_create(context, data_dict)
         _create_portal(data_dict['name'])
 
         return org
     except p.toolkit.ValidationError:
         return create_core.organization_create(context, data_dict)
+
+
+def organization_update(context, data_dict):
+    try:
+        org = update_core.organization_update(context, data_dict)
+        org_show = tk.get_action('organization_show')({}, data_dict)
+
+        if 'orgportals_portal_created' not in org_show:
+            data_dict.update({'orgportals_portal_created': '1'})
+            org = update_core.organization_update(context, data_dict)
+            _create_portal(data_dict['name'])
+
+        return org
+    except p.toolkit.ValidationError:
+        return update_core.organization_update(context, data_dict)
 
 
 def page_name_validator(key, data, errors, context):
