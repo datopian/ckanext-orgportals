@@ -30,9 +30,17 @@ def _create_pages_table():
 
         @classmethod
         def get_pages_for_org(self, org_name):
-            query = model.Session.query(self).autoflush(False).filter_by(org_name=org_name)
+            query = model.Session.query(self).autoflush(False)
+            query = query.filter_by(org_name=org_name)
 
             return query
+
+        @classmethod
+        def get_page_for_org(self, org_name, page_name):
+            query = model.Session.query(self).autoflush(False)
+            query = query.filter_by(org_name=org_name, name=page_name)
+
+            return query.first()
 
     global Page
 
