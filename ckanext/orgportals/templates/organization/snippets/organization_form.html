@@ -57,7 +57,7 @@
     <legend>
     <h2>{{ _('Portal settings') }}
 
-    {% if data.orgportals_portal_created == '1' and (data.orgportals_is_active == '1' or data.orgportals_is_active is undefined) %}
+    {% if data.orgportals_portal_created == '1' and data.orgportals_is_active == '1' %}
       <a class="btn btn-primary pull-right"
         target="_blank"
         href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',

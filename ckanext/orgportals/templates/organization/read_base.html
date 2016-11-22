@@ -3,7 +3,7 @@
 {% block content_action %}
   {{ super() }}
 
-  {% if c.group_dict.orgportals_portal_created == '1' and (c.group_dict.orgdashboards_is_active == '1' or c.group_dict.orgdashboards_is_active is undefined) %}
+  {% if c.group_dict.orgportals_portal_created == '1' and c.group_dict.orgportals_is_active == '1' %}
     {% if c.group_dict.orgportals_secondary_language and c.group_dict.orgportals_secondary_language == 'en' %}
       {% set locale = h.orgportals_get_secondary_language(c.group_dict.orgportals_secondary_dashboard) %}
     {% else %}
