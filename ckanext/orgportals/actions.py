@@ -138,14 +138,19 @@ def _pages_update(context, data_dict):
 
 
 def _create_portal(org_name):
+    _create_pages(org_name)
+    _create_menu(org_name)
+
+
+def _create_pages(org_name):
     pages = [
         {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home'},
         {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data'},
-        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact'},
+        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About'},
         {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help'},
         {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources'},
-        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About'},
-        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary'}
+        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary'},
+        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact'},
     ]
 
     for page in pages:
@@ -159,6 +164,27 @@ def _create_portal(org_name):
 
     model.Session.commit()
 
+def _create_menu(org_name):
+    menu = [
+        {'org_name': org_name, 'order': 1, 'title': 'Home', 'name': 'home'},
+        {'org_name': org_name, 'order': 2, 'title': 'Data', 'name': 'data'},
+        {'org_name': org_name, 'order': 3, 'title': 'About', 'name': 'about'},
+        {'org_name': org_name, 'order': 4, 'title': 'Help', 'name': 'help'},
+        {'org_name': org_name, 'order': 5, 'title': 'Resources', 'name': 'resources'},
+        {'org_name': org_name, 'order': 6, 'title': 'Glossary', 'name': 'glossary'},
+        {'org_name': org_name, 'order': 7, 'title': 'Contact', 'name': 'contact'},
+    ]
+
+    for item in menu:
+        out = db.Menu()
+        out.org_name = item['org_name']
+        out.order = item['order']
+        out.title = item['title']
+        out.name = item['name']
+        out.save()
+        model.Session.add(out)
+
+    model.Session.commit()
 
 @tk.side_effect_free
 def pages_show(context, data_dict):
@@ -191,3 +217,10 @@ def pages_list(context, data_dict):
     except p.toolkit.NotAuthorized:
         p.toolkit.abort(401, p.toolkit._('Not authorized to see this page'))
     return _pages_list(context, data_dict)
+
+
+def orgportals_get_menu(context, data_dict):
+    org_name = data_dict['org_name']
+    menu = db.Menu.get_menu_for_org(org_name)
+
+    return menu
