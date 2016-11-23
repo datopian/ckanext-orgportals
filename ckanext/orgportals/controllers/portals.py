@@ -379,7 +379,17 @@ class OrgportalsController(PackageController):
         if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
-        return p.toolkit.render('portals/pages/custom.html')
+        data_dict = {
+            'org_name': org_name,
+            'page_name': page_name
+        }
+        data = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
+        extra_vars = {
+            'data': data
+        }
+
+        return p.toolkit.render('portals/pages/custom.html', extra_vars=extra_vars)
 
     def _get_full_name_authors(self, context, org_name):
 
