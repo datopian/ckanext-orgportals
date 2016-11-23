@@ -88,8 +88,9 @@ def _pages_list(context, data_dict):
     return pages
 
 def _pages_delete(context, data_dict):
-    """TODO delete requested page from db"""
-    page = {}
+    org_name = data_dict['org_name']
+    page_name = data_dict['page_name']
+    page = db.Page.get_page_for_org(org_name, page_name)
     if page:
         session = context['session']
         session.delete(page)

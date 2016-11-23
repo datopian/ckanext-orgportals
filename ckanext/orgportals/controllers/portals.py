@@ -104,19 +104,18 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
 
     def orgportals_pages_delete(self, org_name, page):
-        """
-        TODO refactor delete
-        """
+
         page = page[1:]
-        if 'cancel' in p.toolkit.request.params:
-            p.toolkit.redirect_to(controller=self.ctrl, action='pages_edit', org_name=org_name, page='/' + page)
 
-
+        data_dict = {
+            'org_name': org_name,
+            'page_name': page
+        }
 
         try:
             if p.toolkit.request.method == 'POST':
-                p.toolkit.get_action('orgpages_pages_delete')({}, {'page': page})
-                p.toolkit.redirect_to(controller=self.ctrl, action='pages_index', org_name=org_name)
+                p.toolkit.get_action('orgportals_pages_delete')({}, data_dict)
+                p.toolkit.redirect_to(controller=self.ctrl, action='orgportals_pages_index', org_name=org_name)
             else:
                 p.toolkit.abort(404, _('Page Not Found'))
         except p.toolkit.NotAuthorized:
