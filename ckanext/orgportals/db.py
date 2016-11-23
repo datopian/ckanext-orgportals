@@ -82,8 +82,12 @@ def _create_menu_table():
     class _Menu(model.DomainObject):
 
         @classmethod
-        def get_foo(self):
-            return 'foo'
+        def get_menu_for_org(self, org_name):
+            query = model.Session.query(self).autoflush(False)
+            query = query.filter_by(org_name=org_name)
+            query = query.order_by(self.order)
+
+            return query
 
     global Menu
 
@@ -91,9 +95,10 @@ def _create_menu_table():
 
     menu_table = sa.Table('orgportal_menu', model.meta.metadata,
         sa.Column('id', sa.types.UnicodeText, primary_key=True, default=_make_uuid),
-        sa.Column('organization_id', sa.types.UnicodeText, default=u''),
+        sa.Column('org_name', sa.types.UnicodeText, default=u''),
+        sa.Column('name', sa.types.UnicodeText, default=u''),
         sa.Column('title', sa.types.UnicodeText, default=u''),
-        # sa.Column('order', sa.types.INT, default=u''),
+        sa.Column('order', sa.types.INT, default=100000),
         sa.Column('created', sa.types.DateTime, default=datetime.datetime.utcnow),
         sa.Column('modified', sa.types.DateTime, default=datetime.datetime.utcnow),
         extend_existing=True

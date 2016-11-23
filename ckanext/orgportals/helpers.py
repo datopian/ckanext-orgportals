@@ -105,3 +105,12 @@ def orgportals_get_copyright_text(organization_name):
     organization = toolkit.get_action('organization_show')(data_dict=data_dict)
 
     return organization['orgportals_copyright']
+
+
+def orgportals_get_menu(org_name):
+    data_dict = {
+        'org_name': org_name
+    }
+    menu = toolkit.get_action('orgportals_get_menu')({}, data_dict)
+
+    return menu
