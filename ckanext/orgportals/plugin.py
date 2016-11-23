@@ -107,7 +107,13 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_copyright_text':
                 helpers.orgportals_get_copyright_text,
             'orgportals_get_menu':
-                helpers.orgportals_get_menu
+                helpers.orgportals_get_menu,
+            'orgportals_convert_to_list':
+                helpers.orgportals_convert_to_list,
+            'orgportals_get_resource_url':
+                helpers.orgportals_get_resource_url,
+            'orgportals_get_resource_names_from_ids':
+                helpers.orgportals_get_resource_names_from_ids
         }
 
     # IGroupForm
