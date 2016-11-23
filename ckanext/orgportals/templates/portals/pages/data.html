@@ -1,12 +1,10 @@
 {% extends 'portals/index.html' %}
 
-{% block content %}
-  <ul class="subdashboards-container">
-    {% for item in [0, 1, 2, 3, 4, 5] %}
-      {% snippet 'portals/snippets/subdashboard_item.html' %}
-    {% endfor %}
-  </ul>
+{% block scripts %}
+  {% resource 'orgportals/map' %}
+{% endblock %}
 
+{% block content %}
   {% if organization.orgportals_base_color %}
     {% set base_color = "#" + organization.orgportals_base_color %}
   {% else %}
@@ -37,10 +35,24 @@
     {% set font_all_data_color = "#000000" %}
   {% endif %}
 
+  {% snippet 'portals/snippets/map.html',
+    base_color=base_color,
+    orgdashboards_map=organization.orgdashboards_map,
+    orgdashboards_map_main_property=organization.orgdashboards_map_main_property
+  %}
+
+  <ul class="subdashboards-container">
+    {% for item in [0, 1, 2, 3, 4, 5] %}
+      {% snippet 'portals/snippets/subdashboard_item.html' %}
+    {% endfor %}
+  </ul>
+
+
   {% snippet 'portals/snippets/new_data.html',
     base_color=base_color,
     font_base_color=font_base_color,
-    font_new_data_color=font_new_data_color
+    font_new_data_color=font_new_data_color,
+    org_display_name=organization.display_name
   %}
   {% snippet 'portals/snippets/all_data.html',
     base_color=base_color,

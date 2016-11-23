@@ -6,6 +6,16 @@ from pylons import config
 from ckan.plugins import toolkit
 from ckan.lib import search
 import ckan.lib.helpers as lib_helpers
+from ckan.logic.validators import resource_id_exists
+from ckan import model
+
+
+def _get_ctx():
+    return {
+        'model': model,
+        'session': model.Session,
+        'user': 'sysadmin'
+    }
 
 
 def orgportals_get_newly_released_data(organization_name, limit=4):
@@ -114,3 +124,34 @@ def orgportals_get_menu(org_name):
     menu = toolkit.get_action('orgportals_get_menu')({}, data_dict)
 
     return menu
+
+
+def orgportals_convert_to_list(resources):
+    if not resources.startswith('{'):
+        return [resources]
+    resources = resources[1:len(resources) - 1].split(',')
+    for i in range(len(resources)):
+        if resources[i].startswith('"'):
+            resources[i] = resources[i][1:len(resources[i]) - 1]
+
+    return resources
+
+
+def orgportals_get_resource_url(id):
+    if not resource_id_exists(id, _get_ctx()):
+        return None
+
+    data = toolkit.get_action('resource_show')({}, {'id': id})
+
+    return data['url']
+
+
+def orgportals_get_resource_names_from_ids(resource_ids):
+    resource_names = []
+
+    for resource_id in resource_ids:
+        resource_names.append(toolkit.get_action('resource_show',
+                                                 {},
+                                                 {'id': resource_id})['name'])
+
+    return resource_names
