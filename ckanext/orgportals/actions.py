@@ -101,10 +101,13 @@ def _pages_update(context, data_dict):
     org_name = data_dict.get('org_name')
     page_name = data_dict.get('name')
     page_type = data_dict.get('type')
+    page_title = data_dict.get('title')
     # we need the page in the context for name validation
     context['page_name'] = page_name
     context['org_name'] = org_name
     context['page_type'] = page_type
+
+    session = context['session']
 
     data, errors = df.validate(data_dict, schema, context)
 
@@ -116,6 +119,14 @@ def _pages_update(context, data_dict):
         out = db.Page()
         out.org_name = org_name
         out.name = page_name
+
+        menu = db.Menu()
+        menu.org_name = org_name
+        menu.name = page_name
+        menu.title = page_title
+        menu.save()
+        session.add(menu)
+
     items = ['title', 'content', 'name', 'image',
              'type', 'text_box', 'email_address',
              'themes', 'datasets_per_page', 'survey_enabled',
@@ -132,7 +143,6 @@ def _pages_update(context, data_dict):
 
     out.modified = datetime.datetime.utcnow()
     out.save()
-    session = context['session']
     session.add(out)
     session.commit()
 
