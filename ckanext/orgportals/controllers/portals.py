@@ -51,28 +51,56 @@ class OrgportalsController(PackageController):
 
         return p.toolkit.render('organization/pages_list.html')
 
-    def pages_edit(self, org_name, page=None, data=None):
-        if p.toolkit.request.method == 'GET':
-            if page:
-                page_name = page[1:]
-                data_dict = {
-                    'org_name': org_name,
-                    'page_name': page_name
-                }
-                _page = get_action('orgportals_pages_show')({}, data_dict)
-            else:
-                _page = {}
+    def pages_edit(self, org_name, page=None, data=None, errors=None, error_summary=None):
 
-            """
-            TODO Get page if page param included and show edit form else show create form
-            """
-            c.group_dict = self._get_group_dict(org_name)
-            print 'page: ', _page
-            vars = {'page': _page}
+        if page:
+            page = page[1:]
+        data_dict = {
+            'org_name': org_name,
+            'page_name': page
+        }
+        _page = get_action('orgportals_pages_show')({}, data_dict)
 
-            return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
-        elif p.toolkit.request.method == 'POST':
-            pass
+        if _page is None:
+            _page = {}
+
+        if p.toolkit.request.method == 'POST' and not data:
+            data = dict(p.toolkit.request.POST)
+
+            _page.update(data)
+            _page['org_name'] = org_name
+
+            try:
+                junk = p.toolkit.get_action('orgportals_pages_update')(
+                    data_dict=_page
+                )
+            except p.toolkit.ValidationError, e:
+
+                errors = e.error_dict
+                error_summary = e.error_summary
+                return self.pages_edit(org_name,'/' + page, data,
+                                       errors, error_summary)
+            p.toolkit.redirect_to(p.toolkit.url_for('orgportals_pages_index', org_name=org_name))
+
+        try:
+            p.toolkit.check_access('orgportals_pages_update', {'user': p.toolkit.c.user or p.toolkit.c.author})
+        except p.toolkit.NotAuthorized:
+            p.toolkit.abort(401, _('Unauthorized to create or edit a page'))
+
+        if not data:
+            data = _page
+
+        errors = errors or {}
+        error_summary = error_summary or {}
+
+        print error_summary
+
+        vars = {'data': data, 'errors': errors,
+                'error_summary': error_summary, 'page': _page}
+
+        c.group_dict = self._get_group_dict(org_name)
+
+        return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
 
     def pages_delete(self, org_name, page):
         """

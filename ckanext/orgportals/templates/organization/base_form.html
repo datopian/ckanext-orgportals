@@ -1,9 +1,16 @@
 {% import 'macros/form.html' as form %}
 
-{% set action_url = h.url_for('orgportals_pages_edit', org_name=org_name, page='') %}
-{% set cancel_url = h.url_for('orgportals_pages_index', org_name=org_name) %}
-{% set delete_url = h.url_for('orgportals_pages_delete', org_name=org_name, page='') %}
+{% set data = data or {} %}
+{% set errors = errors or {} %}
 
+{% if page %}
+  {% set action_url = h.url_for('orgportals_pages_edit', org_name=org_name, page='/' + page.name) %}
+  {% set delete_url = h.url_for('orgportals_pages_delete', org_name=org_name, page='/' + page.name) %}
+{% else %}
+  {% set action_url = h.url_for('orgportals_pages_edit', org_name=org_name, page='') %}
+  {% set delete_url = h.url_for('orgportals_pages_delete', org_name=org_name, page='') %}
+{% endif %}
+{% set cancel_url = h.url_for('orgportals_pages_index', org_name=org_name) %}
 
 {% if not page %}
   <h1>{{ _('Add page') }}</h1>
@@ -20,7 +27,7 @@
   {% endblock %}
 
   {% if page.id is undefined or (page.type != 'data') %}
-    {{ form.input('title', id='field-title', label=_('Title'), placeholder=title_placeholder, value=page.title, classes=['control-full', 'control-large'], is_required=true) }}
+    {{ form.input('title', id='field-title', label=_('Title'), placeholder=title_placeholder, value=page.title, error=errors.title, classes=['control-full', 'control-large'], is_required=true) }}
   {% endif %}
 
   {% if page.type == 'home' %}
@@ -32,6 +39,7 @@
 
   {% if page.id is undefined or page.type == 'custom' %}
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-page'), value=page.name, attrs=attrs, is_required=true) }}
+    {{ form.input('type', id='field-type', label=_('Type'), value='custom', error=errors.type, classes=['control-full', 'control-large'], is_required=true) }}
   {% endif %}
 
   {% if page.id is undefined or page.type == 'custom' or (page.type == 'default' and page.name != 'contact') %}
