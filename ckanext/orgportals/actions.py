@@ -40,7 +40,6 @@ def page_name_validator(key, data, errors, context):
     session = context['session']
     page_name = context.get('page_name')
     org_name = context.get('org_name')
-    page_type = context.get('page_type')
     if page_name and page_name == data[key]:
         return
 
@@ -99,13 +98,11 @@ def _pages_delete(context, data_dict):
 def _pages_update(context, data_dict):
 
     org_name = data_dict.get('org_name')
-    page_name = data_dict.get('name')
-    page_type = data_dict.get('type')
+    page_name = data_dict.get('page_name')
     page_title = data_dict.get('title')
     # we need the page in the context for name validation
     context['page_name'] = page_name
     context['org_name'] = org_name
-    context['page_type'] = page_type
 
     session = context['session']
 

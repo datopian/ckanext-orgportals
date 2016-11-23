@@ -33,17 +33,16 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
         map.connect('orgportals_pages_delete', '/organization/edit/{org_name}/pages_delete{page:/.*|}',
-                    action='pages_delete', ckan_icon='delete', controller=ctrl)
+                    action='orgportals_pages_delete', ckan_icon='delete', controller=ctrl)
 
         map.connect('orgportals_pages_edit', '/organization/edit/{org_name}/pages_edit{page:/.*|}',
-                    action='pages_edit', ckan_icon='edit', controller=ctrl)
+                    action='orgportals_pages_edit', ckan_icon='edit', controller=ctrl)
 
         map.connect('orgportals_pages_index', '/organization/edit/{org_name}/pages',
-                    action='pages_index', ckan_icon='file', controller=ctrl,
-                    highlight_actions='pages_edit pages_index')
+                    action='orgportals_pages_index', ckan_icon='file', controller=ctrl)
 
         map.connect('orgportals_nav_bar', '/organization/edit/{org_name}/nav', controller=ctrl,
-                    action='nav_bar', ckan_icon='list')
+                    action='orgportals_nav_bar', ckan_icon='list')
 
 
         map.connect('/organization/{org_name}/portal/home', controller=ctrl,

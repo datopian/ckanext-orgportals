@@ -42,7 +42,7 @@ class OrgportalsController(PackageController):
         return group_dict
 
 
-    def pages_index(self, org_name):
+    def orgportals_pages_index(self, org_name):
         data_dict = {'org_name': org_name}
         pages = get_action('orgportals_pages_list')({}, data_dict)
 
@@ -51,7 +51,7 @@ class OrgportalsController(PackageController):
 
         return p.toolkit.render('organization/pages_list.html')
 
-    def pages_edit(self, org_name, page=None, data=None, errors=None, error_summary=None):
+    def orgportals_pages_edit(self, org_name, page=None, data=None, errors=None, error_summary=None):
 
         if page:
             page = page[1:]
@@ -69,6 +69,7 @@ class OrgportalsController(PackageController):
 
             _page.update(data)
             _page['org_name'] = org_name
+            _page['page_name'] = page
 
             try:
                 junk = p.toolkit.get_action('orgportals_pages_update')(
@@ -78,7 +79,7 @@ class OrgportalsController(PackageController):
 
                 errors = e.error_dict
                 error_summary = e.error_summary
-                return self.pages_edit(org_name,'/' + page, data,
+                return self.orgportals_pages_edit(org_name,'/' + page, data,
                                        errors, error_summary)
             p.toolkit.redirect_to(p.toolkit.url_for('orgportals_pages_index', org_name=org_name))
 
@@ -102,7 +103,7 @@ class OrgportalsController(PackageController):
 
         return p.toolkit.render('organization/pages_edit.html', extra_vars=vars)
 
-    def pages_delete(self, org_name, page):
+    def orgportals_pages_delete(self, org_name, page):
         """
         TODO refactor delete
         """
@@ -124,7 +125,7 @@ class OrgportalsController(PackageController):
             p.toolkit.abort(404, _('Group not found'))
         return p.toolkit.render('organization/confirm_delete.html', {'page': page})
 
-    def nav_bar(self, org_name):
+    def orgportals_nav_bar(self, org_name):
 
         """
         Get navigation bar for organization portal
