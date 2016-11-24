@@ -72,6 +72,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_pages_delete': actions.pages_delete,
             'orgportals_pages_list': actions.pages_list,
             'orgportals_get_menu': actions.orgportals_get_menu,
+            'orgportals_resource_show_map_properties': actions.orgportals_resource_show_map_properties,
             'organization_create': actions.organization_create,
             'organization_update': actions.organization_update
         }
@@ -112,7 +113,11 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_resource_url':
                 helpers.orgportals_get_resource_url,
             'orgportals_get_resource_names_from_ids':
-                helpers.orgportals_get_resource_names_from_ids
+                helpers.orgportals_get_resource_names_from_ids,
+            'orgportals_get_org_map_views':
+                helpers.orgportals_get_org_map_views,
+            'orgportals_resource_show_map_properties':
+                helpers.orgportals_resource_show_map_properties
         }
 
     # IGroupForm

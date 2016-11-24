@@ -1,6 +1,6 @@
 {% if map %}
   {% set maps = h.orgportals_convert_to_list(map) %}
-  {% set geoJsonUrlList = [] %}}
+  {% set geoJsonUrlList = [] %}
   {% for item in maps %}
     {# Apparently we can append only in an if statement #}
     {% if geoJsonUrlList.append(h.orgportals_get_resource_url(item)) %}
@@ -14,7 +14,6 @@
 {% if map_main_property %}
   {% set map_main_properties = h.orgportals_convert_to_list(map_main_property) %}
 {% endif %}
-
 
 {% if maps %}
   {% set resource_names = h.orgportals_get_resource_names_from_ids(maps) %}

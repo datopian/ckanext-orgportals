@@ -8,7 +8,7 @@ import ckan.logic.action.create as create_core
 import ckan.logic.action.update as update_core
 from ckan import model
 
-import db
+from ckanext.orgportals import db, helpers
 
 def organization_create(context, data_dict):
     try:
@@ -68,7 +68,9 @@ schema = {
     'survey_enabled': [p.toolkit.get_validator('ignore_missing'), bool],
     'survey_text': [p.toolkit.get_validator('ignore_missing'), unicode],
     'survey_link': [p.toolkit.get_validator('ignore_missing'), unicode],
-
+    'map': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'map_main_property': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'map_enabled': [p.toolkit.get_validator('ignore_missing'), unicode],
     'created': [p.toolkit.get_validator('ignore_missing'),
                 p.toolkit.get_validator('isodate')],
     'updated': [p.toolkit.get_validator('ignore_missing'),
@@ -131,7 +133,7 @@ def _pages_update(context, data_dict):
     items = ['title', 'content', 'name', 'image',
              'type', 'text_box', 'email_address',
              'themes', 'datasets_per_page', 'survey_enabled',
-             'survey_text', 'survey_link']
+             'survey_text', 'survey_link', 'map', 'map_main_property', 'map_enabled']
     for item in items:
         setattr(out, item, data.get(item))
 
@@ -235,3 +237,7 @@ def orgportals_get_menu(context, data_dict):
     menu = db.Menu.get_menu_for_org(org_name)
 
     return menu
+
+@p.toolkit.side_effect_free
+def orgportals_resource_show_map_properties(context, data_dict):
+    return helpers.orgportals_get_geojson_properties(data_dict.get('id'))

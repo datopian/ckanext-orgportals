@@ -1,6 +1,8 @@
 {% extends 'portals/index.html' %}
 
 {% block scripts %}
+  {{ super() }}
+
   {% resource 'orgportals/map' %}
 {% endblock %}
 
@@ -37,8 +39,8 @@
 
   {% snippet 'portals/snippets/map.html',
     base_color=base_color,
-    orgdashboards_map=organization.orgdashboards_map,
-    orgdashboards_map_main_property=organization.orgdashboards_map_main_property
+    map=data_page.map,
+    map_main_property=data_page.map_main_property
   %}
 
   <ul class="subdashboards-container">

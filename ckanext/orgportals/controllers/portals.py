@@ -67,6 +67,19 @@ class OrgportalsController(PackageController):
         if p.toolkit.request.method == 'POST' and not data:
             data = dict(p.toolkit.request.POST)
 
+            if 'type' in _page and _page['type'] == 'data':
+                _page['map'] = []
+                _page['map_main_property'] = []
+
+                for k, v in data.items():
+                    if k.startswith('map_main_property'):
+                        _page['map_main_property'].append(v)
+                    elif k.startswith('map_') and not k.startswith('map_enabled'):
+                        _page['map'].append(v)
+
+                _page['map'] = ';'.join(_page['map'])
+                _page['map_main_property'] = ';'.join(_page['map_main_property'])
+
             _page.update(data)
             _page['org_name'] = org_name
             _page['page_name'] = page
@@ -338,8 +351,15 @@ class OrgportalsController(PackageController):
         self._setup_template_variables(context, {},
                                        package_type=package_type)
 
+        data_dict = {
+            'org_name': org['name'],
+            'page_name': 'data'
+        }
+        data_page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
         extra_vars = {
-            'organization': org
+            'organization': org,
+            'data_page': data_page
         }
 
         return p.toolkit.render('portals/pages/data.html',

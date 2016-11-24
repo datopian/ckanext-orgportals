@@ -1,5 +1,6 @@
 from datetime import datetime
 from urllib import urlencode
+import urllib
 
 from pylons import config
 
@@ -8,6 +9,7 @@ from ckan.lib import search
 import ckan.lib.helpers as lib_helpers
 from ckan.logic.validators import resource_id_exists
 from ckan import model
+from ckan.common import json
 
 
 def _get_ctx():
@@ -127,12 +129,10 @@ def orgportals_get_menu(org_name):
 
 
 def orgportals_convert_to_list(resources):
-    if not resources.startswith('{'):
+    if ';' not in resources:
         return [resources]
-    resources = resources[1:len(resources) - 1].split(',')
-    for i in range(len(resources)):
-        if resources[i].startswith('"'):
-            resources[i] = resources[i][1:len(resources[i]) - 1]
+
+    resources = resources.split(';')
 
     return resources
 
@@ -150,8 +150,72 @@ def orgportals_get_resource_names_from_ids(resource_ids):
     resource_names = []
 
     for resource_id in resource_ids:
-        resource_names.append(toolkit.get_action('resource_show',
-                                                 {},
+        resource_names.append(toolkit.get_action('resource_show')({},
                                                  {'id': resource_id})['name'])
 
     return resource_names
+
+
+def orgportals_get_org_map_views(name):
+        allMaps = {}
+        result = [{'value': '', 'text': 'None'}]
+        for item in _get_organization_views(name, type='Maps'):
+            data = {
+                'value': item['id'],
+                'text': 'UNNAMED' if item['name'] == '' else item['name']
+            }
+            result.append(data)
+            allMaps.update({name: result})
+
+        return allMaps.get(name) or {}
+
+
+def _get_organization_views(name, type='chart builder'):
+    data_dict = {
+        'id': name,
+        'include_datasets': True
+    }
+    data = toolkit.get_action('organization_show')({}, data_dict)
+
+    result = []
+    package_names = data.pop('packages', [])
+
+    if any(package_names):
+        for _ in package_names:
+            package = toolkit.get_action('package_show')({}, {'id': _['name']})
+            if not package['num_resources'] > 0:
+                continue
+
+            if type == 'chart builder':
+                resource_views = map(lambda p: toolkit.get_action('resource_view_list')({},
+                                                          {'id': p['id']}), package['resources'])
+                if any(resource_views):
+                    map(lambda l: result.extend(filter(lambda i: i['view_type'].lower() == type, l)), resource_views)
+
+            elif type.lower() == 'maps':
+                result.extend(filter(lambda r: r['format'].lower() in ['geojson', 'gjson'], package['resources']))
+
+            else:
+                pass
+            # Raise not handled exception
+
+    return result
+
+
+def orgportals_resource_show_map_properties(id):
+    return orgportals_get_geojson_properties(id)
+
+
+def orgportals_get_geojson_properties(resource_id):
+    url = orgportals_get_resource_url(resource_id)
+
+    r = urllib.urlopen(url)
+
+    data = unicode(r.read(), errors='ignore')
+    geojson = json.loads(data)
+
+    result = []
+    for k, v in geojson.get('features')[0].get('properties').iteritems():
+        result.append({'value':k, 'text': k})
+
+    return result

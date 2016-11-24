@@ -11,12 +11,38 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
   var pathName = window.location.pathname;
   var paths = pathName.split('/').reverse();
   var organization_entity_name;
+  var disclaimerText = $('.hero-info .media-body');
+  var disclaimerContainer = $('.media.hero-info');
 
   if (paths[2] === 'country') {
     organization_entity_name = 'country';
   } else if (paths[2] === 'organization') {
     organization_entity_name = 'organization';
   }
+
+  // Click handler for the disclaimer icon.
+  $('.hero-info > .media-left').click(function onMapDisclaimerClick(event) {
+    var bodyWidth = $('body').outerWidth();
+    var topPosition;
+
+    if (disclaimerText.hasClass('hidden')) {
+      topPosition = bodyWidth <= 976 ? '790px' : '295px';
+
+      disclaimerText.removeClass('hidden');
+      disclaimerContainer.css({
+          'width': '300px',
+          'padding': '10px',
+      });
+    } else {
+      topPosition = bodyWidth <= 976 ? '905px' : '410px';
+
+      disclaimerText.addClass('hidden');
+      disclaimerContainer.css({
+          'width': '54px',
+          'padding': '2px',
+      });
+    }
+  });
 
   function renderMap(elementId, organizationName, mapURL, color, mainProperty) {
     var mainProperties = [];
