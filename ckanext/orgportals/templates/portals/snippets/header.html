@@ -1,21 +1,21 @@
 {% set menu = h.orgportals_get_menu(c.org_name) %}
 
 <header>
-    <div class="row">
-      <div class="col-sm-3 organization-logo">
-        <a href="#"><img class="img-responsive" src="/images/usedata.jpg" height="130" alt="logo"></a>
-      </div>
-
-      <div class="col-sm-9">
-        <nav class="top-navigation pull-right" style="background-color: grey">
-          <div class="">
-            <ul class="list-inline">
-              {% for item in menu %}
-                <li><a href="{{ item.name }}">{{ item.title }}</a></li>
-              {% endfor %}
-            </ul>
-          </div>
-        </nav>
-      </div>
+  <div class="row">
+    <div class="col-sm-3 organization-logo">
+      <a href="#"><img class="img-responsive" src="/images/usedata.jpg" height="130" alt="logo"></a>
     </div>
+
+    <div class="col-sm-9">
+      <nav class="top-navigation pull-right" style="background-color: grey">
+        <div class="">
+          <ul class="list-inline">
+            {% for item in menu %}
+              <li><a href="{{ item.name }}">{{ item.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
 </header>
