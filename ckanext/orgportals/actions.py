@@ -115,7 +115,7 @@ def _pages_update(context, data_dict):
     if errors:
         raise p.toolkit.ValidationError(errors)
 
-    out = db.Page.get_page_for_org(org_name, page_name)
+    out = db.Page.get_page_for_org(org_name, _page_name)
 
     if not out:
         out = db.Page()
