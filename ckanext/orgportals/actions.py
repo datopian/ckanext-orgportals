@@ -40,12 +40,14 @@ def page_name_validator(key, data, errors, context):
     session = context['session']
     page_name = context.get('page_name')
     org_name = context.get('org_name')
+
     if page_name and page_name == data[key]:
         return
 
     query = session.query(db.Page.name).filter_by(name=data[key], org_name=org_name)
 
     result = query.first()
+
     if result:
         errors[key].append(
             p.toolkit._('Page name already exists in database'))
@@ -99,7 +101,7 @@ def _pages_delete(context, data_dict):
 def _pages_update(context, data_dict):
 
     org_name = data_dict.get('org_name')
-    page_name = data_dict.get('page_name')
+    page_name = data_dict.get('name')
     page_title = data_dict.get('title')
     # we need the page in the context for name validation
     context['page_name'] = page_name
@@ -113,6 +115,7 @@ def _pages_update(context, data_dict):
         raise p.toolkit.ValidationError(errors)
 
     out = db.Page.get_page_for_org(org_name, page_name)
+
     if not out:
         out = db.Page()
         out.org_name = org_name
