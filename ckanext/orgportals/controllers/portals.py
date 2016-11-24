@@ -345,35 +345,11 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('portals/pages/data.html',
                                 extra_vars=extra_vars)
 
-    def aboutpage_show(self, org_name):
+    def contentpage_show(self, org_name, page_name):
         if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
-        return p.toolkit.render('portals/pages/about.html')
-
-    def contactpage_show(self, org_name):
-        if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
-
-        return p.toolkit.render('portals/pages/contact.html')
-
-    def glossarypage_show(self, org_name):
-        if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
-
-        return p.toolkit.render('portals/pages/glossary.html')
-
-    def helppage_show(self, org_name):
-        if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
-
-        return p.toolkit.render('portals/pages/help.html')
-
-    def resourcespage_show(self, org_name):
-        if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
-
-        return p.toolkit.render('portals/pages/resources.html')
+        return p.toolkit.render('portals/pages/{0}.html'.format(page_name))
 
     def custompage_show(self, org_name, page_name):
         if not _is_portal_active(org_name):

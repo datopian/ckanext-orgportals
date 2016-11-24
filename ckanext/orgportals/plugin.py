@@ -50,15 +50,15 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('/organization/{org_name}/portal/data', controller=ctrl,
                     action='datapage_show')
         map.connect('/organization/{org_name}/portal/contact', controller=ctrl,
-                    action='contactpage_show')
+                    action='contentpage_show', page_name='contact')
         map.connect('/organization/{org_name}/portal/about', controller=ctrl,
-                    action='aboutpage_show')
+                    action='contentpage_show', page_name='about')
         map.connect('/organization/{org_name}/portal/help', controller=ctrl,
-                    action='helppage_show')
+                    action='contentpage_show', page_name='help')
         map.connect('/organization/{org_name}/portal/resources', controller=ctrl,
-                    action='resourcespage_show')
+                    action='contentpage_show', page_name='resources')
         map.connect('/organization/{org_name}/portal/glossary', controller=ctrl,
-                    action='glossarypage_show')
+                    action='contentpage_show', page_name='glossary')
         map.connect('/organization/{org_name}/portal/{page_name}', controller=ctrl,
                     action='custompage_show')
 
