@@ -101,10 +101,11 @@ def _pages_delete(context, data_dict):
 def _pages_update(context, data_dict):
 
     org_name = data_dict.get('org_name')
+    _page_name = data_dict.get('page_name')
     page_name = data_dict.get('name')
     page_title = data_dict.get('title')
     # we need the page in the context for name validation
-    context['page_name'] = page_name
+    context['page_name'] = _page_name
     context['org_name'] = org_name
 
     session = context['session']
