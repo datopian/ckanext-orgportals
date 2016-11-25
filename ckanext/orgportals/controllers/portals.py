@@ -107,8 +107,6 @@ class OrgportalsController(PackageController):
         errors = errors or {}
         error_summary = error_summary or {}
 
-        print error_summary
-
         vars = {'data': data, 'errors': errors,
                 'error_summary': error_summary, 'page': _page}
 
@@ -138,14 +136,47 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('organization/confirm_delete.html', {'page': page})
 
     def orgportals_nav_bar(self, org_name):
+        data_dict = {'org_name': org_name}
+        pages = get_action('orgportals_pages_list')({}, data_dict)
+        menu = []
 
-        """
-        Get navigation bar for organization portal
-        """
+        for page in pages:
+            data = {
+                'title': page['title'],
+                'order': page['order'],
+                'name': page['name']
+            }
+            menu.append(data)
+
+        extra_vars = {
+            'menu': menu
+        }
+
         c.group_dict = self._get_group_dict(org_name)
 
+        if p.toolkit.request.method == 'POST':
+            data = dict(p.toolkit.request.POST)
 
-        return p.toolkit.render('organization/nav_bar.html')
+            for k, v in data.items():
+                if k.startswith('menu_item_name'):
+                    page_name = k.split('_')[-1]
+
+                    data_dict = {
+                        'org_name': org_name,
+                        'page_name': page_name
+                    }
+
+                    page = get_action('orgportals_pages_show')({}, data_dict)
+
+                    page['order'] = int(v)
+                    page['org_name'] = org_name
+                    page['page_name'] = page_name
+
+                    p.toolkit.get_action('orgportals_pages_update')({}, data_dict=page)
+
+            p.toolkit.redirect_to(p.toolkit.url_for('orgportals_pages_index', org_name=org_name))
+
+        return p.toolkit.render('organization/nav_bar.html', extra_vars=extra_vars)
 
     def view_portal(self, org_name):
         if not _is_portal_active(org_name):

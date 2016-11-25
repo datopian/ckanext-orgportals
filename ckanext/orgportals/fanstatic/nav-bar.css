@@ -1,0 +1,12 @@
+.portal-nav-menu-admin__item {
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.portal-nav-menu-admin__item.cursor-grabbing {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+

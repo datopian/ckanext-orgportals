@@ -1,0 +1,14 @@
+<form method="POST">
+  <ul class="portal-nav-menu-admin">
+    {% for menu_item in menu %}
+      <li class="portal-nav-menu-admin__item">
+        <input type="hidden" name="menu_item_name_{{ menu_item.name }}" value="{{ menu_item.order }}" />
+        <h3>{{ menu_item.title }}</h3>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="form-actions">
+    <button class="btn btn-primary" name="save" type="submit">Save</button>
+  </div>
+</form>

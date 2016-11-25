@@ -1,11 +1,25 @@
 {% extends "organization/edit_base.html" %}
 
+{% block styles %}
+  {{ super() }}
+
+  {% resource 'orgportals/vendor/dragula/dragula.css' %}
+  {% resource 'orgportals/nav-bar.css' %}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+
+  {% resource 'orgportals/nav_bar' %}
+{% endblock %}
+
 {% block subtitle %}{{ _('Portal navigation bar') }} - {{ super() }}{% endblock %}
 
 {% block primary_content_inner %}
   <legend>
-  <h2>{{ _('Portal nav bar') }}</h2>
+  <h2>{{ _('Change the order of navigation items') }}</h2>
   </legend>
-
+  {% snippet 'organization/snippets/menu_list.html', menu=menu %}
+  <b><p style="font-size: 12px;">Hint: Use drag and drop to rearrange the items.</p></b>
 
 {% endblock %}
