@@ -1,11 +1,20 @@
 {% extends 'portals/index.html' %}
 
 {% block content %}
-  <div class="hero-content-container">
-    <img class="hero-content-container__image" src="/images/hero-image.jpg">
+
+  {% if page.image_url %}
+    {% set container_height = 'initial' %}
+    {% set image_url = page.image_url %}
+  {% else %}
+    {% set container_height = '100px' %}
+    {% set image_url = '' %}
+  {% endif %}
+
+  <div class="hero-content-container" style="height: {{ container_height }};">
+    <img class="hero-content-container__image" src="{{ image_url }}">
     <div class="hero-content-container__content">
-      <h3 class="hero-content-container__header">Lorem ipsum</h3>
-      <div class="hero-content-container__button">Howdy</div>
+      <h3 class="hero-content-container__header">{{ page.content_title }}</h3>
+      <div class="hero-content-container__button">{{ page.text_box }}</div>
     </div>
   </div>
 {% endblock %}
