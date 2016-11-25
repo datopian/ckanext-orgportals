@@ -37,11 +37,13 @@
     {% set font_all_data_color = "#000000" %}
   {% endif %}
 
-  {% snippet 'portals/snippets/map.html',
-    base_color=base_color,
-    map=data_page.map,
-    map_main_property=data_page.map_main_property
-  %}
+  {% if data_page.map_enabled %}
+    {% snippet 'portals/snippets/map.html',
+      base_color=base_color,
+      map=data_page.map,
+      map_main_property=data_page.map_main_property
+    %}
+  {% endif %}
 
   <ul class="subdashboards-container">
     {% for item in [0, 1, 2, 3, 4, 5] %}
