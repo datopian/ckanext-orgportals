@@ -59,6 +59,7 @@ schema = {
     'org_name': [p.toolkit.get_validator('not_empty'), unicode],
     'type': [p.toolkit.get_validator('not_empty'), unicode],
     'title': [p.toolkit.get_validator('not_empty'), unicode],
+    'order': [p.toolkit.get_validator('ignore_missing'), unicode],
     'image': [p.toolkit.get_validator('ignore_empty'), unicode],
     'text_box': [p.toolkit.get_validator('ignore_empty'), unicode],
     'content': [p.toolkit.get_validator('ignore_missing'), unicode],
@@ -88,8 +89,13 @@ def _pages_show(context, data_dict):
 def _pages_list(context, data_dict):
     org_name = data_dict['org_name']
     pages = db.Page.get_pages_for_org(org_name=org_name)
+    pages_dictized = []
 
-    return pages
+    for page in pages:
+        page = db.table_dictize(page, context)
+        pages_dictized.insert(page['order'] - 1, page)
+
+    return pages_dictized
 
 def _pages_delete(context, data_dict):
     org_name = data_dict['org_name']
@@ -124,17 +130,11 @@ def _pages_update(context, data_dict):
         out.org_name = org_name
         out.name = page_name
 
-        menu = db.Menu()
-        menu.org_name = org_name
-        menu.name = page_name
-        menu.title = page_title
-        menu.save()
-        session.add(menu)
-
     items = ['title', 'content', 'name', 'image',
              'type', 'text_box', 'email_address',
              'themes', 'datasets_per_page', 'survey_enabled',
-             'survey_text', 'survey_link', 'map', 'map_main_property', 'map_enabled']
+             'survey_text', 'survey_link', 'map', 'map_main_property',
+             'map_enabled', 'order']
     for item in items:
         setattr(out, item, data.get(item))
 
@@ -153,18 +153,17 @@ def _pages_update(context, data_dict):
 
 def _create_portal(org_name):
     _create_pages(org_name)
-    _create_menu(org_name)
 
 
 def _create_pages(org_name):
     pages = [
-        {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home'},
-        {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data'},
-        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About'},
-        {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help'},
-        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources'},
-        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary'},
-        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact'},
+        {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home', 'order': 1},
+        {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data', 'order': 2},
+        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About', 'order': 3},
+        {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help', 'order': 4},
+        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources', 'order': 5},
+        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary', 'order': 6},
+        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact', 'order': 7},
     ]
 
     for page in pages:
@@ -173,32 +172,12 @@ def _create_pages(org_name):
         out.org_name = page['org_name']
         out.type = page['type']
         out.title = page['title']
+        out.order = page['order']
         out.save()
         model.Session.add(out)
 
     model.Session.commit()
 
-def _create_menu(org_name):
-    menu = [
-        {'org_name': org_name, 'order': 1, 'title': 'Home', 'name': 'home'},
-        {'org_name': org_name, 'order': 2, 'title': 'Data', 'name': 'data'},
-        {'org_name': org_name, 'order': 3, 'title': 'About', 'name': 'about'},
-        {'org_name': org_name, 'order': 4, 'title': 'Help', 'name': 'help'},
-        {'org_name': org_name, 'order': 5, 'title': 'Resources', 'name': 'resources'},
-        {'org_name': org_name, 'order': 6, 'title': 'Glossary', 'name': 'glossary'},
-        {'org_name': org_name, 'order': 7, 'title': 'Contact', 'name': 'contact'},
-    ]
-
-    for item in menu:
-        out = db.Menu()
-        out.org_name = item['org_name']
-        out.order = item['order']
-        out.title = item['title']
-        out.name = item['name']
-        out.save()
-        model.Session.add(out)
-
-    model.Session.commit()
 
 @tk.side_effect_free
 def pages_show(context, data_dict):
@@ -231,13 +210,6 @@ def pages_list(context, data_dict):
     except p.toolkit.NotAuthorized:
         p.toolkit.abort(401, p.toolkit._('Not authorized to see this page'))
     return _pages_list(context, data_dict)
-
-
-def orgportals_get_menu(context, data_dict):
-    org_name = data_dict['org_name']
-    menu = db.Menu.get_menu_for_org(org_name)
-
-    return menu
 
 @p.toolkit.side_effect_free
 def orgportals_resource_show_map_properties(context, data_dict):

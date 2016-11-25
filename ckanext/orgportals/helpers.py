@@ -119,15 +119,6 @@ def orgportals_get_copyright_text(organization_name):
     return organization['orgportals_copyright']
 
 
-def orgportals_get_menu(org_name):
-    data_dict = {
-        'org_name': org_name
-    }
-    menu = toolkit.get_action('orgportals_get_menu')({}, data_dict)
-
-    return menu
-
-
 def orgportals_convert_to_list(resources):
     if ';' not in resources:
         return [resources]
@@ -219,3 +210,9 @@ def orgportals_get_geojson_properties(resource_id):
         result.append({'value':k, 'text': k})
 
     return result
+
+
+def orgportals_get_pages(org_name):
+    data_dict = {'org_name': org_name}
+
+    return toolkit.get_action('orgportals_pages_list')({}, data_dict)

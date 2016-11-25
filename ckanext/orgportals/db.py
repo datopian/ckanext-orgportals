@@ -15,9 +15,6 @@ except:
 page_table = None
 Page = None
 
-menu_table = None
-Menu = None
-
 subdashboards_table = None
 Subdashboards = None
 
@@ -28,7 +25,6 @@ def _make_uuid():
 
 def init():
     _create_pages_table()
-    _create_menu_table()
     _create_subdashboards_table()
 
 
@@ -40,7 +36,7 @@ def _create_pages_table():
             query = model.Session.query(self).autoflush(False)
             query = query.filter_by(org_name=org_name)
 
-            return query
+            return query.all()
 
         @classmethod
         def get_page_for_org(self, org_name, page_name):
@@ -58,6 +54,7 @@ def _create_pages_table():
         sa.Column('name', sa.types.UnicodeText, default=u''),
         sa.Column('org_name', sa.types.UnicodeText, default=u''),
         sa.Column('type', sa.types.UnicodeText, default=u''),
+        sa.Column('order', sa.types.INT, default=100000),
         sa.Column('title', sa.types.UnicodeText, default=u''),
         sa.Column('image', sa.types.UnicodeText, default=u''),
         sa.Column('text_box', sa.types.UnicodeText, default=u''),
@@ -79,37 +76,6 @@ def _create_pages_table():
     page_table.create(checkfirst=True)
 
     model.meta.mapper(Page, page_table)
-
-
-def _create_menu_table():
-    class _Menu(model.DomainObject):
-
-        @classmethod
-        def get_menu_for_org(self, org_name):
-            query = model.Session.query(self).autoflush(False)
-            query = query.filter_by(org_name=org_name)
-            query = query.order_by(self.order)
-
-            return query
-
-    global Menu
-
-    Menu = _Menu
-
-    menu_table = sa.Table('orgportal_menu', model.meta.metadata,
-        sa.Column('id', sa.types.UnicodeText, primary_key=True, default=_make_uuid),
-        sa.Column('org_name', sa.types.UnicodeText, default=u''),
-        sa.Column('name', sa.types.UnicodeText, default=u''),
-        sa.Column('title', sa.types.UnicodeText, default=u''),
-        sa.Column('order', sa.types.INT, default=100000),
-        sa.Column('created', sa.types.DateTime, default=datetime.datetime.utcnow),
-        sa.Column('modified', sa.types.DateTime, default=datetime.datetime.utcnow),
-        extend_existing=True
-    )
-
-    menu_table.create(checkfirst=True)
-
-    model.meta.mapper(Menu, menu_table)
 
 
 def _create_subdashboards_table():

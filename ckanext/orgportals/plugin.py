@@ -71,7 +71,6 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_pages_update': actions.pages_update,
             'orgportals_pages_delete': actions.pages_delete,
             'orgportals_pages_list': actions.pages_list,
-            'orgportals_get_menu': actions.orgportals_get_menu,
             'orgportals_resource_show_map_properties': actions.orgportals_resource_show_map_properties,
             'organization_create': actions.organization_create,
             'organization_update': actions.organization_update
@@ -106,8 +105,6 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_get_current_url,
             'orgportals_get_copyright_text':
                 helpers.orgportals_get_copyright_text,
-            'orgportals_get_menu':
-                helpers.orgportals_get_menu,
             'orgportals_convert_to_list':
                 helpers.orgportals_convert_to_list,
             'orgportals_get_resource_url':
@@ -117,7 +114,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_org_map_views':
                 helpers.orgportals_get_org_map_views,
             'orgportals_resource_show_map_properties':
-                helpers.orgportals_resource_show_map_properties
+                helpers.orgportals_resource_show_map_properties,
+            'orgportals_get_pages':
+                helpers.orgportals_get_pages,
         }
 
     # IGroupForm
