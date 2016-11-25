@@ -93,7 +93,7 @@ def _pages_list(context, data_dict):
 
     for page in pages:
         page = db.table_dictize(page, context)
-        pages_dictized.insert(page['order'] - 1, page)
+        pages_dictized.append(page)
 
     return pages_dictized
 
@@ -157,13 +157,13 @@ def _create_portal(org_name):
 
 def _create_pages(org_name):
     pages = [
-        {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home', 'order': 1},
-        {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data', 'order': 2},
-        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About', 'order': 3},
-        {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help', 'order': 4},
-        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources', 'order': 5},
-        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary', 'order': 6},
-        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact', 'order': 7},
+        {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home', 'order': 0},
+        {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data', 'order': 1},
+        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About', 'order': 2},
+        {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help', 'order': 3},
+        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources', 'order': 4},
+        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary', 'order': 5},
+        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact', 'order': 6},
     ]
 
     for page in pages:
