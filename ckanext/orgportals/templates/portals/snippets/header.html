@@ -1,4 +1,4 @@
-{% set menu = h.orgportals_get_menu(c.org_name) %}
+{% set pages = h.orgportals_get_pages(c.org_name) %}
 
 <header>
   <div class="row">
@@ -10,8 +10,8 @@
       <nav class="top-navigation pull-right" style="background-color: grey">
         <div class="">
           <ul class="list-inline">
-            {% for item in menu %}
-              <li><a href="{{ item.name }}">{{ item.title }}</a></li>
+            {% for page in pages %}
+              <li><a href="{{ page.name }}">{{ page.title }}</a></li>
             {% endfor %}
           </ul>
         </div>
