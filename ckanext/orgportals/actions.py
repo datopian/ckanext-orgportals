@@ -58,9 +58,10 @@ schema = {
              p.toolkit.get_validator('name_validator'), page_name_validator],
     'org_name': [p.toolkit.get_validator('not_empty'), unicode],
     'type': [p.toolkit.get_validator('not_empty'), unicode],
-    'title': [p.toolkit.get_validator('not_empty'), unicode],
+    'page_title': [p.toolkit.get_validator('not_empty'), unicode],
+    'content_title': [p.toolkit.get_validator('ignore_missing'), unicode],
     'order': [p.toolkit.get_validator('ignore_missing'), unicode],
-    'image': [p.toolkit.get_validator('ignore_empty'), unicode],
+    'image_url': [p.toolkit.get_validator('ignore_empty'), unicode],
     'text_box': [p.toolkit.get_validator('ignore_empty'), unicode],
     'content': [p.toolkit.get_validator('ignore_missing'), unicode],
     'email_address': [p.toolkit.get_validator('ignore_missing'), unicode],
@@ -111,7 +112,7 @@ def _pages_update(context, data_dict):
     org_name = data_dict.get('org_name')
     _page_name = data_dict.get('page_name')
     page_name = data_dict.get('name')
-    page_title = data_dict.get('title')
+    page_title = data_dict.get('page_title')
     # we need the page in the context for name validation
     context['page_name'] = _page_name
     context['org_name'] = org_name
@@ -130,7 +131,7 @@ def _pages_update(context, data_dict):
         out.org_name = org_name
         out.name = page_name
 
-    items = ['title', 'content', 'name', 'image',
+    items = ['page_title', 'content_title', 'content', 'name', 'image_url',
              'type', 'text_box', 'email_address',
              'themes', 'datasets_per_page', 'survey_enabled',
              'survey_text', 'survey_link', 'map', 'map_main_property',
@@ -157,13 +158,13 @@ def _create_portal(org_name):
 
 def _create_pages(org_name):
     pages = [
-        {'org_name': org_name, 'type': 'home', 'name': 'home', 'title': 'Home', 'order': 0},
-        {'org_name': org_name, 'type': 'data', 'name': 'data', 'title': 'Data', 'order': 1},
-        {'org_name': org_name, 'type': 'default', 'name': 'about', 'title': 'About', 'order': 2},
-        {'org_name': org_name, 'type': 'default', 'name': 'help', 'title': 'Help', 'order': 3},
-        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'title': 'Resources', 'order': 4},
-        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'title': 'Glossary', 'order': 5},
-        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'title': 'Contact', 'order': 6},
+        {'org_name': org_name, 'type': 'home', 'name': 'home', 'page_title': 'Home', 'order': 0},
+        {'org_name': org_name, 'type': 'data', 'name': 'data', 'page_title': 'Data', 'order': 1},
+        {'org_name': org_name, 'type': 'default', 'name': 'about', 'page_title': 'About', 'order': 2},
+        {'org_name': org_name, 'type': 'default', 'name': 'help', 'page_title': 'Help', 'order': 3},
+        {'org_name': org_name, 'type': 'default', 'name': 'resources', 'page_title': 'Resources', 'order': 4},
+        {'org_name': org_name, 'type': 'default', 'name': 'glossary', 'page_title': 'Glossary', 'order': 5},
+        {'org_name': org_name, 'type': 'default', 'name': 'contact', 'page_title': 'Contact', 'order': 6},
     ]
 
     for page in pages:
@@ -171,7 +172,7 @@ def _create_pages(org_name):
         out.name = page['name']
         out.org_name = page['org_name']
         out.type = page['type']
-        out.title = page['title']
+        out.page_title = page['page_title']
         out.order = page['order']
         out.save()
         model.Session.add(out)
