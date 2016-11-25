@@ -9,7 +9,7 @@
       <img src="{{ page.image or h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ page.name }}" class="media-image">
     {% endblock %}
     {% block title %}
-      <h3 class="media-heading">{{ page.title }}</h3>
+      <h3 class="media-heading">{{ page.page_title }}</h3>
     {% endblock %}
     {% block link %}
       <a href="{{ url }}" class="media-view">
