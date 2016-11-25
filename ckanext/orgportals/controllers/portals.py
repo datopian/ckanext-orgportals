@@ -1,5 +1,6 @@
 import logging
 from urllib import urlencode
+import cgi
 
 from pylons import config
 from paste.deploy.converters import asbool
@@ -14,6 +15,7 @@ import ckan.plugins as p
 import ckan.lib.helpers as h
 from ckan.lib.search import SearchError
 import ckan.lib.maintain as maintain
+import ckan.lib.uploader as uploader
 
 log = logging.getLogger(__name__)
 
@@ -66,6 +68,15 @@ class OrgportalsController(PackageController):
 
         if p.toolkit.request.method == 'POST' and not data:
             data = dict(p.toolkit.request.POST)
+            image_upload =  dict(p.toolkit.request.params)['image_upload']
+
+            if isinstance(image_upload, cgi.FieldStorage):
+                upload = uploader.get_uploader('portal', data['image_url'])
+                upload.update_data_dict(data, 'image_url', 'image_upload', 'clear_upload')
+                upload.upload(uploader.get_max_image_size())
+                image_url = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, upload.filename)
+            else:
+                image_url = data['image_url']
 
             if 'type' in _page and _page['type'] == 'data':
                 _page['map'] = []
@@ -83,6 +94,7 @@ class OrgportalsController(PackageController):
             _page.update(data)
             _page['org_name'] = org_name
             _page['page_name'] = page
+            _page['image_url'] = image_url
 
             try:
                 junk = p.toolkit.get_action('orgportals_pages_update')(
@@ -142,7 +154,7 @@ class OrgportalsController(PackageController):
 
         for page in pages:
             data = {
-                'title': page['title'],
+                'page_title': page['page_title'],
                 'order': page['order'],
                 'name': page['name']
             }
@@ -182,7 +194,18 @@ class OrgportalsController(PackageController):
         if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
-        return p.toolkit.render('portals/pages/home.html')
+        data_dict = {
+            'org_name': org_name,
+            'page_name': 'home'
+        }
+
+        page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
+        extra_vars = {
+            'page': page
+        }
+
+        return p.toolkit.render('portals/pages/home.html', extra_vars=extra_vars)
 
     def datapage_show(self, org_name):
         data_dict = {'id': org_name, 'include_extras': True}

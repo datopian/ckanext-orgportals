@@ -25,17 +25,19 @@
 {% set title_placeholder = _('eg. Page Title') %}
 
 
-<form class="form-horizontal" method="post" action="{{ action_url }}" data-module="basic-form">
+<form class="form-horizontal" method="post" action="{{ action_url }}" data-module="basic-form" enctype="multipart/form-data">
   {% block error_summary %}
     {{ form.errors(error_summary) }}
   {% endblock %}
 
   {% if page.id is undefined or (page.type != 'data') %}
-    {{ form.input('title', id='field-title', label=_('Title'), placeholder=title_placeholder, value=page.title, error=errors.title, classes=['control-full', 'control-large'], is_required=true) }}
+    {{ form.input('page_title', id='field-title', label=_('Page title'), placeholder=title_placeholder, value=page.page_title, error=errors.page_title, classes=['control-full', 'control-large'], is_required=true) }}
+
+    {{ form.input('content_title', id='field-title', label=_('Content title'), value=page.content_title, error=errors.content_title, classes=['control-full']) }}
   {% endif %}
 
   {% if page.type == 'home' %}
-    {{ form.input('text_box', id='field-title', label=_('Text box'), value=page.text_box, classes=['control-full'], is_required=true) }}
+    {{ form.input('text_box', id='field-title', label=_('Text box'), value=page.text_box, classes=['control-full'], error=errors.text_box, is_required=true) }}
   {% endif %}
 
   {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='custompage_show', org_name=org_name, page_name='') %}
@@ -50,11 +52,12 @@
     {{ form.markdown('content', id='field-content', label=_('Content'), placeholder=_('Enter content here'), value=page.content) }}
   {% endif %}
 
-  {% set is_upload = page.image and not page.image.startswith('http') %}
-  {% set is_url = page.image and page.image.startswith('http') %}
-  {% set errors = {} %}
+  {% set is_upload = page.image_url and not page.image_url.startswith('http') %}
+  {% set is_url = page.image_url and page.image_url.startswith('http') %}
 
-  {# {{ form.image_upload(page, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} #}
+  {% if page.type != 'data' %}
+    {{ form.image_upload(page, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
+  {% endif %}
 
   {% if page.type == 'data' %}
     <fieldset class="map-properties">
