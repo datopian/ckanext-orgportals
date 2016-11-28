@@ -1,3 +1,5 @@
+{% set map_views = h.orgportals_get_org_map_views(data.org_name) %}
+
 <fieldset class="map-properties">
   <legend>{{ _('Map options') }}</legend>
 
@@ -19,20 +21,27 @@
       {% set map_main_property_select_name = ['map_main_property_', loop.index] %}
 
       <div id="map-field_{{ loop.index }}" class="map-fields">
-        {{ form.select(map_select_name|join, 'map', _('Resource'), options=h.orgportals_get_org_map_views(data.org_name), selected=item) }}
+        {{ form.select(map_select_name|join, 'map', _('Resource'), options=map_views, selected=item) }}
         {{ form.select(map_main_property_select_name|join, 'map_main_property', _('Property'), options=h.orgportals_resource_show_map_properties(item), selected=map_properties[loop.index - 1]) }}
         <a id="remove_map_field" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
         <hr>
       </div>
     {% endfor %}
   {% else %}
-    <div id="map-field_1" class="map-fields">
-      {{ form.select('map_1', 'map', _('Resource'), options=h.orgportals_get_org_map_views(data.org_name)) }}
-      {{ form.select('map_main_property_1', 'map_main_property', _('Property')) }}
-      <hr>
-      <a id="remove_map_field" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
-    </div>
+
+    {% if map_views|length > 0 %}
+      <div id="map-field_1" class="map-fields">
+        {{ form.select('map_1', 'map', _('Resource'), options=map_views) }}
+        {{ form.select('map_main_property_1', 'map_main_property', _('Property')) }}
+        <hr>
+        <a id="remove_map_field" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      </div>
+    {% endif %}
   {% endif %}
 </fieldset>
 
-<a id="new-field-btn" class="new-field-btn btn btn-default">Add field</a>
+{% if map_views %}
+  <a id="new-field-btn" class="new-field-btn btn btn-default">Add field</a>
+{% else %}
+  <p>No resource views found.</p>
+{% endif %}
