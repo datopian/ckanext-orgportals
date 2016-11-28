@@ -64,7 +64,7 @@ schema = {
     'image_url': [p.toolkit.get_validator('ignore_empty'), unicode],
     'text_box': [p.toolkit.get_validator('ignore_empty'), unicode],
     'content': [p.toolkit.get_validator('ignore_missing'), unicode],
-    'email_address': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'email_address': [p.toolkit.get_validator('not_empty'), unicode],
     'themes': [p.toolkit.get_validator('ignore_missing'), unicode],
     'datasets_per_page': [p.toolkit.get_validator('ignore_empty'), int],
     'survey_enabled': [p.toolkit.get_validator('ignore_missing'), bool],
