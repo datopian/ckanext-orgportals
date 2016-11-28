@@ -7509,7 +7509,7 @@ footer .container {
 }
 
 .content-page-container__header {
-  text-align: center;
+  margin-left: 40px;
 }
 
 .content-page-container__text {
@@ -7517,6 +7517,11 @@ footer .container {
   margin-bottom: 50px;
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.content-page-container__image {
+    max-width: 100%;
+    margin-top: 50px;
 }
 
 .contact-form-container {
@@ -7538,6 +7543,7 @@ footer .container {
   display: block;
   font-size: 30px;
   font-weight: 400;
+  margin-bottom: 20px;
 }
 
 #contact-form-container__form h4 {
