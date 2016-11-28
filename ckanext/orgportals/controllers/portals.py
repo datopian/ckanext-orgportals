@@ -67,6 +67,9 @@ class OrgportalsController(PackageController):
             _page = {}
 
         if p.toolkit.request.method == 'POST' and not data:
+            if 'type' not in _page:
+                _page['type'] = 'custom'
+
             data = dict(p.toolkit.request.POST)
             image_upload =  dict(p.toolkit.request.params)['image_upload']
 
@@ -423,7 +426,18 @@ class OrgportalsController(PackageController):
         if not _is_portal_active(org_name):
             return p.toolkit.render('portals/snippets/not_active.html')
 
-        return p.toolkit.render('portals/pages/{0}.html'.format(page_name))
+        data_dict = {
+            'org_name': org_name,
+            'page_name': page_name
+        }
+
+        page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
+        extra_vars = {
+            'page': page
+        }
+
+        return p.toolkit.render('portals/pages/{0}.html'.format(page_name), extra_vars=extra_vars)
 
     def custompage_show(self, org_name, page_name):
         if not _is_portal_active(org_name):
