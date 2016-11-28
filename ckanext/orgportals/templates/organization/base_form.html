@@ -2,6 +2,8 @@
 
 {% block scripts %}
   {% resource 'orgportals/map-settings.js' %}
+  {% resource 'orgportals/themes-settings.js' %}
+  {% resource 'orgportals/themes-settings.css' %}
 {% endblock %}
 
 {% set data = data or {} %}
@@ -63,11 +65,14 @@
   {% endif %}
 
   {% if page.type == 'data' %}
-    <fieldset class="map-properties">
+    <fieldset class="page-properties">
       <legend>{{ _('Page settings') }}</legend>
 
       {{ form.select('map_enabled', 'map_enabled', _('Is map enabled?'), options=[{'value': True, 'text': 'Yes'}, {'value': False, 'text': 'No'}], selected=data.map_enabled) }}
     </fieldset>
+    <br><br>
+    {% snippet 'organization/snippets/themes_settings.html', data=data, form=form %}
+    <br><br><br><br>
     {% snippet 'organization/snippets/map_settings.html', data=data, form=form %}
   {% endif %}
 

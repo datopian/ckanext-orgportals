@@ -1,0 +1,17 @@
+.subdashboard-checkbox input[type="checkbox"] {
+  top: 4px !important;
+}
+
+.themes-settings-subdashboard-fields {
+  display: none;
+}
+
+.themes-settings-subdashboard-fields__item {
+  position: relative;
+}
+
+.themes-settings-subdashboard-fields__remove-btn {
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+}

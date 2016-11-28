@@ -1,0 +1,21 @@
+<fieldset class="themes-properties">
+  <legend>{{ _('Themes settings') }}</legend>
+
+  <div class="themes-settings-subdashboard-fields">
+    <div class="themes-settings-subdashboard-fields__item">
+      {{ form.input('jaska', id='jaska', label=_('Title'), value='', classes=['control-full']) }}
+      {{ form.select('group', 'group', _('Group'), options=[], selected='') }}
+
+      {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
+      {% set is_url = data.image_url and data.image_url.startswith('http') %}
+
+      {{ form.image_upload(data, {}, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
+      {{ form.input('enabled', id='field-title', type='checkbox', label=_('Enabled'), value='', classes=['subdashboard-checkbox']) }}
+
+      <a class="btn btn-danger themes-settings-subdashboard-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <hr>
+    </div>
+  </div>
+</fieldset>
+
+<a id="create-dashboard-btn" class="new-field-btn btn btn-default">Create subdashboard</a>
