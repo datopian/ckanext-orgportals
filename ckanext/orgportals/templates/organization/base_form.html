@@ -58,7 +58,7 @@
   {% set is_upload = page.image_url and not page.image_url.startswith('http') %}
   {% set is_url = page.image_url and page.image_url.startswith('http') %}
 
-  {% if page.type != 'data' %}
+  {% if page.type != 'data' and page.name != 'contact' %}
     {{ form.image_upload(page, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
   {% endif %}
 
