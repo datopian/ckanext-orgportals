@@ -1,6 +1,7 @@
 import logging
 from urllib import urlencode
 import cgi
+import json
 
 from pylons import config
 from paste.deploy.converters import asbool
@@ -71,15 +72,19 @@ class OrgportalsController(PackageController):
                 _page['type'] = 'custom'
 
             data = dict(p.toolkit.request.POST)
-            image_upload =  dict(p.toolkit.request.params)['image_upload']
 
-            if isinstance(image_upload, cgi.FieldStorage):
-                upload = uploader.get_uploader('portal', data['image_url'])
-                upload.update_data_dict(data, 'image_url', 'image_upload', 'clear_upload')
-                upload.upload(uploader.get_max_image_size())
-                image_url = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, upload.filename)
+            if 'image_upload' in dict(p.toolkit.request.params):
+                image_upload =  dict(p.toolkit.request.params)['image_upload']
+
+                if isinstance(image_upload, cgi.FieldStorage):
+                    upload = uploader.get_uploader('portal', data['image_url'])
+                    upload.update_data_dict(data, 'image_url', 'image_upload', 'clear_upload')
+                    upload.upload(uploader.get_max_image_size())
+                    image_url = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, upload.filename)
+                else:
+                    image_url = data['image_url']
             else:
-                image_url = data['image_url']
+                image_url = None
 
             if 'type' in _page and _page['type'] == 'data':
                 _page['map'] = []
@@ -93,6 +98,20 @@ class OrgportalsController(PackageController):
 
                 _page['map'] = ';'.join(_page['map'])
                 _page['map_main_property'] = ';'.join(_page['map_main_property'])
+
+                themes = []
+
+                for k, v in data.items():
+                    item = {}
+
+                    if k.startswith('theme_title'):
+                        id = k[-1]
+                        item['title'] = data['theme_title_{}'.format(id)]
+                        item['enabled'] = data['theme_enabled_{}'.format(id)]
+
+                        themes.append(item)
+
+                _page['themes'] = json.dumps(themes)
 
             _page.update(data)
             _page['org_name'] = org_name
@@ -413,6 +432,8 @@ class OrgportalsController(PackageController):
             'page_name': 'data'
         }
         data_page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
+        data_page['themes'] = json.loads(data_page['themes'])
 
         extra_vars = {
             'organization': org,
