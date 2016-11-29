@@ -2,11 +2,15 @@
 
   var navMenuContainer = document.querySelector('.portal-nav-menu-admin');
 
-  dragula([navMenuContainer])
+  dragula([navMenuContainer], {
+    moves: function (el, container, handle) {
+      return handle.classList.contains('grippy');
+    }
+  })
     .on('drag', function(el) {
-      el.classList.add('cursor-grabbing');
+      el.querySelector('.grippy').classList.add('cursor-grabbing');
     }).on('dragend', function(el) {
-      el.classList.remove('cursor-grabbing');
+      el.querySelector('.grippy').classList.remove('cursor-grabbing');
 
       _changeMenuOrder();
     });

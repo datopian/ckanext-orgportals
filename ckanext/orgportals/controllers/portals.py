@@ -2,6 +2,7 @@ import logging
 from urllib import urlencode
 import cgi
 import json
+from operator import itemgetter
 
 from pylons import config
 from paste.deploy.converters import asbool
@@ -73,6 +74,7 @@ class OrgportalsController(PackageController):
 
             data = dict(p.toolkit.request.POST)
 
+            # Upload images for portal pages
             if 'image_upload' in dict(p.toolkit.request.params):
                 image_upload =  dict(p.toolkit.request.params)['image_upload']
 
@@ -80,7 +82,7 @@ class OrgportalsController(PackageController):
                     upload = uploader.get_uploader('portal', data['image_url'])
                     upload.update_data_dict(data, 'image_url', 'image_upload', 'clear_upload')
                     upload.upload(uploader.get_max_image_size())
-                    image_url = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, upload.filename)
+                    image_url = upload.filename
                 else:
                     image_url = data['image_url']
             else:
@@ -108,6 +110,22 @@ class OrgportalsController(PackageController):
                         id = k[-1]
                         item['title'] = data['theme_title_{}'.format(id)]
                         item['enabled'] = data['theme_enabled_{}'.format(id)]
+                        item['group'] = data['theme_group_{}'.format(id)]
+                        item['order'] = data['theme_order_{}'.format(id)]
+
+                        image_url = data['theme_image_url_{}'.format(id)]
+
+                        # Upload images for themes
+                        if h.uploads_enabled():
+                            image_upload = data['theme_image_upload_{}'.format(id)]
+
+                            if isinstance(image_upload, cgi.FieldStorage):
+                                upload = uploader.get_uploader('portal', image_url)
+                                upload.update_data_dict(data, 'theme_image_url_{}'.format(id), 'theme_image_upload_{}'.format(id), 'theme_clear_upload_{}'.format(id))
+                                upload.upload(uploader.get_max_image_size())
+                                image_url = upload.filename
+
+                        item['image_url'] = image_url
 
                         themes.append(item)
 
@@ -140,6 +158,16 @@ class OrgportalsController(PackageController):
 
         errors = errors or {}
         error_summary = error_summary or {}
+
+        if 'themes' in data and len(data['themes']) > 0:
+            data['themes'] = json.loads(data['themes'])
+            data['themes'].sort(key=itemgetter('order'))
+
+        if _page:
+            groups = p.toolkit.get_action('group_list')({}, {})
+            groups = [{'value': group, 'text': group} for group in groups]
+            groups.insert(0, {'value': '$none$', 'text':'None'})
+            data['groups'] = groups
 
         vars = {'data': data, 'errors': errors,
                 'error_summary': error_summary, 'page': _page}
@@ -222,6 +250,11 @@ class OrgportalsController(PackageController):
         }
 
         page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
+        is_upload = page['image_url'] and not page['image_url'].startswith('http')
+
+        if is_upload:
+            page['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, page['image_url'])
 
         extra_vars = {
             'page': page
@@ -433,7 +466,18 @@ class OrgportalsController(PackageController):
         }
         data_page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
 
-        data_page['themes'] = json.loads(data_page['themes'])
+        if len(data_page['themes']) > 0:
+            data_page['themes'] = json.loads(data_page['themes'])
+            data_page['themes'].sort(key=itemgetter('order'))
+        else:
+            data_page['themes'] = []
+
+
+        for theme in data_page['themes']:
+            is_upload = theme['image_url'] and not theme['image_url'].startswith('http')
+
+            if is_upload:
+                theme['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, theme['image_url'])
 
         extra_vars = {
             'organization': org,
@@ -454,6 +498,11 @@ class OrgportalsController(PackageController):
 
         page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
 
+        is_upload = page['image_url'] and not page['image_url'].startswith('http')
+
+        if is_upload:
+            page['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, page['image_url'])
+
         extra_vars = {
             'page': page
         }
@@ -469,6 +518,11 @@ class OrgportalsController(PackageController):
             'page_name': page_name
         }
         data = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
+
+        is_upload = data['image_url'] and not data['image_url'].startswith('http')
+
+        if is_upload:
+            data['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, data['image_url'])
 
         extra_vars = {
             'data': data

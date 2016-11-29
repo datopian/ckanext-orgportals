@@ -1,20 +1,115 @@
-<fieldset class="themes-properties">
+{% set uploads_enabled = h.uploads_enabled() %}
+
+<fieldset class="themes-properties" data-uploads-enabled="{{ uploads_enabled }}">
   <legend>{{ _('Themes settings') }}</legend>
 
   <div class="themes-settings-subdashboard-fields">
     <div class="themes-settings-subdashboard-fields__item">
       {{ form.input('title', id='theme_title', label=_('Title'), value='', classes=['control-full']) }}
-      {{ form.select('group', 'theme_group', _('Group'), options=[], selected='') }}
+      {{ form.select('group', 'theme_group', _('Group'), options=data.groups, selected='$none$') }}
 
-      {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
-      {% set is_url = data.image_url and data.image_url.startswith('http') %}
+      {% if uploads_enabled %}
+        <div
+          class="image-upload"
+          data-module="custom-image-upload"
+          data-module-is_url="false"
+          data-module-is_upload="false"
+          data-module-field_url="theme_image_url_1"
+          data-module-field_upload="theme_image_upload_1"
+          data-module-field_clear="theme_clear_upload_1"
+          data-module-upload_label="Image">
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-url">Image URL</label>
+              <div class="controls ">
+                <input id="field-image-url" type="text" name="theme_image_url_1" value="" placeholder="http://example.com/my-image.jpg">
+              </div>
+            </div>
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-upload">Image</label>
+              <div class="controls ">
+                <input id="field-image-upload" type="file" name="theme_image_upload_1" value="" placeholder="">
+              </div>
+            </div>
+        </div>
+      {% else %}
+        <div class="control-group control-full">
+          <label class="control-label" for="field-image-url">Image URL</label>
+          <div class="controls ">
+            <input id="field-image-url" type="text" name="theme_image_url_1" value="" placeholder="http://example.com/my-image.jpg">
+          </div>
+        </div>
+      {% endif %}
 
-      {{ form.image_upload(data, {}, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
-      {{ form.select('enabled', 'theme_enabled', _('Enabled'), options=[{'value': True, 'text': 'Yes'}, {'value': False, 'text': 'No'}], selected='') }}
+      {{ form.select('enabled', 'theme_enabled', _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected='') }}
+      <input id="theme_order" type="hidden" name="theme_order" value="0" />
       <a class="btn btn-danger themes-settings-subdashboard-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
       <hr>
+      <span class="grippy"></span>
     </div>
   </div>
+
+  {% for theme in data.themes %}
+    <div class="themes-settings-subdashboard-fields__item">
+      {% set theme_title = 'theme_title_' + loop.index|string %}
+      {% set theme_group = 'theme_group_' + loop.index|string %}
+      {% set theme_enabled = 'theme_enabled_' + loop.index|string %}
+      {% set theme_order = 'theme_order_' + loop.index|string %}
+      {% set theme_image_url = 'theme_image_url_' + loop.index|string %}
+      {% set theme_image_upload = 'theme_image_upload_' + loop.index|string %}
+      {% set theme_clear_upload = 'theme_clear_upload_' + loop.index|string %}
+
+      {{ form.input(theme_title, id=theme_title, label=_('Title'), value=theme.title, classes=['control-full'], attrs={'required': 'true'}) }}
+      {{ form.select(theme_group, theme_group, _('Group'), options=data.groups, selected=theme.group) }}
+
+      {% set is_upload = theme.image_url and not theme.image_url.startswith('http') %}
+      {% set is_url = theme.image_url and theme.image_url.startswith('http') %}
+
+      {% if uploads_enabled %}
+        <div
+          class="image-upload"
+          data-module="image-upload"
+          data-module-is_url="{{ is_url or 'false' }}"
+          data-module-is_upload="{{ is_upload or 'false' }}"
+          data-module-field_url="{{ theme_image_url }}"
+          data-module-field_upload="{{ theme_image_upload }}"
+          data-module-field_clear="{{ theme_clear_upload }}"
+          data-module-upload_label="Image">
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-url">Image URL</label>
+              <div class="controls ">
+                <input id="field-image-url" type="text" name="{{ theme_image_url }}" value="{{ theme.image_url }}" placeholder="http://example.com/my-image.jpg">
+              </div>
+            </div>
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-upload">Image</label>
+              <div class="controls ">
+                <input id="field-image-upload" type="file" name="{{ theme_image_upload }}" value="{{ theme.image_url }}" placeholder="">
+              </div>
+            </div>
+        </div>
+      {% else %}
+        <div class="control-group control-full">
+          <label class="control-label" for="field-image-url">Image URL</label>
+          <div class="controls ">
+            <input id="field-image-url" type="text" name="{{ theme_image_url }}" value="{{ theme.image_url }}" placeholder="http://example.com/my-image.jpg">
+          </div>
+        </div>
+      {% endif %}
+      {{ form.select(theme_enabled, theme_enabled, _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected=theme.enabled) }}
+      <input id="theme_order" type="hidden" name="{{ theme_order }}" value="{{ theme.order }}" />
+      <a class="btn btn-danger themes-settings-subdashboard-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <hr>
+      <span class="grippy"></span>
+    </div>
+  {% endfor %}
 </fieldset>
 
-<a id="create-dashboard-btn" class="new-field-btn btn btn-default">Create subdashboard</a>
+{% if data.themes|length < 6 %}
+  {% set btn_display = 'initial' %}
+{% else %}
+  {% set btn_display = 'none' %}
+{% endif %}
+
+<a id="create-dashboard-btn" class="new-field-btn btn btn-default" style="display: {{ btn_display  }}">Create subdashboard</a>
+<br><br><br>
+<b><p style="font-size: 12px;">Hint: Drag the handle to rearrange the items.</p></b>

@@ -1,7 +1,16 @@
 <li>
-  <a href="#">
+  <a {% if item.enabled == 'True' and item.group != '$none$' %}
+        href="subdashboard/{{ item.group }}"
+     {% else %}
+        style="text-decoration: none; opacity: 0.5;"
+     {% endif %}>
     <span>
-      <img src="https://montrose-staging.ckan.io/base/images/placeholder-group.png">
+      {% if item.image_url %}
+        {% set image_url = item.image_url %}
+      {% else %}
+        {% set image_url = '/images/placeholder-group.png' %}
+      {% endif %}
+      <img src="{{ image_url }}">
     </span>
     <h3>{{ item.title }}</h3>
   </a>

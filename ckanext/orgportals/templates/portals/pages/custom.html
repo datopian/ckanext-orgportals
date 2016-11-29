@@ -3,6 +3,9 @@
 {% block content %}
   <div class="content-page-container">
     <h3 class="content-page-container__header">{{ data.page_title }}</h3>
+    {% if data.image_url %}
+      <img class="content-page-container__image" src="{{ data.image_url }}" />
+    {% endif %}
     <div class="content-page-container__text">{{ data.content }}</div>
   </div>
 {% endblock %}
