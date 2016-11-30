@@ -52,10 +52,6 @@
     {{ form.markdown('content', id='field-content', label=_('Content'), placeholder=_('Enter content here'), value=page.content) }}
   {% endif %}
 
-  {% if page.name == 'contact' %}
-    {{ form.input('email_address', id='field-title', type='email', label=_('Email address'), value=page.email_address, classes=['control-full'], error=errors.email_address, is_required=true, attrs={'required': 'true'}) }}
-  {% endif %}
-
   {% set is_upload = page.image_url and not page.image_url.startswith('http') %}
   {% set is_url = page.image_url and page.image_url.startswith('http') %}
 
