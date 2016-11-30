@@ -19,6 +19,8 @@ from ckan.lib.search import SearchError
 import ckan.lib.maintain as maintain
 import ckan.lib.uploader as uploader
 
+from ckanext.orgportals import emailer
+
 log = logging.getLogger(__name__)
 
 check_access = logic.check_access
@@ -502,6 +504,15 @@ class OrgportalsController(PackageController):
 
         if is_upload:
             page['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, page['image_url'])
+
+        if page_name == 'contact' and p.toolkit.request.method == 'POST':
+            data = dict(p.toolkit.request.POST)
+            content = data['contact_message']
+            subject = data['contact_message'][:10] + '...'
+            to = data['contact_email']
+
+            response_message = emailer.send_email(content, subject, to)
+            page['contact_response_message'] = response_message
 
         extra_vars = {
             'page': page

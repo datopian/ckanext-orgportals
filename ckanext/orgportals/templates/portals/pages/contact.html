@@ -1,22 +1,26 @@
 {% extends 'portals/index.html' %}
 
+{% set action_url = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='contentpage_show', page_name=page.name, org_name=page.org_name) %}
+
 {% block content %}
   <div class="contact-form-container">
-    <form id="contact-form-container__form"">
+    <form id="contact-form-container__form" method="post" action="{{ action_url }}">
       <h3>{{ page.content_title }}</h3>
       {# <h4>Lorem ipsum</h4> #}
       <fieldset>
-        <input type="text" placeholder="Your name" tabindex="1" required autofocus />
+        <input type="text" placeholder="Your name" name="contact_name" tabindex="1" required autofocus />
       </fieldset>
       <fieldset>
-        <input type="email" placeholder="Your email address" tabindex="2" required />
+        <input type="email" placeholder="Your email address" name="contact_email" tabindex="2" required />
       </fieldset>
       <fieldset>
-        <textarea placeholder="Type your message here...." tabindex="3" required></textarea>
+        <textarea placeholder="Type your message here...." name="contact_message" tabindex="3" required></textarea>
       </fieldset>
       <fieldset>
         <button name="submit" type="submit" id="contact-submit">Submit</button>
       </fieldset>
+
+      <p>{{ page.contact_response_message }}</p>
     </form>
   </div>
 {% endblock %}
