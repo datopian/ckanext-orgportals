@@ -61,7 +61,6 @@ def _create_pages_table():
         sa.Column('image_url', sa.types.UnicodeText, default=u''),
         sa.Column('text_box', sa.types.UnicodeText, default=u''),
         sa.Column('content', sa.types.UnicodeText, default=u''),
-        sa.Column('email_address', sa.types.UnicodeText, default=u''),
         sa.Column('map', sa.types.UnicodeText, default=u''),
         sa.Column('map_main_property', sa.types.UnicodeText, default=u''),
         sa.Column('map_enabled', sa.types.Boolean, default=False),
