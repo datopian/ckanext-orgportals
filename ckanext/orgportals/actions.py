@@ -205,10 +205,6 @@ def pages_delete(context, data_dict):
 
 @tk.side_effect_free
 def pages_list(context, data_dict):
-    try:
-        p.toolkit.check_access('orgportals_pages_list', context, data_dict)
-    except p.toolkit.NotAuthorized:
-        p.toolkit.abort(401, p.toolkit._('Not authorized to see this page'))
     return _pages_list(context, data_dict)
 
 @p.toolkit.side_effect_free
