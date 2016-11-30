@@ -67,7 +67,14 @@ To install ckanext-orgportals:
    config file (by default the config file is located at
    ``/etc/ckan/default/production.ini``).
 
-4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu::
+4. Add the following settings for sending emails::
+
+     ckanext.orgportals.smtp.mail.from
+     ckanext.orgportals.smtp.server
+     ckanext.orgportals.smtp.user
+     ckanext.orgportals.smtp.password
+
+5. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu::
 
      sudo service apache2 reload
 
