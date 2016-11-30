@@ -64,7 +64,6 @@ schema = {
     'image_url': [p.toolkit.get_validator('ignore_empty'), unicode],
     'text_box': [p.toolkit.get_validator('ignore_empty'), unicode],
     'content': [p.toolkit.get_validator('ignore_missing'), unicode],
-    'email_address': [p.toolkit.get_validator('ignore_empty'), unicode],
     'themes': [p.toolkit.get_validator('ignore_missing'), unicode],
     'datasets_per_page': [p.toolkit.get_validator('ignore_empty'), int],
     'survey_enabled': [p.toolkit.get_validator('ignore_missing'), bool],
@@ -132,7 +131,7 @@ def _pages_update(context, data_dict):
         out.name = page_name
 
     items = ['page_title', 'content_title', 'content', 'name', 'image_url',
-             'type', 'text_box', 'email_address',
+             'type', 'text_box',
              'themes', 'datasets_per_page', 'survey_enabled',
              'survey_text', 'survey_link', 'map', 'map_main_property',
              'map_enabled', 'order']
