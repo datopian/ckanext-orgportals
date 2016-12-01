@@ -44,6 +44,18 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('orgportals_nav_bar', '/organization/edit/{org_name}/nav', controller=ctrl,
                     action='orgportals_nav_bar', ckan_icon='list')
 
+        map.connect('orgportals_subdashboards_index', '/organization/edit/{org_name}/subdashboards', controller=ctrl,
+                    action='orgportals_subdashboards_index', ckan_icon='file')
+
+        map.connect('orgportals_subdashboards_edit', '/organization/edit/{org_name}/subdashboards_edit{subdashboard:/.*|}',
+                    action='orgportals_subdashboards_edit', ckan_icon='edit', controller=ctrl)
+
+        map.connect('/organization/{org_name}/portal/subdashboard/{subdashboard_name}', controller=ctrl,
+                    action='subdashboardpage_show')
+
+        map.connect('orgportals_subdashboards_delete', '/organization/edit/{org_name}/subdashboards_delete{subdashboard:/.*|}',
+                    action='orgportals_subdashboards_delete', ckan_icon='delete', controller=ctrl)
+
 
         map.connect('/organization/{org_name}/portal/home', controller=ctrl,
                     action='view_portal')
@@ -73,7 +85,11 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_pages_list': actions.pages_list,
             'orgportals_resource_show_map_properties': actions.orgportals_resource_show_map_properties,
             'organization_create': actions.organization_create,
-            'organization_update': actions.organization_update
+            'organization_update': actions.organization_update,
+            'orgportals_subdashboards_list': actions.subdashboards_list,
+            'orgportals_subdashboards_show': actions.subdashboards_show,
+            'orgportals_subdashboards_update': actions.subdashboards_update,
+            'orgportals_subdashboards_delete': actions.subdashboards_delete,
         }
         return actions_dict
 
@@ -83,7 +99,11 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_pages_show': auth.pages_show,
             'orgportals_pages_update': auth.pages_update,
             'orgportals_pages_delete': auth.pages_delete,
-            'orgportals_pages_list': auth.pages_list
+            'orgportals_pages_list': auth.pages_list,
+            'orgportals_subdashboards_show': auth.subdashboards_show,
+            'orgportals_subdashboards_update': auth.subdashboards_update,
+            'orgportals_subdashboards_delete': auth.subdashboards_delete,
+            'orgportals_subdashboards_list': auth.subdashboards_list,
        }
 
     # ITemplateHelpers
