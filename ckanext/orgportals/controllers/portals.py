@@ -569,6 +569,92 @@ class OrgportalsController(PackageController):
 
         return authors_list
 
+    def orgportals_subdashboards_index(self, org_name):
+        data_dict = {'org_name': org_name}
+        subdashboards = get_action('orgportals_subdashboards_list')({}, data_dict)
+
+        c.subdashboards = subdashboards
+        c.group_dict = self._get_group_dict(org_name)
+
+        return p.toolkit.render('organization/subdashboards_list.html')
+
+    def orgportals_subdashboards_edit(self, org_name, subdashboard=None, data=None, errors=None, error_summary=None):
+
+        if subdashboard:
+            subdashboard = subdashboard[1:]
+
+        data_dict = {
+            'org_name': org_name,
+            'subdashboard_name': subdashboard
+        }
+        _subdashboard = get_action('orgportals_subdashboards_show')({}, data_dict)
+
+        if _subdashboard is None:
+            _subdashboard = {}
+
+        if p.toolkit.request.method == 'POST' and not data:
+            data = dict(p.toolkit.request.POST)
+
+            _subdashboard.update(data)
+            _subdashboard['org_name'] = org_name
+            _subdashboard['subashboard_name'] = subdashboard
+
+            try:
+                junk = p.toolkit.get_action('orgportals_subdashboards_update')(
+                    data_dict=_subdashboard
+                )
+            except p.toolkit.ValidationError, e:
+                errors = e.error_dict
+                error_summary = e.error_summary
+                return self.orgportals_subdashboards_edit(org_name,'/' + subdashboard, data,
+                                       errors, error_summary)
+
+            p.toolkit.redirect_to(p.toolkit.url_for('orgportals_subdashboards_index', org_name=org_name))
+
+        try:
+            p.toolkit.check_access('orgportals_subdashboards_update', {'user': p.toolkit.c.user or p.toolkit.c.author})
+        except p.toolkit.NotAuthorized:
+            p.toolkit.abort(401, _('Unauthorized to create or edit a subdashboard'))
+
+        if not data:
+            data = _subdashboard
+
+        errors = errors or {}
+        error_summary = error_summary or {}
+
+        groups = p.toolkit.get_action('group_list')({}, {})
+        groups = [{'value': group, 'text': group} for group in groups]
+        groups.insert(0, {'value': '$none$', 'text':'None'})
+        data['groups'] = groups
+
+        vars = {'data': data, 'errors': errors,
+                'error_summary': error_summary, 'subdashboard': _subdashboard}
+
+        c.group_dict = self._get_group_dict(org_name)
+
+        return p.toolkit.render('organization/subdashboards_edit.html', extra_vars=vars)
+
+    def orgportals_subdashboards_delete(self, org_name, subdashboard):
+
+        subdashboard = subdashboard[1:]
+
+        data_dict = {
+            'org_name': org_name,
+            'subdashboard_name': subdashboard
+        }
+
+        try:
+            if p.toolkit.request.method == 'POST':
+                p.toolkit.get_action('orgportals_subdashboards_delete')({}, data_dict)
+                p.toolkit.redirect_to(controller=self.ctrl, action='orgportals_subdashboards_index', org_name=org_name)
+            else:
+                p.toolkit.abort(404, _('Subdashboard Not Found'))
+        except p.toolkit.NotAuthorized:
+            p.toolkit.abort(401, _('Unauthorized to delete subdashboard'))
+        except p.toolkit.ObjectNotFound:
+            p.toolkit.abort(404, _('Group not found'))
+        return p.toolkit.render('organization/confirm_delete.html', {'subdashboard': subdashboard})
+
 
 def _is_portal_active(orgnization_name):
     data_dict = {'id': orgnization_name, 'include_extras': True}
