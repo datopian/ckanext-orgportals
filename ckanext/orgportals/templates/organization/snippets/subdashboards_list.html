@@ -1,0 +1,9 @@
+{% if subdashboards %}
+  <ul class="media-grid" data-module="media-grid">
+    {% for subdashboard in subdashboards %}
+        {% snippet 'organization/snippets/subdashboards_item.html', subdashboard=subdashboard, position=loop.index %}
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="empty">{{ _('There are currently no subdashboars here') }}</p>
+{% endif %}

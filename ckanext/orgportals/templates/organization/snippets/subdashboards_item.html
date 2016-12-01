@@ -1,0 +1,24 @@
+{% set url = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController',
+                       action='orgportals_subdashboards_edit',
+                       org_name=c.group_dict.name,
+                       subdashboard='/' + subdashboard.name) %}
+{% block item %}
+<li class="media-item">
+  {% block item_inner %}
+    {% block image %}
+      <img src="{{ h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ subdashboard.name }}" class="media-image">
+    {% endblock %}
+    {% block title %}
+      <h3 class="media-heading">{{ subdashboard.name }}</h3>
+    {% endblock %}
+    {% block link %}
+      <a href="{{ url }}" class="media-view">
+        <span>test</span>
+      </a>
+    {% endblock %}
+  {% endblock %}
+</li>
+{% endblock %}
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}
