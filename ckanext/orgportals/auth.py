@@ -16,4 +16,9 @@ if p.toolkit.check_ckan_version(min_version='2.2'):
 pages_show = anyone
 pages_update = org_admin
 pages_delete = org_admin
-pages_list = org_admin
+pages_list = anyone
+
+subdashboards_show = anyone
+subdashboards_update = org_admin
+subdashboards_delete = org_admin
+subdashboards_list = anyone
