@@ -15,8 +15,8 @@ except:
 page_table = None
 Page = None
 
-subdashboards_table = None
-Subdashboards = None
+subdashboard_table = None
+Subdashboard = None
 
 
 def _make_uuid():
@@ -25,7 +25,7 @@ def _make_uuid():
 
 def init():
     _create_pages_table()
-    _create_subdashboards_table()
+    _create_subdashboard_table()
 
 
 def _create_pages_table():
@@ -79,20 +79,33 @@ def _create_pages_table():
     model.meta.mapper(Page, page_table)
 
 
-def _create_subdashboards_table():
-    class _Subdashboards(model.DomainObject):
+def _create_subdashboard_table():
+    class _Subdashboard(model.DomainObject):
 
         @classmethod
-        def get_foo(self):
-            return 'foo'
+        def get_subdashboards_for_org(self, org_name):
+            query = model.Session.query(self).autoflush(False)
+            query = query.filter_by(org_name=org_name)
+            query = query.order_by(self.name)
 
-    global Subdashboards
+            return query.all()
 
-    Subdashboards = _Subdashboards
+        @classmethod
+        def get_subdashboard_for_org(self, org_name, subdashboard_name):
+            query = model.Session.query(self).autoflush(False)
+            query = query.filter_by(org_name=org_name, name=subdashboard_name)
 
-    subdashboards_table = sa.Table('orgportal_subdashboards', model.meta.metadata,
+            return query.first()
+
+    global Subdashboard
+
+    Subdashboard = _Subdashboard
+
+    subdashboard_table = sa.Table('orgportal_subdashboard', model.meta.metadata,
         sa.Column('id', sa.types.UnicodeText, primary_key=True, default=_make_uuid),
-        sa.Column('organization_id', sa.types.UnicodeText, default=u''),
+        sa.Column('name', sa.types.UnicodeText, default=u''),
+        sa.Column('org_name', sa.types.UnicodeText, default=u''),
+        sa.Column('group', sa.types.UnicodeText, default=u''),
         sa.Column('is_active', sa.types.Boolean, default=False),
         sa.Column('description', sa.types.UnicodeText, default=u''),
         sa.Column('map', sa.types.UnicodeText, default=u''),
@@ -100,16 +113,15 @@ def _create_subdashboards_table():
         sa.Column('map_enabled', sa.types.Boolean, default=False),
         sa.Column('data_section_enabled', sa.types.Boolean, default=False),
         sa.Column('content_section_enabled', sa.types.Boolean, default=False),
-        sa.Column('datasets_filter', sa.types.UnicodeText, default=u''),
         sa.Column('media', sa.types.UnicodeText, default=u''),
         sa.Column('created', sa.types.DateTime, default=datetime.datetime.utcnow),
         sa.Column('modified', sa.types.DateTime, default=datetime.datetime.utcnow),
         extend_existing=True
     )
 
-    subdashboards_table.create(checkfirst=True)
+    subdashboard_table.create(checkfirst=True)
 
-    model.meta.mapper(Subdashboards, subdashboards_table)
+    model.meta.mapper(Subdashboard, subdashboard_table)
 
 
 
