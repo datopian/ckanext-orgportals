@@ -24,13 +24,6 @@ def send_email(content, subject, to, from_=FROM):
     msg['From'] = from_
     msg['To'] = ','.join(to)
 
-    print 'SMTP_SERVER: ', SMTP_SERVER
-    print 'SMTP_USER: ', SMTP_USER
-    print 'SMTP_PASSWORD: ', SMTP_PASSWORD
-    print 'from_: ', from_
-    print 'to: ', to
-    print 'msg: ', msg
-
     try:
         s = smtplib.SMTP(SMTP_SERVER)
         s.login(SMTP_USER, SMTP_PASSWORD)
