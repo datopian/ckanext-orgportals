@@ -52,7 +52,23 @@ def page_name_validator(key, data, errors, context):
         errors[key].append(
             p.toolkit._('Page name already exists in database'))
 
-schema = {
+def subdashboard_name_validator(key, data, errors, context):
+    session = context['session']
+    name = context.get('subashboard_name')
+    org_name = context.get('org_name')
+
+    if name and name == data[key]:
+        return
+
+    query = session.query(db.Subdashboard.name).filter_by(name=data[key], org_name=org_name)
+
+    result = query.first()
+
+    if result:
+        errors[key].append(
+            p.toolkit._('Subdashboard name already exists in database.'))
+
+pages_schema = {
     'id': [p.toolkit.get_validator('ignore_empty'), unicode],
     'name': [p.toolkit.get_validator('not_empty'), unicode,
              p.toolkit.get_validator('name_validator'), page_name_validator],
@@ -72,6 +88,26 @@ schema = {
     'map': [p.toolkit.get_validator('ignore_missing'), unicode],
     'map_main_property': [p.toolkit.get_validator('ignore_missing'), unicode],
     'map_enabled': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'created': [p.toolkit.get_validator('ignore_missing'),
+                p.toolkit.get_validator('isodate')],
+    'updated': [p.toolkit.get_validator('ignore_missing'),
+                p.toolkit.get_validator('isodate')]
+}
+
+subdashboards_schema = {
+    'id': [p.toolkit.get_validator('ignore_empty'), unicode],
+    'name': [p.toolkit.get_validator('not_empty'), unicode,
+             p.toolkit.get_validator('name_validator'), subdashboard_name_validator],
+    'org_name': [p.toolkit.get_validator('not_empty'), unicode],
+    'group': [p.toolkit.get_validator('not_empty'), unicode],
+    'is_active': [p.toolkit.get_validator('not_empty'), unicode],
+    'description': [p.toolkit.get_validator('ignore_empty'), unicode],
+    'map': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'map_main_property': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'map_enabled': [p.toolkit.get_validator('ignore_missing'), unicode],
+    'data_section_enabled': [p.toolkit.get_validator('not_empty'), unicode],
+    'content_section_enabled': [p.toolkit.get_validator('not_empty'), unicode],
+    'media': [p.toolkit.get_validator('ignore_missing'), unicode],
     'created': [p.toolkit.get_validator('ignore_missing'),
                 p.toolkit.get_validator('isodate')],
     'updated': [p.toolkit.get_validator('ignore_missing'),
@@ -118,7 +154,7 @@ def _pages_update(context, data_dict):
 
     session = context['session']
 
-    data, errors = df.validate(data_dict, schema, context)
+    data, errors = df.validate(data_dict, pages_schema, context)
 
     if errors:
         raise p.toolkit.ValidationError(errors)
@@ -139,7 +175,7 @@ def _pages_update(context, data_dict):
         setattr(out, item, data.get(item))
 
     extras = {}
-    extra_keys = set(schema.keys()) - set(items + ['id', 'created'])
+    extra_keys = set(pages_schema.keys()) - set(items + ['id', 'created'])
     for key in extra_keys:
         if key in data:
             extras[key] = data.get(key)
@@ -149,6 +185,86 @@ def _pages_update(context, data_dict):
     out.save()
     session.add(out)
     session.commit()
+
+def _subdadashboards_list(context, data_dict):
+    org_name = data_dict['org_name']
+    subdashboards = db.Subdashboard.get_subdashboards_for_org(org_name=org_name)
+    subdashboards_dictized = []
+
+    for subdashboard in subdashboards:
+        subdashboard = db.table_dictize(subdashboard, context)
+        subdashboards_dictized.append(subdashboard)
+
+    return subdashboards_dictized
+
+def _subdashboards_show(context, data_dict):
+    org_name = data_dict['org_name']
+    subdashboard_name = data_dict['subdashboard_name']
+    subdashboard = db.Subdashboard.get_subdashboard_for_org(org_name, subdashboard_name)
+    if subdashboard:
+        subdashboard = db.table_dictize(subdashboard, context)
+    return subdashboard
+
+def _subdashboards_update(context, data_dict):
+
+    org_name = data_dict.get('org_name')
+    subashboard_name = data_dict.get('subashboard_name')
+    name = data_dict.get('name')
+    # we need the subdashboard in the context for name validation
+    context['subashboard_name'] = subashboard_name
+    context['org_name'] = org_name
+
+    session = context['session']
+
+    data, errors = df.validate(data_dict, subdashboards_schema, context)
+
+    if errors:
+        raise p.toolkit.ValidationError(errors)
+
+    out = db.Subdashboard.get_subdashboard_for_org(org_name, subashboard_name)
+
+    if not out:
+        out = db.Subdashboard()
+        out.name = name
+
+    items = [
+        'name',
+        'org_name',
+        'group',
+        'is_active',
+        'description',
+        'map',
+        'map_main_property',
+        'map_enabled',
+        'data_section_enabled',
+        'content_section_enabled',
+        'media',
+    ]
+
+    for item in items:
+        setattr(out, item, data.get(item))
+
+    extras = {}
+    extra_keys = set(subdashboards_schema.keys()) - set(items + ['id', 'created'])
+    for key in extra_keys:
+        if key in data:
+            extras[key] = data.get(key)
+    out.extras = json.dumps(extras)
+
+    out.modified = datetime.datetime.utcnow()
+    out.save()
+    session.add(out)
+    session.commit()
+
+def _subdashboards_delete(context, data_dict):
+    org_name = data_dict['org_name']
+    subdashboard_name = data_dict['subdashboard_name']
+    subdashboard = db.Subdashboard.get_subdashboard_for_org(org_name, subdashboard_name)
+
+    if subdashboard:
+        session = context['session']
+        session.delete(subdashboard)
+        session.commit()
 
 
 def _create_portal(org_name):
@@ -210,3 +326,29 @@ def pages_list(context, data_dict):
 @p.toolkit.side_effect_free
 def orgportals_resource_show_map_properties(context, data_dict):
     return helpers.orgportals_get_geojson_properties(data_dict.get('id'))
+
+@tk.side_effect_free
+def subdashboards_list(context, data_dict):
+    return _subdadashboards_list(context, data_dict)
+
+@tk.side_effect_free
+def subdashboards_show(context, data_dict):
+    try:
+        p.toolkit.check_access('orgportals_subdashboards_show', context, data_dict)
+    except p.toolkit.NotAuthorized:
+        p.toolkit.abort(401, p.toolkit._('Not authorized to see this subdashboard'))
+    return _subdashboards_show(context, data_dict)
+
+def subdashboards_update(context, data_dict):
+    try:
+        p.toolkit.check_access('orgportals_subdashboards_update', context, data_dict)
+    except p.toolkit.NotAuthorized:
+        p.toolkit.abort(401, p.toolkit._('Not authorized to see this subdashboard'))
+    return _subdashboards_update(context, data_dict)
+
+def subdashboards_delete(context, data_dict):
+    try:
+        p.toolkit.check_access('orgportals_subdashboards_delete', context, data_dict)
+    except p.toolkit.NotAuthorized:
+        p.toolkit.abort(401, p.toolkit._('Not authorized to see this subdashboard'))
+    return _subdashboards_delete(context, data_dict)
