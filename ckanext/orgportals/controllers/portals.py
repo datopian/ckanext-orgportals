@@ -112,7 +112,7 @@ class OrgportalsController(PackageController):
                         id = k[-1]
                         item['title'] = data['theme_title_{}'.format(id)]
                         item['enabled'] = data['theme_enabled_{}'.format(id)]
-                        item['group'] = data['theme_group_{}'.format(id)]
+                        item['subdashboard'] = data['theme_subdashboard_{}'.format(id)]
                         item['order'] = data['theme_order_{}'.format(id)]
 
                         image_url = data['theme_image_url_{}'.format(id)]
@@ -166,10 +166,11 @@ class OrgportalsController(PackageController):
             data['themes'].sort(key=itemgetter('order'))
 
         if _page:
-            groups = p.toolkit.get_action('group_list')({}, {})
-            groups = [{'value': group, 'text': group} for group in groups]
-            groups.insert(0, {'value': '$none$', 'text':'None'})
-            data['groups'] = groups
+            data_dict = {'org_name': org_name}
+            subdashboards = p.toolkit.get_action('orgportals_subdashboards_list')({}, data_dict)
+            subdashboards = [{'value': subdashboard['name'], 'text': subdashboard['name']} for subdashboard in subdashboards]
+            subdashboards.insert(0, {'value': '$none$', 'text':'None'})
+            data['subdashboards'] = subdashboards
 
         vars = {'data': data, 'errors': errors,
                 'error_summary': error_summary, 'page': _page}
@@ -646,6 +647,30 @@ class OrgportalsController(PackageController):
         try:
             if p.toolkit.request.method == 'POST':
                 p.toolkit.get_action('orgportals_subdashboards_delete')({}, data_dict)
+
+                data_dict = {
+                    'org_name': org_name,
+                    'page_name': 'data'
+                }
+
+                page = get_action('orgportals_pages_show')({}, data_dict)
+
+                themes = page['themes']
+
+                if len(themes) > 0:
+                    themes = json.loads(themes)
+                    new_themes = themes[:]
+
+                    # Remove the theme for this subdashboard
+                    for i, theme in enumerate(new_themes):
+                        if theme['subdashboard'] == subdashboard:
+                            themes.pop(i)
+
+                    page['themes'] = json.dumps(themes)
+                    page['page_name'] = 'data'
+
+                    p.toolkit.get_action('orgportals_pages_update')({}, page)
+
                 p.toolkit.redirect_to(controller=self.ctrl, action='orgportals_subdashboards_index', org_name=org_name)
             else:
                 p.toolkit.abort(404, _('Subdashboard Not Found'))
