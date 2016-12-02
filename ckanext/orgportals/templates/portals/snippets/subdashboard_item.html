@@ -1,6 +1,6 @@
 <li>
   <a {% if item.enabled == 'True' and item.group != '$none$' %}
-        href="subdashboard/{{ item.group }}"
+        href="subdashboard/{{ item.subdashboard }}"
      {% else %}
         style="text-decoration: none; opacity: 0.5;"
      {% endif %}>
