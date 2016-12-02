@@ -3,10 +3,10 @@
 <fieldset class="themes-properties" data-uploads-enabled="{{ uploads_enabled }}">
   <legend>{{ _('Themes settings') }}</legend>
 
-  <div class="themes-settings-subdashboard-fields">
-    <div class="themes-settings-subdashboard-fields__item">
+  <div class="themes-settings-item-fields">
+    <div class="themes-settings-item-fields__item">
       {{ form.input('title', id='theme_title', label=_('Title'), value='', classes=['control-full']) }}
-      {{ form.select('group', 'theme_group', _('Group'), options=data.groups, selected='$none$') }}
+      {{ form.select('subdashboard', 'theme_subdashboard', _('Subdashboard'), options=data.subdashboards, selected='$none$') }}
 
       {% if uploads_enabled %}
         <div
@@ -42,16 +42,16 @@
 
       {{ form.select('enabled', 'theme_enabled', _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected='') }}
       <input id="theme_order" type="hidden" name="theme_order" value="0" />
-      <a class="btn btn-danger themes-settings-subdashboard-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <a class="btn btn-danger themes-settings-item-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
       <hr>
       <span class="grippy"></span>
     </div>
   </div>
 
   {% for theme in data.themes %}
-    <div class="themes-settings-subdashboard-fields__item">
+    <div class="themes-settings-item-fields__item">
       {% set theme_title = 'theme_title_' + loop.index|string %}
-      {% set theme_group = 'theme_group_' + loop.index|string %}
+      {% set theme_subdashboard = 'theme_subdashboard_' + loop.index|string %}
       {% set theme_enabled = 'theme_enabled_' + loop.index|string %}
       {% set theme_order = 'theme_order_' + loop.index|string %}
       {% set theme_image_url = 'theme_image_url_' + loop.index|string %}
@@ -59,7 +59,7 @@
       {% set theme_clear_upload = 'theme_clear_upload_' + loop.index|string %}
 
       {{ form.input(theme_title, id=theme_title, label=_('Title'), value=theme.title, classes=['control-full'], attrs={'required': 'true'}) }}
-      {{ form.select(theme_group, theme_group, _('Group'), options=data.groups, selected=theme.group) }}
+      {{ form.select(theme_subdashboard, theme_subdashboard, _('Subdashboard'), options=data.subdashboards, selected=theme.subdashboard) }}
 
       {% set is_upload = theme.image_url and not theme.image_url.startswith('http') %}
       {% set is_url = theme.image_url and theme.image_url.startswith('http') %}
@@ -97,7 +97,7 @@
       {% endif %}
       {{ form.select(theme_enabled, theme_enabled, _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected=theme.enabled) }}
       <input id="theme_order" type="hidden" name="{{ theme_order }}" value="{{ theme.order }}" />
-      <a class="btn btn-danger themes-settings-subdashboard-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <a class="btn btn-danger themes-settings-item-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
       <hr>
       <span class="grippy"></span>
     </div>
@@ -110,6 +110,6 @@
   {% set btn_display = 'none' %}
 {% endif %}
 
-<a id="create-dashboard-btn" class="new-field-btn btn btn-default" style="display: {{ btn_display  }}">Create subdashboard</a>
+<a id="create-item-btn" class="new-field-btn btn btn-default" style="display: {{ btn_display  }}">Create item</a>
 <br><br><br>
 <b><p style="font-size: 12px;">Hint: Drag the handle to rearrange the items.</p></b>

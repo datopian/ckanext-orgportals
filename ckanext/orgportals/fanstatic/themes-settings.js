@@ -1,31 +1,31 @@
 (function themesSettings() {
 
-  var createDashboardBtn = $('#create-dashboard-btn');
-  var subdashboardFields = $('.themes-settings-subdashboard-fields');
+  var createItemBtn = $('#create-item-btn');
+  var itemFields = $('.themes-settings-item-fields');
   var themesProperties = $('.themes-properties');
   var uploadsEnabled = themesProperties.attr('data-uploads-enabled');
   var themeItems;
   var totalItems;
 
   // Add a theme/dashboard
-  createDashboardBtn.on('click', function onCreateDashboardBtnClick() {
-    var newFields = subdashboardFields.contents().clone();
+  createItemBtn.on('click', function onCreateDashboardBtnClick() {
+    var newFields = itemFields.contents().clone();
 
-    themeItems = $('.themes-settings-subdashboard-fields__item');
+    themeItems = $('.themes-settings-item-fields__item');
     totalItems = themeItems.length;
 
     newFields.each(function(i, item) {
       var item = $(item);
       var themeTitle;
-      var themeGroup;
+      var themeSubdashboard;
       var themeEnabled;
       var fieldImageUrl;
       var fieldImageUpload;
       var imageUploadModule;
 
-      if (item.hasClass('themes-settings-subdashboard-fields__item')) {
+      if (item.hasClass('themes-settings-item-fields__item')) {
         themeTitle = item.find('#theme_title');
-        themeGroup = item.find('#theme_group');
+        themeSubdashboard = item.find('#theme_subdashboard');
         themeEnabled = item.find('#theme_enabled');
         themeOrder = item.find('#theme_order');
         themeImage = item.find('#field-image-url');
@@ -35,8 +35,8 @@
         themeTitle.attr('name', 'theme_title_' + totalItems);
         themeTitle.attr('required', 'true' + totalItems);
 
-        themeGroup.attr('id', 'theme_group_' + totalItems);
-        themeGroup.attr('name', 'theme_group_' + totalItems);
+        themeSubdashboard.attr('id', 'theme_subdashboard_' + totalItems);
+        themeSubdashboard.attr('name', 'theme_subdashboard_' + totalItems);
 
         themeEnabled.attr('id', 'theme_enabled_' + totalItems);
         themeEnabled.attr('name', 'theme_enabled_' + totalItems);
@@ -69,21 +69,21 @@
 
     // Limit the total number of themes to 6
     if (totalItems == 6) {
-      createDashboardBtn.css('display', 'none');
+      createItemBtn.css('display', 'none');
     }
   });
 
   // Remove a theme/dashboard
-  themesProperties.on('click', '.themes-settings-subdashboard-fields__remove-btn', function (e) {
+  themesProperties.on('click', '.themes-settings-item-fields__remove-btn', function (e) {
     $(e.target).parent().remove();
 
     _changeThemesOrder();
 
-    themeItems = $('.themes-settings-subdashboard-fields__item');
+    themeItems = $('.themes-settings-item-fields__item');
     totalItems = themeItems.length;
 
     if (totalItems < 7) {
-      createDashboardBtn.css('display', 'initial');
+      createItemBtn.css('display', 'initial');
     }
   });
 
@@ -102,7 +102,7 @@
     });
 
   function _changeThemesOrder() {
-    var menuItems = $('.themes-settings-subdashboard-fields__item');
+    var menuItems = $('.themes-settings-item-fields__item');
     var input;
 
     $.each(menuItems, function(key, item) {

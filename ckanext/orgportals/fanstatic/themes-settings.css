@@ -1,16 +1,12 @@
-.subdashboard-checkbox input[type="checkbox"] {
-  top: 4px !important;
-}
-
-.themes-settings-subdashboard-fields {
+.themes-settings-item-fields {
   display: none;
 }
 
-.themes-settings-subdashboard-fields__item {
+.themes-settings-item-fields__item {
   position: relative;
 }
 
-.themes-settings-subdashboard-fields__remove-btn {
+.themes-settings-item-fields__remove-btn {
   position: absolute;
   right: 0;
   bottom: 20px;
@@ -18,7 +14,7 @@
 
 span.grippy {
   position: absolute;
-  top: 40%;
+  top: 50%;
   content: '....';
   width: 10px;
   height: 20px;
