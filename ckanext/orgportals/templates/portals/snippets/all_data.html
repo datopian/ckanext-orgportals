@@ -7,14 +7,19 @@
     {% set group_filter_name = _('Themes') %}
   {% endif %}
 
+  {% set titles = [{'value': 'tags', 'name': _('Tags')},
+                   {'value': 'res_format', 'name': _('Resource Format')},
+                   {'value': 'license_id', 'name': _('Licenses')},
+                   {'value': 'author', 'name': _('Authors')},] %}
+
+  {% if not is_subdashboard %}
+    {% if titles.insert(0, {'value': 'groups', 'name': group_filter_name}) %}{% endif %}
+  {% endif %}
+
   {% set facets = {
     'fields': c.fields_grouped,
     'search': c.search_facets,
-    'titles': [{'value': 'groups', 'name': group_filter_name},
-               {'value': 'tags', 'name': _('Tags')},
-               {'value': 'res_format', 'name': _('Resource Format')},
-               {'value': 'license_id', 'name': _('Licenses')},
-               {'value': 'author', 'name': _('Authors')},],
+    'titles': titles,
     'translated_fields': c.translated_fields,
     'remove_field': c.remove_field
   } %}
