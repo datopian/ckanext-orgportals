@@ -10,8 +10,21 @@
       <nav class="top-navigation pull-right" style="background-color: grey">
         <div class="">
           <ul class="list-inline">
+            {% set ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController' %}
+
             {% for page in pages %}
-              <li><a href="{{ page.name }}">{{ page.page_title }}</a></li>
+
+              {% if page.type == 'home' %}
+                {% set page_link = h.url_for(controller=ctrl, action='view_portal', org_name=c.org_name) %}
+              {% elif page.type == 'data' %}
+                {% set page_link = h.url_for(controller=ctrl, action='datapage_show', org_name=c.org_name) %}
+              {% elif page.type == 'default' %}
+                {% set page_link = h.url_for(controller=ctrl, action='contentpage_show', org_name=c.org_name, page_name=page.name) %}
+              {% elif page.type == 'custom' %}
+                {% set page_link = h.url_for(controller=ctrl, action='custompage_show', org_name=c.org_name, page_name=page.name) %}
+              {% endif %}
+
+              <li><a href="{{ page_link }}">{{ page.page_title }}</a></li>
             {% endfor %}
           </ul>
         </div>
