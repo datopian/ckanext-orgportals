@@ -67,6 +67,9 @@ class OrgportalsController(PackageController):
         }
         _page = get_action('orgportals_pages_show')({}, data_dict)
 
+        if _page is None and len(page) > 0:
+            p.toolkit.abort(404, _('Page not found.'))
+
         if _page is None:
             _page = {}
 
@@ -589,6 +592,9 @@ class OrgportalsController(PackageController):
             'subdashboard_name': subdashboard
         }
         _subdashboard = get_action('orgportals_subdashboards_show')({}, data_dict)
+
+        if _subdashboard is None and len(subdashboard) > 0:
+            p.toolkit.abort(404, _('Subdashboard not found.'))
 
         if _subdashboard is None:
             _subdashboard = {}
