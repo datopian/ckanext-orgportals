@@ -687,8 +687,6 @@ class OrgportalsController(PackageController):
         data_dict = {'org_name': org_name, 'subdashboard_name': subdashboard_name}
         subdashboard = get_action('orgportals_subdashboards_show')({}, data_dict)
 
-        print 'subdashboard ', subdashboard
-
         # if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
         #     return p.toolkit.render('portals/snippets/not_active.html')
 

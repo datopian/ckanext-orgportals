@@ -9,7 +9,7 @@
 
   <div id="newly-released-data" class="hidden" style="border-top: 3px solid {{ base_color }}; border-bottom: 3px solid {{ base_color }}">
     {{ h.snippet('portals/snippets/show_datasets.html',
-          packages=h.orgportals_get_newly_released_data(organization_name),
+          packages=h.orgportals_get_newly_released_data(organization_name, subdashboard_group_name),
           datasets_group_name='newdata',
           color=font_new_data_color) }}
   </div>

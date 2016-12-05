@@ -20,10 +20,15 @@ def _get_ctx():
     }
 
 
-def orgportals_get_newly_released_data(organization_name, limit=4):
+def orgportals_get_newly_released_data(organization_name, subdashboard_group_name, limit=4):
+    fq = ' organization:"{}"'.format(organization_name)
+
+    if subdashboard_group_name:
+        fq = '{0}+groups:{1}'.format(fq, subdashboard_group_name)
+
     try:
         pkg_search_results = toolkit.get_action('package_search')(data_dict={
-            'fq': ' organization:{}'.format(organization_name),
+            'fq': fq,
             'sort': 'metadata_modified desc',
             'rows': limit
         })['results']
