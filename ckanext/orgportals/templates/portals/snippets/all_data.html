@@ -45,7 +45,8 @@
     fields=c.fields,
     font_base_color=font_base_color,
     base_color=base_color,
-    secondary_color=secondary_color
+    secondary_color=secondary_color,
+    subdashboard=subdashboard
   %}
 
   <div class="data-block-header">
@@ -54,7 +55,7 @@
         <h3 class="data-block-heading" style="color: {{ font_base_color }}">{{ _('Filter Data by') }}:</h3>
       </div>
       {% for facet in facets.titles %}
-        {{ h.snippet('portals/snippets/facet_list.html', name=facet, organization_name=c.org_name) }}
+        {{ h.snippet('portals/snippets/facet_list.html', name=facet, organization_name=c.org_name, subdashboard=subdashboard) }}
       {% endfor %}
     </div>
   </div>
