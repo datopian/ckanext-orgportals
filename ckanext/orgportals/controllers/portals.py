@@ -596,6 +596,18 @@ class OrgportalsController(PackageController):
         if p.toolkit.request.method == 'POST' and not data:
             data = dict(p.toolkit.request.POST)
 
+            _subdashboard['map'] = []
+            _subdashboard['map_main_property'] = []
+
+            for k, v in data.items():
+                if k.startswith('map_main_property'):
+                    _subdashboard['map_main_property'].append(v)
+                elif k.startswith('map_') and not k.startswith('map_enabled'):
+                    _subdashboard['map'].append(v)
+
+            _subdashboard['map'] = ';'.join(_subdashboard['map'])
+            _subdashboard['map_main_property'] = ';'.join(_subdashboard['map_main_property'])
+
             _subdashboard.update(data)
             _subdashboard['org_name'] = org_name
             _subdashboard['subashboard_name'] = subdashboard
