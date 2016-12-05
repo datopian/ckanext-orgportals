@@ -677,12 +677,7 @@ class OrgportalsController(PackageController):
 
                 if len(themes) > 0:
                     themes = json.loads(themes)
-                    new_themes = themes[:]
-
-                    # Remove the theme for this subdashboard
-                    for i, theme in enumerate(new_themes):
-                        if theme['subdashboard'] == subdashboard:
-                            themes.pop(i)
+                    themes = [item for item in themes if item['subdashboard'] != subdashboard]
 
                     page['themes'] = json.dumps(themes)
                     page['page_name'] = 'data'
