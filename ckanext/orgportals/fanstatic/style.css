@@ -7624,3 +7624,9 @@ fieldset {
 :-ms-input-placeholder {
  color:#888;
 }
+
+.exit-search-btn {
+  position: absolute;
+  top: 1px;
+  padding: 10px 12px;
+}

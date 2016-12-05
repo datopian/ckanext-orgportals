@@ -137,6 +137,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_resource_show_map_properties,
             'orgportals_get_pages':
                 helpers.orgportals_get_pages,
+            'orgportals_show_exit_button':
+                helpers.orgportals_show_exit_button
         }
 
     # IGroupForm
