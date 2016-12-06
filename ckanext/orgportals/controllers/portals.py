@@ -248,7 +248,9 @@ class OrgportalsController(PackageController):
 
     def view_portal(self, org_name):
         if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
+            extra_vars = {'type': 'portal'}
+
+            return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
 
         data_dict = {
             'org_name': org_name,
@@ -272,8 +274,10 @@ class OrgportalsController(PackageController):
         data_dict = {'id': org_name, 'include_extras': True}
         org = get_action('organization_show')({}, data_dict)
 
-        if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
-            return p.toolkit.render('portals/snippets/not_active.html')
+        if not _is_portal_active(org_name):
+            extra_vars = {'type': 'portal'}
+
+            return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
 
         package_type = 'dataset'
 
@@ -495,7 +499,9 @@ class OrgportalsController(PackageController):
 
     def contentpage_show(self, org_name, page_name):
         if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
+            extra_vars = {'type': 'portal'}
+
+            return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
 
         data_dict = {
             'org_name': org_name,
@@ -526,7 +532,9 @@ class OrgportalsController(PackageController):
 
     def custompage_show(self, org_name, page_name):
         if not _is_portal_active(org_name):
-            return p.toolkit.render('portals/snippets/not_active.html')
+            extra_vars = {'type': 'portal'}
+
+            return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
 
         data_dict = {
             'org_name': org_name,
@@ -700,8 +708,15 @@ class OrgportalsController(PackageController):
         data_dict = {'org_name': org_name, 'subdashboard_name': subdashboard_name}
         subdashboard = get_action('orgportals_subdashboards_show')({}, data_dict)
 
-        # if 'orgportals_is_active' in org and org['orgportals_is_active'] == '0':
-        #     return p.toolkit.render('portals/snippets/not_active.html')
+        if not _is_portal_active(org_name):
+            extra_vars = {'type': 'portal'}
+
+            return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
+
+        if 'is_active' in subdashboard and subdashboard['is_active'] == False:
+            extra_vars = {'type': 'subdashboard'}
+
+            return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
 
         package_type = 'dataset'
 
