@@ -138,7 +138,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_pages':
                 helpers.orgportals_get_pages,
             'orgportals_show_exit_button':
-                helpers.orgportals_show_exit_button
+                helpers.orgportals_show_exit_button,
+            'orgportals_is_subdashboard_active':
+                helpers.orgportals_is_subdashboard_active
         }
 
     # IGroupForm

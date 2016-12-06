@@ -237,3 +237,14 @@ def orgportals_show_exit_button(params):
             return True
 
     return False
+
+
+def orgportals_is_subdashboard_active(org_name, subdashboard_name):
+    data_dict = {
+        'org_name': org_name,
+        'subdashboard_name': subdashboard_name
+    }
+
+    subdashboard = toolkit.get_action('orgportals_subdashboards_show')({}, data_dict)
+
+    return subdashboard['is_active']

@@ -1,5 +1,5 @@
 <li>
-  <a {% if item.enabled == 'True' and item.group != '$none$' %}
+  <a {% if item.enabled == 'True' and item.group != '$none$' and h.orgportals_is_subdashboard_active(org_name, item.subdashboard) %}
         href="subdashboard/{{ item.subdashboard }}"
      {% else %}
         style="text-decoration: none; opacity: 0.5;"
