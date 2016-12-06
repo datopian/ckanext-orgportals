@@ -112,7 +112,13 @@ Example:
               <div class="col-md-1">
                 <strong>{{ _('Author') }}:</strong>
               </div>
-              <div class="col-md-8 additional-information">{{ package.author }}</div>
+              <div class="col-md-8 additional-information">
+                {% if package.author_email %}
+                  <a href="mailto:{{ package.author_email }}">{{ package.author }}</a>
+                {% else %}
+                  {{ package.author }}
+                {% endif %}
+              </div>
             </div>
           {% endif %}
 
@@ -122,7 +128,11 @@ Example:
                 <strong>{{ _('Maintainer') }}:</strong>
               </div>
               <div class="col-md-8 additional-information">
-                <a href="mailto:{{package.maintainer_email}}">{{ package.maintainer }}</a>
+                {% if package.maintainer_email %}
+                  <a href="mailto:{{ package.maintainer_email }}">{{ package.maintainer }}</a>
+                {% else %}
+                  {{ package.maintainer }}
+                {% endif %}
               </div>
             </div>
           {% endif %}
