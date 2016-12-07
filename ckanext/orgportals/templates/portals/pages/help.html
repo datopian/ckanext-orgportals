@@ -6,6 +6,6 @@
     {% if page.image_url %}
       <img class="content-page-container__image" src="{{ page.image_url }}" />
     {% endif %}
-    <div class="content-page-container__text">{{ page.content }}</div>
+    <div class="content-page-container__text">{{ h.render_markdown(page.content) }}</div>
   </div>
 {% endblock %}
