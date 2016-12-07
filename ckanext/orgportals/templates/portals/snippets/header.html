@@ -1,5 +1,4 @@
 {% set pages = h.orgportals_get_pages(c.org_name) %}
-
 <header>
   <div class="row">
     <div class="col-sm-3 organization-logo">
@@ -24,7 +23,13 @@
                 {% set page_link = h.url_for(controller=ctrl, action='custompage_show', org_name=c.org_name, page_name=page.name) %}
               {% endif %}
 
-              <li><a href="{{ page_link }}">{{ page.page_title }}</a></li>
+              {% if c.page_name == page.name %}
+                {% set page_active = 'true' %}
+              {% else %}
+                {% set page_active = 'false' %}
+              {% endif %}
+
+              <li><a href="{{ page_link }}" data-page-active="{{ page_active }}">{{ page.page_title }}</a></li>
             {% endfor %}
           </ul>
         </div>

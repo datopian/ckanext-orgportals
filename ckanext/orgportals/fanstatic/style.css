@@ -7422,8 +7422,11 @@ footer .container {
 }
 
 .top-navigation a {
-    color: #333;
-    font-weight: 600;
+    color: #666666;
+}
+
+.top-navigation a:hover {
+    color: #154289;
 }
 
 .top-navigation .list-inline {
@@ -7510,6 +7513,7 @@ footer .container {
 
 .content-page-container__header {
   margin-left: 40px;
+  color: #154289;
 }
 
 .content-page-container__text {
@@ -7629,4 +7633,8 @@ fieldset {
   position: absolute;
   top: 1px;
   padding: 10px 12px;
+}
+
+a[data-page-active="true"] {
+  color: #154289;
 }
