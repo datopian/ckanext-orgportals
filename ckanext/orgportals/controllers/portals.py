@@ -268,6 +268,8 @@ class OrgportalsController(PackageController):
             'page': page
         }
 
+        c.page_name = 'home'
+
         return p.toolkit.render('portals/pages/home.html', extra_vars=extra_vars)
 
     def datapage_show(self, org_name):
@@ -280,6 +282,8 @@ class OrgportalsController(PackageController):
             return p.toolkit.render('portals/snippets/not_active.html', extra_vars=extra_vars)
 
         package_type = 'dataset'
+
+        c.page_name = 'data'
 
         try:
             context = {
