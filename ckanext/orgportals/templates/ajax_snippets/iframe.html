@@ -1,0 +1,9 @@
+{% if not width %}
+	{% set width = 600 %}
+{% endif %}
+
+{% if not height %}
+	{% set height = 350 %}
+{% endif %}
+
+<iframe width="{{width}}" height="{{height}}" src="{{source}}" frameBorder="0"></iframe>

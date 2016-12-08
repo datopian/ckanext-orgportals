@@ -1,0 +1,27 @@
+
+<fieldset>
+  <legend>{{ _('Content settings') }}</legend>
+
+    <div id="content-settings-items">
+
+    </div>
+
+</fieldset>
+</fieldset>
+
+{{ form.select('item_type', 'item_type', _('Item Type'), options=[{'value': 'chart', 'text': 'Chart'},
+                                                                  {'value': 'image', 'text': 'Image'},
+                                                                  {'value': 'upload_video', 'text': 'Upload video'},
+                                                                  {'value': 'youtube_video', 'text': 'YouTube video'}], selected='') }}
+
+{{ form.select('item_size', 'item_size', _('Item Size'), options=[{'value': 'single', 'text': 'Single'},
+                                                                  {'value': 'double', 'text': 'Double'},
+                                                                  {'value': 'square', 'text': 'Square'}], selected='') }}
+
+<a id="create-media-item-btn"
+   class="create-media-item-btn btn btn-default"
+   style="display: {{ btn_display  }}">Create item</a>
+</fieldset>
+
+
+

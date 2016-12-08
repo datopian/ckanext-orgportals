@@ -352,3 +352,27 @@ def subdashboards_delete(context, data_dict):
     except p.toolkit.NotAuthorized:
         p.toolkit.abort(401, p.toolkit._('Not authorized to see this subdashboard'))
     return _subdashboards_delete(context, data_dict)
+
+
+@p.toolkit.side_effect_free
+def orgportals_show_datasets(context, data_dict):
+    dd = data_dict.copy()
+    dd.update({'include_datasets': True})
+
+    data = helpers._get_action('organization_show', context.copy(), dd)
+    return data.pop('packages', [])
+
+
+@p.toolkit.side_effect_free
+def orgportals_dataset_show_resources(context, data_dict):
+    data = helpers._get_action('package_show', context.copy(), data_dict)
+
+    return data.pop('resources', [])
+
+
+@p.toolkit.side_effect_free
+def orgportals_resource_show_resource_views(context, data_dict):
+    data = helpers._get_action('resource_view_list', context.copy(), data_dict)
+    data = filter(lambda i: i['view_type'] == data_dict['view_type'], data)
+
+    return data

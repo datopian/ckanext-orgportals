@@ -4,12 +4,14 @@ import urllib
 
 from pylons import config
 
+
 from ckan.plugins import toolkit
 from ckan.lib import search
 import ckan.lib.helpers as lib_helpers
 from ckan.logic.validators import resource_id_exists
 from ckan import model
 from ckan.common import json
+import ckan.logic as l
 
 
 def _get_ctx():
@@ -18,6 +20,9 @@ def _get_ctx():
         'session': model.Session,
         'user': 'sysadmin'
     }
+
+def _get_action(action, context_dict, data_dict):
+    return toolkit.get_action(action)(context_dict, data_dict)
 
 
 def orgportals_get_newly_released_data(organization_name, subdashboard_group_name, limit=4):
@@ -221,3 +226,34 @@ def orgportals_get_pages(org_name):
     data_dict = {'org_name': org_name}
 
     return toolkit.get_action('orgportals_pages_list')({}, data_dict)
+
+
+def orgportals_get_resourceview_resource_package(resource_view_id):
+    if not resource_view_id:
+        return None
+
+    data_dict = {
+        'id': resource_view_id
+    }
+    try:
+        resource_view = toolkit.get_action('resource_view_show')({}, data_dict)
+
+    except l.NotFound:
+        return None
+
+    data_dict = {
+        'id': resource_view['resource_id']
+    }
+    resource = toolkit.get_action('resource_show')({}, data_dict)
+
+    data_dict = {
+        'id': resource['package_id']
+    }
+
+    try:
+        package = toolkit.get_action('package_show')({}, data_dict)
+
+    except l.NotFound:
+        return None
+
+    return [resource_view, resource, package]

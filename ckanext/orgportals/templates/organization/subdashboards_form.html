@@ -2,6 +2,7 @@
 
 {% block scripts %}
   {% resource 'orgportals/map-settings.js' %}
+  {% resource 'orgportals/content' %}
 {% endblock %}
 
 {% set data = data or {} %}
@@ -47,6 +48,8 @@
   {{ form.select('data_section_enabled', 'data_section_enabled', _('Is data section enabled?'), options=[{'value': True, 'text': 'Yes'}, {'value': False, 'text': 'No'}], selected=subdashboard.data_section_enabled) }}
 
   {% snippet 'organization/snippets/map_settings.html', data=subdashboard, form=form %}
+
+  {% snippet 'organization/snippets/content_settings.html', data=subdashboard, form=form, errors=errors %}
 
   <div class="form-actions">
     {% if not subdashboard %}

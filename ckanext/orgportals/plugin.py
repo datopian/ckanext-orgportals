@@ -90,6 +90,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_subdashboards_show': actions.subdashboards_show,
             'orgportals_subdashboards_update': actions.subdashboards_update,
             'orgportals_subdashboards_delete': actions.subdashboards_delete,
+            'orgportals_show_datasets': actions.orgportals_show_datasets,
+            'orgportals_dataset_show_resources': actions.orgportals_dataset_show_resources,
+            'orgportals_resource_show_resource_views': actions.orgportals_resource_show_resource_views,
         }
         return actions_dict
 
@@ -137,6 +140,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_resource_show_map_properties,
             'orgportals_get_pages':
                 helpers.orgportals_get_pages,
+            'orgportals_get_chart_resources':
+                helpers.orgportals_get_resourceview_resource_package,
         }
 
     # IGroupForm
