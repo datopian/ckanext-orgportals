@@ -12,6 +12,20 @@
     }
   });
 
+  $('.orgportals-filters').on('change', function () {
+    var url = $(this).val();
+
+    if (url) {
+      window.location = url + '#search-data';
+    }
+
+    return false;
+  });
+
+  var fontUrl = 'http://mmwebfonts.comquas.com/fonts/?font=zawgyi';
+
+  $('head').append('<link rel="stylesheet" href="' + fontUrl + '" />')
+
 })();
 
 function toggleResources(resourceId) {

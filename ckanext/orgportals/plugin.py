@@ -142,6 +142,10 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_get_pages,
             'orgportals_get_chart_resources':
                 helpers.orgportals_get_resourceview_resource_package,
+            'orgportals_show_exit_button':
+                helpers.orgportals_show_exit_button,
+            'orgportals_is_subdashboard_active':
+                helpers.orgportals_is_subdashboard_active
         }
 
     # IGroupForm

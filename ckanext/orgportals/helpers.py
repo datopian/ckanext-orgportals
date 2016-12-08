@@ -78,7 +78,7 @@ def orgportals_get_facet_items_dict(value):
 
 
 def orgportals_replace_or_add_url_param(name, value, params, controller,
-                                        action, context_name):
+                                        action, context_name, subdashboard_name):
     for k, v in params:
         # Reset the page to the first one
         if k == 'page':
@@ -90,9 +90,16 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
 
     params.append((name, value))
 
-    url = lib_helpers.url_for(controller=controller,
-                              action=action,
-                              name=context_name)
+    if subdashboard_name:
+        url = lib_helpers.url_for(controller=controller,
+                                  action=action,
+                                  org_name=context_name,
+                                  subdashboard_name=subdashboard_name)
+    else:
+        url = lib_helpers.url_for(controller=controller,
+                                  action=action,
+                                  org_name=context_name)
+
 
     params = [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
               for k, v in params]
@@ -102,7 +109,7 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
 
 def orgportals_get_current_url(page, params, controller, action, name,
                                exclude_param=''):
-    url = lib_helpers.url_for(controller=controller, action=action, name=name)
+    url = lib_helpers.url_for(controller=controller, action=action, org_name=name)
 
     for k, v in params:
         if k == exclude_param:
@@ -227,7 +234,6 @@ def orgportals_get_pages(org_name):
 
     return toolkit.get_action('orgportals_pages_list')({}, data_dict)
 
-
 def orgportals_get_resourceview_resource_package(resource_view_id):
     if not resource_view_id:
         return None
@@ -257,3 +263,21 @@ def orgportals_get_resourceview_resource_package(resource_view_id):
         return None
 
     return [resource_view, resource, package]
+
+def orgportals_show_exit_button(params):
+    print params
+    for item in params.items():
+        if item[0] == 'q':
+            return True
+
+    return False
+
+def orgportals_is_subdashboard_active(org_name, subdashboard_name):
+    data_dict = {
+        'org_name': org_name,
+        'subdashboard_name': subdashboard_name
+    }
+
+    subdashboard = toolkit.get_action('orgportals_subdashboards_show')({}, data_dict)
+
+    return subdashboard['is_active']

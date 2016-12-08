@@ -1,1 +1,3 @@
-<h4>{{ _('This portal is not active.') }}</h4>
+{% set message = 'This ' + type + ' is not active.' %}
+
+<h4>{{ _(message) }}</h4>

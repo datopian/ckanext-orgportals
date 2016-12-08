@@ -4,21 +4,12 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
 (function (self, $) {
 
-  self.init = function init(elementId, organizationName, mapURL, color, mainProperty) {
-    renderMap(elementId, organizationName, mapURL, color, mainProperty);
+  self.init = function init(elementId, organizationName, mapURL, color, mainProperty, map_selector_name, organization_entity_name) {
+    renderMap(elementId, organizationName, mapURL, color, mainProperty, map_selector_name, organization_entity_name);
   };
 
-  var pathName = window.location.pathname;
-  var paths = pathName.split('/').reverse();
-  var organization_entity_name;
   var disclaimerText = $('.hero-info .media-body');
   var disclaimerContainer = $('.media.hero-info');
-
-  if (paths[2] === 'country') {
-    organization_entity_name = 'country';
-  } else if (paths[2] === 'organization') {
-    organization_entity_name = 'organization';
-  }
 
   // Click handler for the disclaimer icon.
   $('.hero-info > .media-left').click(function onMapDisclaimerClick(event) {
@@ -44,7 +35,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
     }
   });
 
-  function renderMap(elementId, organizationName, mapURL, color, mainProperty) {
+  function renderMap(elementId, organizationName, mapURL, color, mainProperty, map_selector_name, organization_entity_name) {
     var mainProperties = [];
     var fitBounds = false;
 
@@ -103,6 +94,25 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
         // Initialize markers
         initDatasetMarkers(mapURLS[0], mainProperties[0]);
+      }
+
+      highlightCountry();
+
+      function highlightCountry() {
+        var countriesUrl = 'http://localhost:5000/countries.json';
+        var country;
+
+        $.getJSON(countriesUrl).done(function(data) {
+          data.features.some(function(feature) {
+            if (feature.properties.name === organizationName) {
+              country = L.geoJson(feature);
+              country.setStyle({fill: false})
+              map.addLayer(country);
+              map.fitBounds(country.getBounds());
+              return true;
+            }
+          });
+        });
       }
 
       function initDatasetMarkers(mapURL, mainField) {

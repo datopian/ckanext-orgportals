@@ -41,13 +41,14 @@
     {% snippet 'portals/snippets/map.html',
       base_color=base_color,
       map=data_page.map,
-      map_main_property=data_page.map_main_property
+      map_main_property=data_page.map_main_property,
+      org_display_name=organization.display_name
     %}
   {% endif %}
 
   <ul class="subdashboards-container">
     {% for item in data_page.themes %}
-      {% snippet 'portals/snippets/subdashboard_item.html', item=item %}
+      {% snippet 'portals/snippets/subdashboard_item.html', item=item, org_name=organization.name %}
     {% endfor %}
   </ul>
 
