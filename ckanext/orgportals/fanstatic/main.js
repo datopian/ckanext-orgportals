@@ -24,7 +24,29 @@
 
   var fontUrl = 'http://mmwebfonts.comquas.com/fonts/?font=zawgyi';
 
-  $('head').append('<link rel="stylesheet" href="' + fontUrl + '" />')
+  $('head').append('<link rel="stylesheet" href="' + fontUrl + '" />');
+
+  _setActiveLanguage();
+
+  /*
+   * Set the active language in the language picker
+   * based on the active locale
+   */
+  function _setActiveLanguage() {
+    var languageSelector = $('.language-selector');
+    var currentLanguage = $('html').attr('lang');
+    var languageElement;
+
+    if (currentLanguage === 'en') {
+      languageElement = languageSelector.find('li')[0];
+    } else {
+      languageElement = languageSelector.find('li')[1];
+    }
+
+    if (languageElement) {
+      languageElement.className = 'active';
+    }
+  }
 
 })();
 

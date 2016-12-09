@@ -281,3 +281,65 @@ def orgportals_is_subdashboard_active(org_name, subdashboard_name):
     subdashboard = toolkit.get_action('orgportals_subdashboards_show')({}, data_dict)
 
     return subdashboard['is_active']
+
+def orgportals_get_all_organizations(current_org_name):
+    ''' Get all created organizations '''
+
+    organizations = _get_action('organization_list', {}, {'all_fields': True})
+
+    organizations = map(lambda item:
+                        {
+                            'value': item['name'],
+                            'text': item['display_name']
+                        },
+                        organizations
+                    )
+
+    # Filter out the current organization in the list
+    organizations = [x for x in organizations if x['value'] != current_org_name]
+
+    organizations.insert(0, {'value': 'none', 'text': 'None'})
+
+    return organizations
+
+def orgportals_get_available_languages():
+    languages = []
+
+    for locale in lib_helpers.get_available_locales():
+        languages.append({'value': locale, 'text': locale.english_name})
+
+    languages.sort()
+
+    languages.insert(0, {'value': 'none', 'text': 'None'})
+
+    return languages
+
+def orgportals_get_current_organization(org_name):
+    data_dict = {
+        'id': org_name,
+    }
+
+    organization = toolkit.get_action('organization_show')(data_dict=data_dict)
+
+    return organization
+
+def orgportals_get_secondary_language(organization_name):
+    organization = _get_action('organization_show', {}, {'id': organization_name})
+
+    if 'orgportals_secondary_language' in organization:
+        return organization['orgportals_secondary_language']
+    else:
+        return 'none'
+
+def orgportals_get_country_short_name(current_locale):
+    for locale in lib_helpers.get_available_locales():
+        if current_locale == str(locale):
+            return locale.english_name[:3]
+
+def orgportals_get_secondary_dashboard(organization_name):
+    organization = _get_action('organization_show', {}, {'id': organization_name})
+
+    if 'orgportals_secondary_portals' in organization:
+        return organization['orgportals_secondary_portal']
+    else:
+        return 'none'

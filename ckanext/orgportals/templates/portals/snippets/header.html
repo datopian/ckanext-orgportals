@@ -1,9 +1,12 @@
 {% set pages = h.orgportals_get_pages(c.org_name) %}
 <header>
+  {% snippet 'portals/snippets/language_switcher.html' %}
+
   <div class="row">
     <div class="col-sm-3 organization-logo">
       <a href="#"><img class="img-responsive" src="/images/usedata.jpg" height="130" alt="logo"></a>
     </div>
+
 
     <div class="col-sm-9">
       <nav class="top-navigation pull-right" style="background-color: grey">
