@@ -48,6 +48,20 @@
     }
   }
 
+  var downloadAsPDFBtn = $('#download-as-pdf');
+
+  downloadAsPDFBtn.on('click', function() {
+    var promise = html2canvas($('body')[0]);
+
+    promise.then(function(canvas) {
+      var doc = new jsPDF('p', 'mm', [500, 500]);
+      var image = canvas.toDataURL('image/png');
+
+      doc.addImage(canvas, 'PNG', 0, 0, 0, 0);
+      doc.save("dataurlnewwindow.pdf");
+    });
+  });
+
 })();
 
 function toggleResources(resourceId) {
