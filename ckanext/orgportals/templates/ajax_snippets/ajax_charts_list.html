@@ -1,4 +1,9 @@
-<div id="change_chart_{{ n }}" class="{{ class }}">
+<fieldset class="orgportal-media-item">
+
+<legend>{{ _('Chart') }} {{ n }}</legend>
+
+
+<div class="graph-container" id="chart_resourceview_{{ n }}_preview"></div>
   <div class="control-group control-select">
     <label class="control-label" for="media_size_{{ n }}">Select size</label>
     <div class="controls ">
@@ -46,4 +51,11 @@
     </div>
   </div>
 
-</div>
+<a class="btn btn-danger remove-media-item-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+<hr>
+<span class="grippy"></span>
+
+<input type="hidden" id="chart_{{ n }}" name="chart_resourceview_{{ n }}" value=""/>
+<input id="media_type" type="hidden" name="media_type_{{ n }}" value="{{ media_type }}" />
+
+</fieldset>

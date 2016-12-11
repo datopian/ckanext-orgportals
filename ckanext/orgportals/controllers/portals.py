@@ -614,6 +614,35 @@ class OrgportalsController(PackageController):
         if p.toolkit.request.method == 'POST' and not data:
             data = dict(p.toolkit.request.POST)
 
+            log.debug('--------------------------------')
+            log.debug(data)
+
+
+            media_items = []
+            for k, v in data.items():
+                item = {}
+
+                if k.startswith('media_type'):
+
+                    id = k[-1]
+                    if data['media_type_{}'.format(id)] == 'chart':
+
+                        item['order'] = id
+                        item['media_type'] = data['media_type_{}'.format(id)]
+                        item['media_size'] = data['media_size_{}'.format(id)]
+                        item['chart_resourceview_{}'.format(id)] = data['chart_resourceview_{}'.format(id)]
+                        item['chart_subheader_{}'.format(id)] = data['chart_subheader_{}'.format(id)]
+
+
+                        media_items.append(item)
+
+
+            _subdashboard['media'] = json.dumps(media_items)
+
+
+
+
+
             _subdashboard['map'] = []
             _subdashboard['map_main_property'] = []
 
@@ -652,6 +681,10 @@ class OrgportalsController(PackageController):
 
         errors = errors or {}
         error_summary = error_summary or {}
+
+        if 'media' in data and len(data['media']) > 0:
+            data['media'] = json.loads(data['media'])
+            data['media'].sort(key=itemgetter('order'))
 
         groups = p.toolkit.get_action('group_list')({}, {})
         groups = [{'value': group, 'text': group} for group in groups]

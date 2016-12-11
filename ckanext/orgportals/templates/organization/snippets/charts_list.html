@@ -1,60 +1,60 @@
+<fieldset class="orgportal-media-item">
+{% set n =  data.order %}
+<legend>{{ _('Chart') }} {{ n }}</legend>
 
-  <fieldset>
-    <legend>{{ _('Chart') }} {{ n }}</legend>
 
-    {% set chart_number_key =  ['orgportals_chart_', n]|join('') %}
-    {% set chart_subheader_key =  ['orgportals_chart_', n, '_subheader']|join('') %}
-    {% set chart_subheader = data[chart_subheader_key] %}
-    {% set hidden_value = data[chart_number_key] %}
 
-    {% if data[chart_number_key] %}
-      {% set chart = h.orgportals_get_chart_resources(data[chart_number_key]) %}
+{% set media_type =  data['media_type'] %}
+{% set media_size =  data['media_size'] %}
+{% set order =  data['order'] %}
 
-      {% if chart is not none %}
 
-          {% set dataset_name = chart[2].title %}
-          {% set resource_name = chart[1].name %}
-          {% set view_name = chart[0].title %}
+{% set chart_resourceview_key =  ['chart_resourceview_', n]|join('') %}
+{% set chart_subheader_key =  ['chart_subheader_', n]|join('') %}
+{% set chart_subheader = data[chart_subheader_key] %}
+{% set chart_resourceview = data[chart_resourceview_key] %}
 
-          <div class="graph-container" id="chart_resourceview_{{ n }}_preview">
-            <b>Dataset:</b> {{ dataset_name }} <br>
-            <b>Resource:</b> {% if resource_name %}{{ chart[1].name }}{% else %}Unnamed resourcce{% endif %} <br>
-            <b>View name:</b> {{ view_name }} <br>
-            <b>Subheader:</b> {{ chart_subheader }} <br>
+{% if data[chart_resourceview_key] %}
+  {% set chart = h.orgportals_get_chart_resources(data[chart_resourceview_key]) %}
 
-            {% snippet 'portals/snippets/resource_view.html',
-                             resource_view=chart[0],
-                             resource=chart[1],
-                             package=chart[2] %}
-          </div>
+  {% if chart is not none %}
 
-          <a class="btn btn-default pull-right" type="button" href="#"
-                  onclick="$('#change_chart_{{ n }}').removeClass('hidden'); $(this).addClass('hidden'); return false">
-            Change
-          </a>
+      {% set dataset_name = chart[2].title %}
+      {% set resource_name = chart[1].name %}
+      {% set view_name = chart[0].title %}
 
-          {% snippet 'organization/snippets/charts_fields.html',
-                      n=n,
-                      class='hidden' %}
+      <div class="graph-container" id="chart_resourceview_{{ n }}_preview">
+        <b>Dataset:</b> {{ dataset_name }} <br>
+        <b>Resource:</b> {% if resource_name %}{{ chart[1].name }}{% else %}Unnamed resourcce{% endif %} <br>
+        <b>View name:</b> {{ view_name }} <br>
+        <b>Subheader:</b> {{ chart_subheader }} <br>
 
-       {% else %}
+        {% snippet 'portals/snippets/resource_view.html',
+                         resource_view=chart[0],
+                         resource=chart[1],
+                         package=chart[2] %}
+      </div>
 
-          {% snippet 'organization/snippets/charts_fields.html',
-                      n=n,
-                      class='hidden' %}
+      <a class="btn btn-default pull-right" type="button" href="#"
+              onclick="$('#change_chart_{{ n }}').removeClass('hidden'); $(this).addClass('hidden'); return false">
+        Change
+      </a>
 
-          <a class="btn btn-default pull-right" type="button" href="#"
-          onclick="$('#change_chart_{{ n }}').removeClass('hidden'); $(this).addClass('hidden'); return false">
-            Change
-          </a>
-       {% endif %}
-
-    {% else %}
-      <div class="graph-container" id="chart_resourceview_{{ n }}_preview"></div>
       {% snippet 'organization/snippets/charts_fields.html',
-                  n=n %}
-    {% endif %}
+                  n=n,
+                  class='hidden' %}
 
-    <input type="hidden" id="{{ chart_number_key }}" name="{{ chart_number_key }}" value="{{ hidden_value }}"/>
+  {% endif %}
 
-  </fieldset>
+{% endif %}
+
+<a class="btn btn-danger remove-media-item-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+<hr>
+<span class="grippy"></span>
+
+<input type="hidden" id="chart_{{ n }}" name="chart_resourceview_{{ n }}" value="{{ chart_resourceview }}"/>
+<input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
+<input type="hidden" id="media_size_{{ n }}" name="media_size_{{ n }}" value="{{ media_size }}"/>
+
+
+</fieldset>
