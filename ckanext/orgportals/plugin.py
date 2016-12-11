@@ -145,7 +145,19 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_show_exit_button':
                 helpers.orgportals_show_exit_button,
             'orgportals_is_subdashboard_active':
-                helpers.orgportals_is_subdashboard_active
+                helpers.orgportals_is_subdashboard_active,
+            'orgportals_get_all_organizations':
+                helpers.orgportals_get_all_organizations,
+            'orgportals_get_available_languages':
+                helpers.orgportals_get_available_languages,
+            'orgportals_get_current_organization':
+                helpers.orgportals_get_current_organization,
+            'orgportals_get_secondary_language':
+                helpers.orgportals_get_secondary_language,
+            'orgportals_get_country_short_name':
+                helpers.orgportals_get_country_short_name,
+            'orgportals_get_secondary_dashboard':
+                helpers.orgportals_get_secondary_dashboard
         }
 
     # IGroupForm
@@ -208,7 +220,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_main_color': default_validators,
             'orgportals_new_data_color': default_validators,
             'orgportals_all_data_color': default_validators,
-            'orgportals_portal_created': default_validators
+            'orgportals_portal_created': default_validators,
+            'orgportals_secondary_portal': default_validators,
+            'orgportals_secondary_language': default_validators
         })
 
         return schema
@@ -233,6 +247,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_new_data_color': default_validators,
             'orgportals_all_data_color': default_validators,
             'orgportals_portal_created': default_validators,
+            'orgportals_secondary_portal': default_validators,
+            'orgportals_secondary_language': default_validators,
             'num_followers': [_not_empty],
             'package_count': [_not_empty],
         })

@@ -4,6 +4,7 @@
   {{ super() }}
 
   {% resource 'orgportals/map' %}
+  {% resource 'orgportals/jspdf' %}
 {% endblock %}
 
 {% block content %}
@@ -36,6 +37,8 @@
   {% else %}
     {% set font_all_data_color = "#000000" %}
   {% endif %}
+
+  <button id="download-as-pdf">Download as PDF</button>
 
   {% if subdashboard.map_enabled %}
     {% snippet 'portals/snippets/map.html',
