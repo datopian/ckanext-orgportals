@@ -7651,3 +7651,9 @@ a[data-page-active="true"] {
   transform: rotate(45deg);
   border: 1px solid #FFFFFF
 }
+
+.snapshot-dashboard {
+  cursor: pointer;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
