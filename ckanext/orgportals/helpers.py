@@ -223,8 +223,20 @@ def orgportals_get_geojson_properties(resource_id):
     geojson = json.loads(data)
 
     result = []
+    exclude_keys = [
+        'marker-symbol',
+        'marker-color',
+        'marker-size',
+        'stroke',
+        'stroke-width',
+        'stroke-opacity',
+        'fill',
+        'fill-opacity'
+    ]
+
     for k, v in geojson.get('features')[0].get('properties').iteritems():
-        result.append({'value':k, 'text': k})
+        if k not in exclude_keys:
+            result.append({'value':k, 'text': k})
 
     return result
 
