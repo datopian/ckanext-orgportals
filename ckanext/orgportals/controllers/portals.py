@@ -14,6 +14,7 @@ from ckan.controllers.package import (PackageController,
 import ckan.lib.base as base
 import ckan.logic as logic
 import ckan.plugins as p
+import ckan.lib.navl.dictization_functions as df
 import ckan.lib.helpers as h
 from ckan.lib.search import SearchError
 import ckan.lib.maintain as maintain
@@ -617,7 +618,6 @@ class OrgportalsController(PackageController):
             log.debug('--------------------------------')
             log.debug(data)
 
-
             media_items = []
             for k, v in data.items():
                 item = {}
@@ -630,19 +630,12 @@ class OrgportalsController(PackageController):
                         item['order'] = id
                         item['media_type'] = data['media_type_{}'.format(id)]
                         item['media_size'] = data['media_size_{}'.format(id)]
-                        item['chart_resourceview_{}'.format(id)] = data['chart_resourceview_{}'.format(id)]
-                        item['chart_subheader_{}'.format(id)] = data['chart_subheader_{}'.format(id)]
-
+                        item['chart_resourceview'] = data['chart_resourceview_{}'.format(id)]
+                        item['chart_subheader'] = data['chart_subheader_{}'.format(id)]
 
                         media_items.append(item)
 
-
             _subdashboard['media'] = json.dumps(media_items)
-
-
-
-
-
             _subdashboard['map'] = []
             _subdashboard['map_main_property'] = []
 

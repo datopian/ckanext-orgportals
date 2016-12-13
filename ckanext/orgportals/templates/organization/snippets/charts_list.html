@@ -1,21 +1,16 @@
 <fieldset class="orgportal-media-item">
+
 {% set n =  data.order %}
+
 <legend>{{ _('Chart') }} {{ n }}</legend>
-
-
 
 {% set media_type =  data['media_type'] %}
 {% set media_size =  data['media_size'] %}
-{% set order =  data['order'] %}
+{% set chart_subheader = data['chart_subheader'] %}
+{% set chart_resourceview = data['chart_resourceview'] %}
 
-
-{% set chart_resourceview_key =  ['chart_resourceview_', n]|join('') %}
-{% set chart_subheader_key =  ['chart_subheader_', n]|join('') %}
-{% set chart_subheader = data[chart_subheader_key] %}
-{% set chart_resourceview = data[chart_resourceview_key] %}
-
-{% if data[chart_resourceview_key] %}
-  {% set chart = h.orgportals_get_chart_resources(data[chart_resourceview_key]) %}
+{% if data['chart_resourceview'] %}
+  {% set chart = h.orgportals_get_chart_resources(data['chart_resourceview']) %}
 
   {% if chart is not none %}
 
@@ -52,9 +47,10 @@
 <hr>
 <span class="grippy"></span>
 
-<input type="hidden" id="chart_{{ n }}" name="chart_resourceview_{{ n }}" value="{{ chart_resourceview }}"/>
+<input type="hidden" id="save_chart_resourceview_{{ n }}" name="chart_resourceview_{{ n }}" value="{{ chart_resourceview }}"/>
+<input type="hidden" id="save_chart_subheader_{{ n }}" name="chart_subheader_{{ n }}" value="{{ chart_subheader }}"/>
 <input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
-<input type="hidden" id="media_size_{{ n }}" name="media_size_{{ n }}" value="{{ media_size }}"/>
+<input type="hidden" id="save_media_size_{{ n }}" name="media_size_{{ n }}" value="{{ media_size }}"/>
 
 
 </fieldset>
