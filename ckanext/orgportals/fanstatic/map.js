@@ -119,24 +119,31 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
         var layers = [];
 
-        var smallIcon = L.icon({
-          iconUrl: '/images/marker-icon.png',
-          shadowUrl: '/images/marker-shadow.png',
-          iconRetinaUrl: '/images/marker-icon-2x.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowSize: [41, 41]
-        });
-
         $.getJSON(mapURL).done(function (data) {
           geoL = L.geoJson(data, {
             style: function (feature) {
-              return feature.properties.style;
+              var styles = {};
+              var color = feature.properties.stroke;
+              var fillColor = feature.properties.fill;
+
+              if (color) {
+                styles.color = color;
+              }
+
+              if (fillColor) {
+                styles.fillColor = fillColor;
+              }
+
+              return styles;
             },
-            pointToLayer: function (fauture, latlng) {
+            pointToLayer: function (feature, latlng) {
+              var markerColor = feature.properties['marker-color'] || '#c71111';
+              var icon = L.divIcon({
+                html: '<span class="orgportals-marker-icon" style="background-color: ' + markerColor + '" />'
+              });
+
               return L.marker(latlng, {
-                icon: smallIcon
+                icon: icon
               });
             },
             onEachFeature: function (feature, layer) {

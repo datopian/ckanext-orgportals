@@ -48,19 +48,50 @@
     }
   }
 
-  var downloadAsPDFBtn = $('#download-as-pdf');
+  var downloadAsBtn = $('.snapshot-dashboard-menu');
 
-  downloadAsPDFBtn.on('click', function() {
-    var promise = html2canvas($('body')[0]);
+  downloadAsBtn.on('click', function(event) {
+    var target = event.target;
+    var dataAttribute = target.getAttribute('data-download-as');
+    var renderedCanvas;
 
-    promise.then(function(canvas) {
-      var doc = new jsPDF('p', 'mm', [500, 500]);
+    // Scroll the window to top, in order to capture the entire screen
+    window.scrollTo(0, 0);
+
+    _hideElementsBeforeDownload();
+
+    html2canvas($('body')[0]).then(function(canvas) {
       var image = canvas.toDataURL('image/png');
+      var doc;
 
-      doc.addImage(canvas, 'PNG', 0, 0, 0, 0);
-      doc.save("dataurlnewwindow.pdf");
+      if (dataAttribute === 'pdf') {
+        doc = new jsPDF('portrait', 'mm', [document.body.offsetWidth / 3.85, document.body.offsetHeight * 0.9]);
+        doc.addImage(canvas, 'PNG', 0, 0, 0, 0);
+        doc.save('download.pdf');
+      } else if (dataAttribute === 'image') {
+        Canvas2Image.saveAsPNG(canvas);
+      }
+
+      _showElementsAfterDownload();
     });
   });
+
+  var heroMap = $('.hero-map-wrap');
+  var newData = $('.new-data');
+  var allData = $('.all-data');
+
+  function _hideElementsBeforeDownload() {
+    downloadAsBtn.parent().toggleClass('open');
+    heroMap.hide();
+    newData.hide();
+    allData.hide();
+  }
+
+  function _showElementsAfterDownload() {
+    heroMap.show();
+    newData.show();
+    allData.show();
+  }
 
 })();
 
