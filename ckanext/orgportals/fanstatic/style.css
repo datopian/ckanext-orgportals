@@ -6908,6 +6908,13 @@ button.close {
     }
 }
 
+@media (max-width: 767px) {
+    .hero-controls {
+        margin-top: -30px;
+        padding-top: 165px;
+    }
+}
+
 .hero-info {
     position: absolute;
     right: 12px;
