@@ -940,6 +940,10 @@ class OrgportalsController(PackageController):
         self._setup_template_variables(context, {},
                                        package_type=package_type)
 
+        if 'media' in subdashboard and len(subdashboard['media']) > 0:
+            subdashboard['media'] = json.loads(subdashboard['media'])
+            subdashboard['media'].sort(key=itemgetter('order'))
+
         extra_vars = {
             'organization': org,
             'subdashboard': subdashboard
