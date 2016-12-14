@@ -30,6 +30,7 @@
       var inputs;
       if (item_id) {
         inputs = $('[id=chart_dataset_'+ item_id +']');
+        inputs.prop('required', 'required');
       } else {
         inputs = $('[id*=chart_dataset_]');
       }
@@ -260,9 +261,7 @@
 
     // Remove item event handler for existing items
     removeMediaItemBtn.on('click', function (e) {
-
       $(e.target).parent().remove();
-
       handleItemsOrder(e);
     });
 
@@ -289,7 +288,7 @@
              var removeMediaItemBtn = $('.remove-media-item-btn');
              removeMediaItemBtn.on('click', function (e) {
                $(e.target).parent().remove();
-               handleItemsOrder(e);
+//               handleItemsOrder(e);
              });
 
              handleChartItems(name, totalItems);
