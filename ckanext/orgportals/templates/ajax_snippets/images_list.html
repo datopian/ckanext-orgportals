@@ -1,0 +1,36 @@
+<fieldset class="orgportal-media-item">
+  <legend>{{ _('Item') }} {{ n }}</legend>
+  {% if uploads_enabled %}
+    <div
+      class="image-upload"
+      data-module="custom-image-upload"
+      data-module-is_url="false"
+      data-module-is_upload="false"
+      data-module-field_url="theme_image_url_{{ n }}"
+      data-module-field_upload="theme_image_upload_{{ n }}"
+      data-module-field_clear="theme_clear_upload_{{ n }}"
+      data-module-upload_label="Image">
+        <div class="control-group control-full">
+          <label class="control-label" for="field-image-url">Image URL</label>
+          <div class="controls ">
+            <input id="field-image-url" type="text" name="theme_image_url_{{ n }}" value="" placeholder="http://example.com/my-image.jpg">
+          </div>
+        </div>
+        <div class="control-group control-full">
+          <label class="control-label" for="field-image-upload">Image</label>
+          <div class="controls ">
+            <input id="field-image-upload" type="file" name="theme_image_upload_{{ n }}" value="" placeholder="">
+          </div>
+        </div>
+    </div>
+  {% else %}
+    <div class="control-group control-full">
+      <label class="control-label" for="field-image-url">Image URL</label>
+      <div class="controls ">
+        <input id="field-image-url" type="text" name="theme_image_url_{{ n }}" value="" placeholder="http://example.com/my-image.jpg">
+      </div>
+    </div>
+  {% endif %}
+  <a class="btn btn-danger remove-media-item-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+  <hr>
+</fieldset>

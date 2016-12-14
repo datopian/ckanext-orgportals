@@ -1,4 +1,3 @@
-
 <fieldset>
   <legend>{{ _('Content settings') }}</legend>
 
@@ -6,7 +5,9 @@
         {% if data.media %}
           {% for media_item in data.media %}
             {% if media_item.media_type == 'chart' %}
-              {% snippet 'organization/snippets/charts_list.html', data=media_item %}
+              {% snippet 'ajax_snippets/charts_list.html', data=media_item %}
+            {% elif media_item.media_type == 'image'  %}
+              {% snippet 'ajax_snippets/images_list.html', data=media_item %}
             {% endif %}
 
 
@@ -16,17 +17,19 @@
     </div>
 
 </fieldset>
-
 </fieldset>
+  <div id="create-media-item-section">
 
-{{ form.select('item_type', 'item_type', _('Item Type'), options=[{'value': 'chart', 'text': 'Chart'},
-                                                                  {'value': 'image', 'text': 'Image'},
-                                                                  {'value': 'upload_video', 'text': 'Upload video'},
-                                                                  {'value': 'youtube_video', 'text': 'YouTube video'}], selected='') }}
+  {{ form.select('item_type', 'item_type', _('Item Type'), options=[{'value': '', 'text': 'Choose item'},
+                                                                    {'value': 'chart', 'text': 'Chart'},
+                                                                    {'value': 'image', 'text': 'Image'},
+                                                                    {'value': 'youtube_video', 'text': 'YouTube video'}], selected='') }}
 
-<a id="create-media-item-btn"
-   class="create-media-item-btn btn btn-default"
-   style="display: {{ btn_display  }}">Create item</a>
+    <a id="create-media-item-btn" class="create-media-item-btn btn btn-default" style="display: {{ btn_display  }}">Create item</a>
+  </div>
+  <div class="hidden" id="media-section-info-msg">
+    <span>You need to save the changes in order to edit or add new items.</span>
+  </div>
 </fieldset>
 
 

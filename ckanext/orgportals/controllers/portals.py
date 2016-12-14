@@ -14,7 +14,7 @@ from ckan.controllers.package import (PackageController,
 import ckan.lib.base as base
 import ckan.logic as logic
 import ckan.plugins as p
-import ckan.lib.navl.dictization_functions as df
+
 import ckan.lib.helpers as h
 from ckan.lib.search import SearchError
 import ckan.lib.maintain as maintain
