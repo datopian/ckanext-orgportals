@@ -634,6 +634,15 @@ class OrgportalsController(PackageController):
                         item['chart_subheader'] = data['chart_subheader_{}'.format(id)]
 
                         media_items.append(item)
+                    elif data['media_type_{}'.format(id)] == 'youtube_video':
+
+                        item['order'] = id
+                        item['media_type'] = data['media_type_{}'.format(id)]
+                        item['video_source'] = data['video_source_{}'.format(id)]
+
+                        media_items.append(item)
+
+
 
             _subdashboard['media'] = json.dumps(media_items)
             _subdashboard['map'] = []

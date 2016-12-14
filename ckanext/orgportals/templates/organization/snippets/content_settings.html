@@ -8,6 +8,8 @@
               {% snippet 'ajax_snippets/charts_list.html', data=media_item %}
             {% elif media_item.media_type == 'image'  %}
               {% snippet 'ajax_snippets/images_list.html', data=media_item %}
+            {% elif media_item.media_type == 'youtube_video'  %}
+              {% snippet 'ajax_snippets/videos_list.html', data=media_item %}
             {% endif %}
 
 

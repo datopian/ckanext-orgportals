@@ -23,7 +23,7 @@
     name = url[url.length - 3];
   }
 
-  function populateDatasets(name, item_id){
+  function handleChartItems(name, item_id){
 
     // Fetch and populate datasets dropdowns for existing chart items
     api.get('orgportals_show_datasets', {id: name}).done(function (data) {
@@ -171,6 +171,32 @@
     });
   };
 
+  function handleVideoItems (item_id) {
+
+    // Videos source event handlers
+      var video_source_inputs;
+      if (item_id) {
+        video_source_inputs = $('[id=video_source_'+ item_id +']');
+      } else {
+        video_source_inputs = $('[id*=video_source_]');
+      }
+
+      video_source_inputs.on('change paste keyup', function () {
+
+        var elem = $(this);
+        var video_source = elem.val();
+        var url = video_source.replace('watch?v=', 'embed/');
+
+        var video_source_id = elem.attr('id');
+        var video_nr = video_source_id.substr(video_source_id.lastIndexOf('_') + 1);
+
+        $('#video_source_preview_' + video_nr).prop('src', url);
+        $('#video_source_preview_' + video_nr).removeClass('hidden');
+        $('#save_video_source_' + video_nr).val(url);
+
+      });
+  };
+
   function handleItemsOrder(e) {
 
     $('.change-chart-btn').hide();
@@ -180,6 +206,7 @@
     var media_size_input;
     var chart_resourceview_input;
     var chart_subheader_input;
+    var save_video_source_input;
 
     var mediaItems = $('.orgportal-media-item');
 
@@ -207,6 +234,17 @@
         chart_subheader_input.attr('id', 'save_chart_subheader_' + media_order);
         chart_subheader_input.attr('name', 'chart_subheader_' + media_order);
 
+      } else if (media_type === 'youtube_video') {
+
+        media_type_input =  $(item).find('[id*=media_type_]');
+        save_video_source_input =  $(item).find('[id*=save_video_source_]');
+
+
+        media_type_input.attr('id', 'media_type_' + media_order);
+        media_type_input.attr('name', 'media_type_' + media_order);
+
+        save_video_source_input.attr('id', 'save_video_source_' + media_order);
+        save_video_source_input.attr('name', 'video_source_' + media_order);
       }
 
     });
@@ -215,7 +253,8 @@
 
   $(document).ready(function () {
 
-    populateDatasets(name);
+    handleChartItems(name);
+    handleVideoItems();
     var createMediaItemBtn = $('#create-media-item-btn');
     var removeMediaItemBtn = $('.remove-media-item-btn');
 
@@ -253,7 +292,7 @@
                handleItemsOrder(e);
              });
 
-             populateDatasets(name, totalItems);
+             handleChartItems(name, totalItems);
 
            });
       } else if (mediaType === 'image') {
@@ -268,6 +307,23 @@
              removeMediaItemBtn.on('click', function (e) {
                $(e.target).parent().remove();
              });
+
+           });
+
+      } else if (mediaType === 'youtube_video') {
+
+        ckan.sandbox().client.getTemplate('videos_list.html', {n: totalItems, media_type: 'youtube_video'})
+           .done(function (data) {
+
+             $('#content-settings-items').append(data);
+
+             // Remove item event handler
+             var removeMediaItemBtn = $('.remove-media-item-btn');
+             removeMediaItemBtn.on('click', function (e) {
+               $(e.target).parent().remove();
+             });
+
+             handleVideoItems(totalItems);
 
            });
 
