@@ -1,0 +1,11 @@
+<div class="container">
+  {% for item in media %}
+    {% if item.media_type == 'chart' %}
+      {% snippet 'portals/snippets/chart_container.html',
+        resource_view_id=item.chart_resourceview,
+        subheader=item.chart_subheader,
+        media_size=item.media_size
+      %}
+    {% endif %}
+  {% endfor %}
+</div>

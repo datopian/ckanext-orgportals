@@ -1,0 +1,28 @@
+{% set chart = h.orgportals_get_chart_resources(resource_view_id) %}
+
+{% if chart is not none %}
+  {% if media_size == 'single' %}
+    {% set graph_size = 'col-md-4' %}
+    {% set graph_width = 320 %}
+    {% set graph_height = 320 %}
+  {% elif media_size == 'double' %}
+    {% set graph_size = 'col-md-8' %}
+    {% set graph_width = 800 %}
+    {% set graph_height = 320 %}
+  {% elif media_size == 'square' %}
+    {% set graph_size = 'col-md-8' %}
+    {% set graph_width = 800 %}
+    {% set graph_height = 740 %}
+  {% endif %}
+  <div class="{{ graph_size }} graph-container">
+    <h3 class="graph-title"><a target="_blank" href="{{ h.orgportals_get_resource_view_url(dataset=chart[1].package_id, id=chart[1].id) }}">{{ chart[1].name }}</a></h3>
+    <h4 class="graph-subtitle">{{ subheader }}</h4>
+    {% snippet 'portals/snippets/resource_view.html',
+                           resource_view=chart[0],
+                           resource=chart[1],
+                           package=chart[2],
+                           graph_width=graph_width,
+                           graph_height=graph_height %}
+    <p class="graph-description">{{ chart[0].description }}</p>
+  </div>
+{% endif %}

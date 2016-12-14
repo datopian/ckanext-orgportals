@@ -57,6 +57,10 @@
     %}
   {% endif %}
 
+  {% if subdashboard.content_section_enabled %}
+    {% snippet 'portals/snippets/media.html', media=subdashboard.media %}
+  {% endif %}
+
   {% if subdashboard.data_section_enabled %}
     {% snippet 'portals/snippets/new_data.html',
       base_color=base_color,
