@@ -7678,3 +7678,24 @@ a[data-page-active="true"] {
   margin-left: 20px;
   margin-bottom: 10px;
 }
+
+.go-down-arrow {
+  float: right;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  z-index: 401;
+}
+
+.go-down-arrow:hover {
+  background-color: #eee;
+}
+
+.next-section-container {
+  position: relative;
+}
+
+div[data-section="themes"] .next-section-container {
+  top: -70px;
+}

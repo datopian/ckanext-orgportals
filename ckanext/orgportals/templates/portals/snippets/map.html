@@ -21,7 +21,7 @@
 
 {% set organization_entity_name = h.orgportals_get_organization_entity_name() %}
 
-<div class="hero-map-wrap">
+<div class="hero-map-wrap" data-section="map">
   <div class="hero-controls">
     <div class="hero-block hero-info-select hidden" id="map-info">
       <div class="hero-select" style="border: 5px solid {{ base_color }}">
@@ -66,5 +66,7 @@
       <div class="media-body hidden">{{ _(disclaimer_text) }} © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> {{ _('contributors') }}
       </div>
     </div>
+
+    {% snippet 'portals/snippets/goto_next_section.html' %}
   </div>
 </div>
