@@ -154,6 +154,7 @@
       var chart_size_inputs;
       if (item_id) {
         chart_size_inputs = $('[id=media_size_'+ item_id +']');
+        chart_size_inputs.prop('required', 'required');
       } else {
         chart_size_inputs = $('[id*=media_size_]');
       }
