@@ -93,6 +93,24 @@
     allData.show();
   }
 
+  var mediaContainer = $('div[data-section="media"]');
+
+  mediaContainer.on('click', function onMediaContainerClick(event) {
+    var target = $(event.target);
+    var graphDescription = target.siblings('.graph-description');
+
+    if (target.hasClass('download-graph-btn')) {
+      graphDescription.hide();
+      // target.hide();
+
+      html2canvas(target.parent('.graph-container')[0]).then(function(canvas) {
+        graphDescription.show();
+        // target.show();
+        Canvas2Image.saveAsPNG(canvas);
+      });
+    }
+  });
+
 })();
 
 function toggleResources(resourceId) {

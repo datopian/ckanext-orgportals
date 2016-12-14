@@ -7087,7 +7087,15 @@ button.close {
 }
 
 .graph-container {
-    min-height: 20em
+    min-height: 20em;
+    position: relative;
+}
+
+.download-graph-btn {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  cursor: pointer;
 }
 
 .graph-flex {
@@ -7698,4 +7706,12 @@ a[data-page-active="true"] {
 
 div[data-section="themes"] .next-section-container {
   top: -70px;
+}
+
+div[data-section="media"] .next-section-container {
+  top: -50px;
+}
+
+div[data-section="media"] {
+  padding-top: 50px;
 }
