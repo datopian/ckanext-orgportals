@@ -22,7 +22,7 @@
     return false;
   });
 
-  var fontUrl = 'http://mmwebfonts.comquas.com/fonts/?font=zawgyi';
+  var fontUrl = 'https://mmwebfonts.comquas.com/fonts/?font=zawgyi';
 
   $('head').append('<link rel="stylesheet" href="' + fontUrl + '" />');
 
