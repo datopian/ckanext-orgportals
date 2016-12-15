@@ -138,8 +138,9 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
             },
             pointToLayer: function (feature, latlng) {
               var markerColor = feature.properties['marker-color'] || '#c71111';
+              markerColor = markerColor.substr(1);
               var icon = L.divIcon({
-                html: '<span class="orgportals-marker-icon" style="background-color: ' + markerColor + '" />'
+                html: '<img class="orgportals-marker-icon" src="https://a.tiles.mapbox.com/v4/marker/pin-m+' + markerColor + '.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IlpIdEpjOHcifQ.Cldl4wq_T5KOgxhLvbjE-w" />'
               });
 
               return L.marker(latlng, {

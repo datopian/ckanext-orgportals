@@ -7670,15 +7670,9 @@ a[data-page-active="true"] {
 }
 
 .orgportals-marker-icon {
-  width: 3rem;
-  height: 3rem;
-  display: block;
-  left: -1.5rem;
-  top: -1.5rem;
+  left: -10px;
+  top: -17px;
   position: relative;
-  border-radius: 3rem 3rem 0;
-  transform: rotate(45deg);
-  border: 1px solid #FFFFFF
 }
 
 .snapshot-dashboard {
