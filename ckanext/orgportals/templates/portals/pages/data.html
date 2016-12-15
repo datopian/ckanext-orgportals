@@ -49,11 +49,11 @@
 
   <div data-section="themes">
     {% snippet 'portals/snippets/goto_next_section.html' %}
-    <ul class="subdashboards-container">
+    <div class="subdashboards-container container">
       {% for item in data_page.themes %}
         {% snippet 'portals/snippets/subdashboard_item.html', item=item, org_name=organization.name %}
       {% endfor %}
-    </ul>
+    </div>
   </div>
 
 

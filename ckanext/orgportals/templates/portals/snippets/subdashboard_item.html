@@ -1,4 +1,4 @@
-<li>
+<div class="col-md-4 col-sm-6 subdashboards-container__item">
   <a {% if item.enabled == 'True' and item.group != '$none$' and h.orgportals_is_subdashboard_active(org_name, item.subdashboard) %}
         href="subdashboard/{{ item.subdashboard }}"
      {% else %}
@@ -14,4 +14,4 @@
     </span>
     <h3>{{ item.title }}</h3>
   </a>
-</li>
+</div>
