@@ -3,6 +3,7 @@ from urllib import urlencode
 import cgi
 import json
 from operator import itemgetter
+from urlparse import urlparse
 
 from pylons import config
 from paste.deploy.converters import asbool
@@ -248,6 +249,7 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('organization/nav_bar.html', extra_vars=extra_vars)
 
     def view_portal(self, org_name):
+
         if not _is_portal_active(org_name):
             extra_vars = {'type': 'portal'}
 
@@ -257,7 +259,6 @@ class OrgportalsController(PackageController):
             'org_name': org_name,
             'page_name': 'home'
         }
-
         page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
 
         is_upload = page['image_url'] and not page['image_url'].startswith('http')
@@ -268,7 +269,7 @@ class OrgportalsController(PackageController):
         extra_vars = {
             'page': page
         }
-
+        c.org_name = org_name
         c.page_name = 'home'
 
         return p.toolkit.render('portals/pages/home.html', extra_vars=extra_vars)
@@ -285,6 +286,7 @@ class OrgportalsController(PackageController):
         package_type = 'dataset'
 
         c.page_name = 'data'
+        c.org_name = org_name
 
         try:
             context = {
@@ -532,6 +534,7 @@ class OrgportalsController(PackageController):
         extra_vars = {
             'page': page
         }
+        c.org_name = org_name
 
         return p.toolkit.render('portals/pages/{0}.html'.format(page_name), extra_vars=extra_vars)
 
@@ -555,6 +558,7 @@ class OrgportalsController(PackageController):
         extra_vars = {
             'data': data
         }
+        c.org_name = org_name
 
         return p.toolkit.render('portals/pages/custom.html', extra_vars=extra_vars)
 
@@ -614,9 +618,6 @@ class OrgportalsController(PackageController):
 
         if p.toolkit.request.method == 'POST' and not data:
             data = dict(p.toolkit.request.POST)
-
-            log.debug('--------------------------------')
-            log.debug(data)
 
             media_items = []
             for k, v in data.items():
@@ -957,8 +958,130 @@ class OrgportalsController(PackageController):
             'organization': org,
             'subdashboard': subdashboard
         }
+        c.org_name = org_name
 
         return p.toolkit.render('portals/pages/subdashboard.html', extra_vars=extra_vars)
+
+    def show_portal_homepage(self):
+        name = None
+        request_url = urlparse(p.toolkit.request.url)
+        ckan_base_url = urlparse(config.get('ckan.site_url'))
+
+        if request_url.netloc != ckan_base_url.netloc:
+
+            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
+
+            for org in org_list:
+                if 'orgportals_portal_url' in org:
+                    org_url = urlparse(org['orgportals_portal_url'])
+                    if org_url.netloc == request_url.netloc:
+                        name = org['name']
+
+            if name is None:
+                c.url = p.toolkit.request.url
+                return p.toolkit.render('portals/snippets/domain_not_registered.html')
+            else:
+                return self.view_portal(name)
+
+        else:
+            return p.toolkit.render('home/index.html')
+
+    def show_portal_datapage(self):
+        name = None
+        request_url = urlparse(p.toolkit.request.url)
+        ckan_base_url = urlparse(config.get('ckan.site_url'))
+
+        if request_url.netloc != ckan_base_url.netloc:
+
+            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
+
+            for org in org_list:
+                if 'orgportals_portal_url' in org:
+                    org_url = urlparse(org['orgportals_portal_url'])
+                    if org_url.netloc == request_url.netloc:
+                        name = org['name']
+
+            if name is None:
+                c.url = p.toolkit.request.url
+                return p.toolkit.render('portals/snippets/domain_not_registered.html')
+            else:
+                return self.datapage_show(name)
+
+        else:
+            return p.toolkit.render('home/index.html')
+
+    def show_portal_contentpage(self, page_name):
+        name = None
+        request_url = urlparse(p.toolkit.request.url)
+        ckan_base_url = urlparse(config.get('ckan.site_url'))
+
+        if request_url.netloc != ckan_base_url.netloc:
+
+            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
+
+            for org in org_list:
+                if 'orgportals_portal_url' in org:
+                    org_url = urlparse(org['orgportals_portal_url'])
+                    if org_url.netloc == request_url.netloc:
+                        name = org['name']
+
+            if name is None:
+                c.url = p.toolkit.request.url
+                return p.toolkit.render('portals/snippets/domain_not_registered.html')
+            else:
+                return self.contentpage_show(name, page_name)
+
+        else:
+            return p.toolkit.render('home/index.html')
+
+    def show_portal_custompage(self, page_name):
+        name = None
+        request_url = urlparse(p.toolkit.request.url)
+        ckan_base_url = urlparse(config.get('ckan.site_url'))
+
+        if request_url.netloc != ckan_base_url.netloc:
+
+            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
+
+            for org in org_list:
+                if 'orgportals_portal_url' in org:
+                    org_url = urlparse(org['orgportals_portal_url'])
+                    if org_url.netloc == request_url.netloc:
+                        name = org['name']
+
+            if name is None:
+                c.url = p.toolkit.request.url
+                return p.toolkit.render('portals/snippets/domain_not_registered.html')
+            else:
+                return self.custompage_show(name, page_name)
+
+        else:
+            return p.toolkit.render('home/index.html')
+
+    def show_portal_subdashboardpage(self, subdashboard_name):
+        name = None
+        request_url = urlparse(p.toolkit.request.url)
+        ckan_base_url = urlparse(config.get('ckan.site_url'))
+
+        if request_url.netloc != ckan_base_url.netloc:
+
+            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
+
+            for org in org_list:
+                if 'orgportals_portal_url' in org:
+                    org_url = urlparse(org['orgportals_portal_url'])
+                    if org_url.netloc == request_url.netloc:
+                        name = org['name']
+
+            if name is None:
+                c.url = p.toolkit.request.url
+                return p.toolkit.render('portals/snippets/domain_not_registered.html')
+            else:
+                return self.subdashboardpage_show(name, subdashboard_name)
+
+        else:
+            return p.toolkit.render('home/index.html')
+
 
 def _is_portal_active(orgnization_name):
     data_dict = {'id': orgnization_name, 'include_extras': True}
@@ -968,3 +1091,7 @@ def _is_portal_active(orgnization_name):
         return True
     else:
         return False
+
+
+
+

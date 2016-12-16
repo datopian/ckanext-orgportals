@@ -3,6 +3,8 @@
 {% block content_action %}
   {{ super() }}
 
+
+
   {% if c.group_dict.orgportals_portal_created == '1' and c.group_dict.orgportals_is_active == '1' %}
     {% if c.group_dict.orgportals_secondary_language and c.group_dict.orgportals_secondary_language == 'en' %}
       {% set locale = h.orgportals_get_secondary_language(c.group_dict.orgportals_secondary_dashboard) %}
@@ -10,9 +12,12 @@
       {% set locale = 'en' %}
     {% endif %}
 
+    {% set source = 'admin' %}
+
     <a class="btn" href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
                                     action='view_portal',
                                     locale=locale,
-                                    org_name=c.group_dict.name %}" target="_blank"><i class="icon-globe"></i>View portal</a>
+                                    org_name=c.group_dict.name,
+                                    source=source%}" target="_blank"><i class="icon-globe"></i>View portal</a>
   {% endif %}
 {% endblock %}

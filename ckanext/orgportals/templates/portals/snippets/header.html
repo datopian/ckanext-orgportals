@@ -13,17 +13,41 @@
         <div class="">
           <ul class="list-inline">
             {% set ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController' %}
+            {% set source = 'admin' %}
 
             {% for page in pages %}
 
               {% if page.type == 'home' %}
-                {% set page_link = h.url_for(controller=ctrl, action='view_portal', org_name=c.org_name) %}
+
+                {% if c.source == 'admin' %}
+                  {% set page_link = h.url_for(controller=ctrl, action='view_portal', org_name=c.org_name, source=source) %}
+                {% else %}
+                  {% set page_link = h.url_for(controller=ctrl, action='show_portal_homepage') %}
+                {% endif %}
+
               {% elif page.type == 'data' %}
-                {% set page_link = h.url_for(controller=ctrl, action='datapage_show', org_name=c.org_name) %}
+
+                {% if c.source == 'admin' %}
+                  {% set page_link = h.url_for(controller=ctrl, action='datapage_show', org_name=c.org_name, source=source) %}
+                {% else %}
+                  {% set page_link = h.url_for(controller=ctrl, action='show_portal_datapage') %}
+                {% endif %}
+
               {% elif page.type == 'default' %}
-                {% set page_link = h.url_for(controller=ctrl, action='contentpage_show', org_name=c.org_name, page_name=page.name) %}
+
+                {% if c.source == 'admin' %}
+                  {% set page_link = h.url_for(controller=ctrl, action='contentpage_show', org_name=c.org_name, page_name=page.name, source=source) %}
+                {% else %}
+                  {% set page_link = h.url_for(controller=ctrl, action='show_portal_contentpage', page_name=page.name) %}
+                {% endif %}
+
               {% elif page.type == 'custom' %}
-                {% set page_link = h.url_for(controller=ctrl, action='custompage_show', org_name=c.org_name, page_name=page.name) %}
+
+                {% if c.source == 'admin' %}
+                  {% set page_link = h.url_for(controller=ctrl, action='custompage_show', org_name=c.org_name, page_name=page.name, source=source) %}
+                {% else %}
+                  {% set page_link = h.url_for(controller=ctrl, action='show_portal_custompage', page_name=page.name) %}
+                {% endif %}
               {% endif %}
 
               {% if c.page_name == page.name %}

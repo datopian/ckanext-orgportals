@@ -6,7 +6,7 @@
     {% set video_source =  data['video_source'] %}
     <legend>{{ _('Item') }} {{ n }}</legend>
 
-    <iframe id="video_source_preview_{{ n }}" width="665" height="350" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
+    <iframe id="video_source_preview_{{ n }}" class="video-container" width="665" height="350" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
 
     <a class="btn btn-default pull-right change-chart-btn" type="button" href="#"
        onclick="$('#change_video_{{ n }}').removeClass('hidden'); $(this).addClass('hidden'); return false">
@@ -26,7 +26,7 @@
     {% set source_input_id =  ['video_source_', n]|join('') %}
     {% set source_input_name =  ['input_video_source_', n]|join('') %}
 
-    <iframe id="video_source_preview_{{ n }}" class="hidden" width="665" height="350" src="" frameborder="0" allowfullscreen></iframe>
+    <iframe id="video_source_preview_{{ n }}" class="hidden video-container" width="665" height="350" src="" frameborder="0" allowfullscreen></iframe>
 
     {{ form.input(source_input_name, source_input_id, label=_('URL'), type='url', placeholder=url_placeholder, value='', error='', is_required=true, attrs={'required':'required'}) }}
 
@@ -37,7 +37,5 @@
 
 <input type="hidden" id="save_video_source_{{ n }}" name="video_source_{{ n }}" value="{{ video_source }}"/>
 <input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
-
 <span class="grippy"></span>
-
 </fieldset>

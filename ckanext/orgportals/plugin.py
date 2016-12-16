@@ -1,6 +1,8 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import ckan.lib.plugins as lib_plugins
+from ckan import model as m
+from sqlalchemy import and_
 
 import helpers
 import db
@@ -32,47 +34,53 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
     def before_map(self, map):
         ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController'
 
+        #edit portal admin routes
         map.connect('orgportals_pages_delete', '/organization/edit/{org_name}/pages_delete{page:/.*|}',
                     action='orgportals_pages_delete', ckan_icon='delete', controller=ctrl)
-
         map.connect('orgportals_pages_edit', '/organization/edit/{org_name}/pages_edit{page:/.*|}',
                     action='orgportals_pages_edit', ckan_icon='edit', controller=ctrl)
-
         map.connect('orgportals_pages_index', '/organization/edit/{org_name}/pages',
                     action='orgportals_pages_index', ckan_icon='file', controller=ctrl)
-
         map.connect('orgportals_nav_bar', '/organization/edit/{org_name}/nav', controller=ctrl,
                     action='orgportals_nav_bar', ckan_icon='list')
-
         map.connect('orgportals_subdashboards_index', '/organization/edit/{org_name}/subdashboards', controller=ctrl,
                     action='orgportals_subdashboards_index', ckan_icon='file')
-
         map.connect('orgportals_subdashboards_edit', '/organization/edit/{org_name}/subdashboards_edit{subdashboard:/.*|}',
                     action='orgportals_subdashboards_edit', ckan_icon='edit', controller=ctrl)
-
-        map.connect('/organization/{org_name}/portal/subdashboard/{subdashboard_name}', controller=ctrl,
-                    action='subdashboardpage_show')
-
         map.connect('orgportals_subdashboards_delete', '/organization/edit/{org_name}/subdashboards_delete{subdashboard:/.*|}',
                     action='orgportals_subdashboards_delete', ckan_icon='delete', controller=ctrl)
 
+        #portal routes for custom domain
+        map.connect('/', controller=ctrl, action='show_portal_homepage')
+        map.connect('/data', controller=ctrl, action='show_portal_datapage')
+        map.connect('/contact', controller=ctrl, action='show_portal_contentpage', page_name='contact')
+        map.connect('/about', controller=ctrl, action='show_portal_contentpage', page_name='about')
+        map.connect('/help', controller=ctrl, action='show_portal_contentpage', page_name='help')
+        map.connect('/resources', controller=ctrl, action='show_portal_contentpage', page_name='resources')
+        map.connect('/glossary', controller=ctrl, action='show_portal_contentpage', page_name='glossary')
+        map.connect('/page/{page_name}', controller=ctrl, action='show_portal_custompage')
+        map.connect('/subdashboard/{subdashboard_name}', controller=ctrl, action='show_portal_subdashboardpage')
 
+
+        #portal routes for admin
         map.connect('/organization/{org_name}/portal/home', controller=ctrl,
-                    action='view_portal')
+                    action='view_portal', source='admin')
         map.connect('/organization/{org_name}/portal/data', controller=ctrl,
-                    action='datapage_show')
+                    action='datapage_show', source='admin')
+        map.connect('/organization/{org_name}/portal/subdashboard/{subdashboard_name}', controller=ctrl,
+                    action='subdashboardpage_show', source='admin')
         map.connect('/organization/{org_name}/portal/contact', controller=ctrl,
-                    action='contentpage_show', page_name='contact')
+                    action='contentpage_show', source='admin', page_name='contact')
         map.connect('/organization/{org_name}/portal/about', controller=ctrl,
-                    action='contentpage_show', page_name='about')
+                    action='contentpage_show', source='admin', page_name='about')
         map.connect('/organization/{org_name}/portal/help', controller=ctrl,
-                    action='contentpage_show', page_name='help')
+                    action='contentpage_show', source='admin', page_name='help')
         map.connect('/organization/{org_name}/portal/resources', controller=ctrl,
-                    action='contentpage_show', page_name='resources')
+                    action='contentpage_show', source='admin', page_name='resources')
         map.connect('/organization/{org_name}/portal/glossary', controller=ctrl,
-                    action='contentpage_show', page_name='glossary')
+                    action='contentpage_show', source='admin', page_name='glossary')
         map.connect('/organization/{org_name}/portal/{page_name}', controller=ctrl,
-                    action='custompage_show')
+                    action='custompage_show', source='admin')
 
         return map
 
@@ -222,7 +230,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_all_data_color': default_validators,
             'orgportals_portal_created': default_validators,
             'orgportals_secondary_portal': default_validators,
-            'orgportals_secondary_language': default_validators
+            'orgportals_secondary_language': default_validators,
+            'orgportals_portal_url': [_ignore_missing, _convert_to_extras, _domain_validator],
         })
 
         return schema
@@ -251,6 +260,27 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_secondary_language': default_validators,
             'num_followers': [_not_empty],
             'package_count': [_not_empty],
+            'orgportals_portal_url': [_convert_from_extras, _ignore_missing, _domain_validator],
         })
 
         return schema
+
+def _domain_validator(key, data, errors, context):
+
+    session = context['session']
+    group_name = data[('name',)]
+
+    if not data[key]:
+        return
+
+    query = session.query(m.Group) \
+        .join((m.GroupExtra, m.Group.id == m.GroupExtra.group_id)) \
+        .filter(and_(m.GroupExtra.key == 'orgportals_portal_url',
+                     m.GroupExtra.value == data[key],
+                     m.Group.name != group_name))
+
+    result = query.first()
+
+    if result:
+        errors[key].append(
+            toolkit._('Domain name already exists in database'))

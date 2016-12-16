@@ -58,12 +58,16 @@
     <h2>{{ _('Portal settings') }}
 
     {% if data.orgportals_portal_created == '1' and data.orgportals_is_active == '1' %}
+
+      {% set source = 'admin' %}
+
       <a class="btn btn-primary pull-right"
         target="_blank"
         href="{% url_for controller='ckanext.orgportals.controllers.portals:OrgportalsController',
                                                                action='view_portal',
                                                                locale=locale,
-                                                               org_name=c.group_dict.name%}">View Portal</a>
+                                                               org_name=c.group_dict.name,
+                                                               source=source %}">View Portal</a>
     {% endif %}
     </h2>
     </legend>
@@ -73,6 +77,8 @@
     {% endif %}
 
     {{ form.select('orgportals_is_active', 'orgportals_is_active', _('Is portal active?'), options=[{'value': '1', 'text': 'Yes'}, {'value': '0', 'text': 'No'}], selected=data.orgportals_is_active) }}
+
+    {{ form.input('orgportals_portal_url', 'orgportals_portal_url', label=_('Portal URL'), type='url', value=data.orgportals_portal_url, error=errors.orgportals_portal_url) }}
 
     {{ form.select('orgportals_lang_is_active', 'orgportals_lang_is_active', _('Show language selector'), options=[{'value': '0', 'text': 'No'}, {'value': '1', 'text': 'Yes'}], selected=data.orgportals_lang_is_active) }}
 

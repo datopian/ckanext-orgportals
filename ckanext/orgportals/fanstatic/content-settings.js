@@ -199,7 +199,7 @@
       });
   };
 
-  function handleItemsOrder(e) {
+  function handleItemsOrder() {
 
     $('.change-chart-btn').hide();
     $('#create-media-item-section').hide();
@@ -263,7 +263,7 @@
     // Remove item event handler for existing items
     removeMediaItemBtn.on('click', function (e) {
       $(e.target).parent().remove();
-      handleItemsOrder(e);
+      handleItemsOrder();
     });
 
       // Add new media item and Fetch and populate datasets dropdowns for the new item
@@ -330,6 +330,17 @@
       }
 
   });
+
+//  dragula([$('#content-settings-items')[0]], {
+//    moves: function (el, container, handle) {
+//      return true;
+//    }
+//  })
+//    .on('drag', function(el, container, handle) {
+//    }).on('dragend', function(el) {
+//
+//      handleItemsOrder();
+//    });
 
   });
 })($);
