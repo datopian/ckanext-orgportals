@@ -41,7 +41,7 @@
     {{ form.input('text_box', id='field-title', label=_('Text box'), value=page.text_box, classes=['control-full'], error=errors.text_box) }}
   {% endif %}
 
-  {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='custompage_show', org_name=org_name, page_name='') %}
+  {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='custompage_show', org_name=org_name, page_name='', source='admin') %}
   {% set attrs = {'data-module': 'slug-preview-target'} %}
 
   {% if page.id is undefined or page.type == 'custom' %}

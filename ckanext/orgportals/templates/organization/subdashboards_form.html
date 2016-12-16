@@ -30,7 +30,7 @@
     {{ form.errors(error_summary) }}
   {% endblock %}
 
-  {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='subdashboardpage_show', org_name=org_name, subdashboard_name='') %}
+  {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='subdashboardpage_show', org_name=org_name, subdashboard_name='', source='admin') %}
   {% set attrs = {'data-module': 'slug-preview-target'} %}
 
   {{ form.select('is_active', 'is_active', _('Is subdashboard active?'), options=[{'value': True, 'text': 'Yes'}, {'value': False, 'text': 'No'}], selected=subdashboard.is_active) }}
