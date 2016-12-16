@@ -33,4 +33,9 @@ span.grippy.cursor-grabbing {
 
 .video-container {
   float: right;
+  width: 95%;
+}
+
+.orgportal-media-item {
+  position: relative;
 }
