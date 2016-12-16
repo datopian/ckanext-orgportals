@@ -331,16 +331,18 @@
 
   });
 
-//  dragula([$('#content-settings-items')[0]], {
-//    moves: function (el, container, handle) {
-//      return true;
-//    }
-//  })
-//    .on('drag', function(el, container, handle) {
-//    }).on('dragend', function(el) {
-//
-//      handleItemsOrder();
-//    });
+  dragula([$('#content-settings-items')[0]], {
+    moves: function(el, container, handle) {
+      return handle.classList.contains('grippy');
+    }
+  })
+   .on('drag', function(el, container, handle) {
+     el.querySelector('.grippy').classList.add('cursor-grabbing');
+   }).on('dragend', function(el) {
+     el.querySelector('.grippy').classList.remove('cursor-grabbing');
+
+     handleItemsOrder();
+   });
 
   });
 })($);
