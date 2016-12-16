@@ -90,16 +90,17 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
       map.addLayer(osm);
 
+      highlightCountry();
+
       if (mapURLS && mainProperties.length > 0) {
 
         // Initialize markers
         initDatasetMarkers(mapURLS[0], mainProperties[0]);
       }
 
-      highlightCountry();
-
       function highlightCountry() {
-        var countriesUrl = 'http://localhost:5000/countries.json';
+        var siteURL = $('body').attr('data-site-root');
+        var countriesUrl = siteURL + 'countries.json';
         var country;
 
         $.getJSON(countriesUrl).done(function(data) {
@@ -109,6 +110,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
               country.setStyle({fill: false})
               map.addLayer(country);
               map.fitBounds(country.getBounds());
+              fitBounds = false;
               return true;
             }
           });
@@ -138,8 +140,9 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
             },
             pointToLayer: function (feature, latlng) {
               var markerColor = feature.properties['marker-color'] || '#c71111';
+              markerColor = markerColor.substr(1);
               var icon = L.divIcon({
-                html: '<span class="orgportals-marker-icon" style="background-color: ' + markerColor + '" />'
+                html: '<img class="orgportals-marker-icon" src="https://a.tiles.mapbox.com/v4/marker/pin-m+' + markerColor + '.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IlpIdEpjOHcifQ.Cldl4wq_T5KOgxhLvbjE-w" />'
               });
 
               return L.marker(latlng, {

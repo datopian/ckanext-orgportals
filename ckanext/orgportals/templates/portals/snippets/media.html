@@ -8,6 +8,10 @@
         subheader=item.chart_subheader,
         media_size=item.media_size
       %}
+    {% elif item.media_type == 'youtube_video' %}
+      {% snippet 'portals/snippets/youtube_video_container.html',
+        video_source=item.video_source
+      %}
     {% endif %}
   {% endfor %}
 </div>
