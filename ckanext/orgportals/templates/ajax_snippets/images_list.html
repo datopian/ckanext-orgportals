@@ -1,36 +1,93 @@
 <fieldset class="orgportal-media-item">
-  <legend>{{ _('Item') }} {{ n }}</legend>
-  {% if uploads_enabled %}
-    <div
-      class="image-upload"
-      data-module="custom-image-upload"
-      data-module-is_url="false"
-      data-module-is_upload="false"
-      data-module-field_url="theme_image_url_{{ n }}"
-      data-module-field_upload="theme_image_upload_{{ n }}"
-      data-module-field_clear="theme_clear_upload_{{ n }}"
-      data-module-upload_label="Image">
-        <div class="control-group control-full">
-          <label class="control-label" for="field-image-url">Image URL</label>
-          <div class="controls ">
-            <input id="field-image-url" type="text" name="theme_image_url_{{ n }}" value="" placeholder="http://example.com/my-image.jpg">
+  {% set uploads_enabled = h.uploads_enabled() %}
+
+  {% if data %}
+    {% set n =  data.order %}
+    {% set media_type =  data.media_type %}
+    {% set image_url =  data.image_url %}
+
+    {% set media_image_url = 'media_image_url_' + n %}
+    {% set media_image_upload = 'media_image_upload_' + n %}
+    {% set media_clear_upload = 'media_clear_upload_' + n %}
+
+    {% set is_upload = image_url and not image_url.startswith('http') %}
+    {% set is_url = image_url and image_url.startswith('http') %}
+
+    <legend>{{ _('Item') }} {{ n }}</legend>
+
+    {% if uploads_enabled %}
+      <div
+        class="image-upload"
+        data-module="image-upload"
+        data-module-is_url="{{ is_url or 'false' }}"
+        data-module-is_upload="{{ is_upload or 'false' }}"
+        data-module-field_url="{{ media_image_url }}"
+        data-module-field_upload="{{ media_image_upload }}"
+        data-module-field_clear="{{ media_clear_upload }}"
+        data-module-upload_label="Image">
+          <div class="control-group control-full">
+            <label class="control-label" for="field-image-url">Image URL</label>
+            <div class="controls ">
+              <input id="field-image-url" type="text" name="{{ media_image_url }}" value="{{ image_url }}" placeholder="http://example.com/my-image.jpg">
+            </div>
           </div>
-        </div>
-        <div class="control-group control-full">
-          <label class="control-label" for="field-image-upload">Image</label>
-          <div class="controls ">
-            <input id="field-image-upload" type="file" name="theme_image_upload_{{ n }}" value="" placeholder="">
+          <div class="control-group control-full">
+            <label class="control-label" for="field-image-upload">Image</label>
+            <div class="controls ">
+              <input id="field-image-upload" type="file" name="{{ media_image_upload }}" value="{{ image_url }}" placeholder="">
+            </div>
           </div>
-        </div>
-    </div>
-  {% else %}
-    <div class="control-group control-full">
-      <label class="control-label" for="field-image-url">Image URL</label>
-      <div class="controls ">
-        <input id="field-image-url" type="text" name="theme_image_url_{{ n }}" value="" placeholder="http://example.com/my-image.jpg">
       </div>
-    </div>
+    {% else %}
+      <div class="control-group control-full">
+        <label class="control-label" for="field-image-url">Image URL</label>
+        <div class="controls ">
+          <input id="field-image-url" type="text" name="{{ media_image_url }}" value="{{ image_url }}" placeholder="http://example.com/my-image.jpg">
+        </div>
+      </div>
+    {% endif %}
+  {% else %}
+    <legend>{{ _('Item') }} {{ n }}</legend>
+    {% if uploads_enabled %}
+      <div
+        class="image-upload"
+        data-module="custom-image-upload"
+        data-module-is_url="false"
+        data-module-is_upload="false"
+        data-module-field_url="media_image_url_{{ n }}"
+        data-module-field_upload="media_image_upload_{{ n }}"
+        data-module-field_clear="media_clear_upload_{{ n }}"
+        data-module-upload_label="Image">
+          <div class="control-group control-full">
+            <label class="control-label" for="field-image-url">Image URL</label>
+            <div class="controls ">
+              <input id="field-image-url" type="text" name="media_image_url_{{ n }}" value="" placeholder="http://example.com/my-image.jpg">
+            </div>
+          </div>
+          <div class="control-group control-full">
+            <label class="control-label" for="field-image-upload">Image</label>
+            <div class="controls ">
+              <input id="field-image-upload" type="file" name="media_image_upload_{{ n }}" value="" placeholder="">
+            </div>
+          </div>
+      </div>
+    {% else %}
+      <div class="control-group control-full">
+        <label class="control-label" for="field-image-url">Image URL</label>
+        <div class="controls ">
+          <input id="field-image-url" type="text" name="media_image_url_{{ n }}" value="" placeholder="http://example.com/my-image.jpg">
+        </div>
+      </div>
+    {% endif %}
   {% endif %}
+
   <a class="btn btn-danger remove-media-item-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
   <hr>
+
+  <input type="hidden" id="image_url_{{ n }}" name="image_url_{{ n }}" value="{{ image_url }}"/>
+  <input type="hidden" id="image_upload_{{ n }}" name="image_upload_{{ n }}" value="{{ image_upload }}"/>
+  <input type="hidden" id="image_clear_upload_{{ n }}" name="image_clear_upload_{{ n }}" value="{{ image_clear_upload }}"/>
+  <input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
+
+  <span class="grippy"></span>
 </fieldset>

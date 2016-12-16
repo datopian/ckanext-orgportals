@@ -12,6 +12,10 @@
       {% snippet 'portals/snippets/youtube_video_container.html',
         video_source=item.video_source
       %}
+    {% elif item.media_type == 'image' %}
+      {% snippet 'portals/snippets/image_container.html',
+        image_url=item.image_url
+      %}
     {% endif %}
   {% endfor %}
 </div>

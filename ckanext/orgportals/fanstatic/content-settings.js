@@ -209,6 +209,8 @@
     var chart_resourceview_input;
     var chart_subheader_input;
     var save_video_source_input;
+    var image_url_input;
+    var image_upload_input;
 
     var mediaItems = $('.orgportal-media-item');
 
@@ -247,16 +249,114 @@
 
         save_video_source_input.attr('id', 'save_video_source_' + media_order);
         save_video_source_input.attr('name', 'video_source_' + media_order);
+      } else if (media_type === 'image') {
+
+        media_type_input =  $(item).find('[id*=media_type_]');
+        image_url_input =  $(item).find('[name*=media_image_url_]');
+        image_upload_input =  $(item).find('[name*=media_image_upload_]');
+
+        media_type_input.attr('id', 'media_type_' + media_order);
+        media_type_input.attr('name', 'media_type_' + media_order);
+
+        image_url_input.attr('name', 'media_image_url_' + media_order);
+        image_upload_input.attr('name', 'media_image_upload_' + media_order);
       }
 
     });
 
   };
 
+  function handleImageItems(item_id) {
+    var contentContainer = $('#content-settings-items');
+    var contentContainerChildren = contentContainer.children();
+    var uploadsEnabled = contentContainer.attr('data-uploads-enabled');
+    var item;
+    var fieldImageUrl;
+    var fieldImageUpload;
+    var imageUploadModule;
+    var mediaImage;
+    var mediaUpload;
+    var removeLinkBtn;
+    var image_url_inputs;
+    var remove_url_inputs;
+    var image_upload_inputs;
+
+    if (item_id) {
+      item = contentContainerChildren.last();
+      mediaImage = item.find('#field-image-url');
+      mediaUpload = item.find('#field-image-upload');
+
+      fieldImageUrl = 'media_image_url_' + item_id;
+      fieldImageUpload = 'media_image_upload_' + item_id;
+
+      if (uploadsEnabled == 'True') {
+        imageUploadModule = item.find('[data-module="custom-image-upload"]');
+        imageUploadModule.attr('data-module', 'image-upload');
+        imageUploadModule.attr('data-module-field_upload', fieldImageUpload);
+        imageUploadModule.attr('data-module-field_url', fieldImageUrl);
+        mediaUpload.attr('name', fieldImageUpload);
+      }
+
+      mediaImage.attr('name', fieldImageUrl);
+
+      if (uploadsEnabled == 'True') {
+        window.ckan.module.initializeElement(imageUploadModule[0]);
+      }
+    }
+
+    if (item_id) {
+      image_url_inputs = $('[name=media_image_url_'+ item_id +']');
+      image_upload_inputs = $('[name=media_image_upload_'+ item_id +']');
+    } else {
+      image_url_inputs = $('[name*=media_image_url_]');
+      image_upload_inputs = $('[name*=media_image_upload_]');
+    }
+
+    image_url_inputs.on('change keyup paste', function onMediaImageChange() {
+      var elem = $(this);
+      var image_url_id = elem.attr('name');
+      var image_id = image_url_id.substr(image_url_id.lastIndexOf('_') + 1);
+      var imageUrl = $('#image_url_' + image_id);
+
+      imageUrl.val(elem.val());
+    });
+
+    image_upload_inputs.on('change', function onMediaImageChange() {
+      var elem = $(this);
+      var image_upload_id = elem.attr('name');
+      var image_id = image_upload_id.substr(image_upload_id.lastIndexOf('_') + 1);
+      var imageUpload = $('#image_upload_' + image_id);
+
+      imageUpload.val(elem.val());
+    });
+
+    setTimeout(function() {
+      if (item_id) {
+        remove_url_inputs = image_url_inputs.closest('.btn-remove-url');
+      } else {
+        remove_url_inputs = $('.btn-remove-url');
+      }
+
+      remove_url_inputs.on('click', function onMediaImageChange() {
+        var elem = $(this);
+        elem = elem.next();
+        var image_url_id = elem.attr('name');
+        var image_id = image_url_id.substr(image_url_id.lastIndexOf('_') + 1);
+        var imageUrl = $('#image_url_' + image_id);
+
+        imageUrl.val(elem.val());
+      });
+    }, 1000)
+
+
+  }
+
   $(document).ready(function () {
 
     handleChartItems(name);
     handleVideoItems();
+    handleImageItems();
+
     var createMediaItemBtn = $('#create-media-item-btn');
     var removeMediaItemBtn = $('.remove-media-item-btn');
 
@@ -307,6 +407,8 @@
              removeMediaItemBtn.on('click', function (e) {
                $(e.target).parent().remove();
              });
+
+             handleImageItems(totalItems);
 
            });
 

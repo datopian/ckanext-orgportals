@@ -1,7 +1,9 @@
+{% set uploads_enabled = h.uploads_enabled() %}
+
 <fieldset>
   <legend>{{ _('Content settings') }}</legend>
 
-    <div id="content-settings-items">
+    <div id="content-settings-items" data-uploads-enabled="{{ uploads_enabled }}">
         {% if data.media %}
           {% for media_item in data.media %}
             {% if media_item.media_type == 'chart' %}

@@ -642,8 +642,26 @@ class OrgportalsController(PackageController):
                         item['video_source'] = data['video_source_{}'.format(id)]
 
                         media_items.append(item)
+                    elif data['media_type_{}'.format(id)] == 'image':
 
+                        item['order'] = id
+                        item['media_type'] = data['media_type_{}'.format(id)]
 
+                        image_url = data['media_image_url_{}'.format(id)]
+
+                        # Upload images for themes
+                        if h.uploads_enabled():
+                            image_upload = data['media_image_upload_{}'.format(id)]
+
+                            if isinstance(image_upload, cgi.FieldStorage):
+                                upload = uploader.get_uploader('portal', image_url)
+                                upload.update_data_dict(data, 'media_image_url_{}'.format(id), 'media_image_upload_{}'.format(id), 'image_clear_upload_{}'.format(id))
+                                upload.upload(uploader.get_max_image_size())
+                                image_url = upload.filename
+
+                        item['image_url'] = image_url
+
+                        media_items.append(item)
 
             _subdashboard['media'] = json.dumps(media_items)
             _subdashboard['map'] = []
@@ -953,6 +971,12 @@ class OrgportalsController(PackageController):
         if 'media' in subdashboard and len(subdashboard['media']) > 0:
             subdashboard['media'] = json.loads(subdashboard['media'])
             subdashboard['media'].sort(key=itemgetter('order'))
+
+            for item in subdashboard['media']:
+                is_upload = 'image_url' in item and item['image_url'] and not item['image_url'].startswith('http')
+
+                if is_upload:
+                    item['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, item['image_url'])
 
         extra_vars = {
             'organization': org,
