@@ -54,11 +54,11 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('/', controller=ctrl, action='show_portal_homepage')
         map.connect('/data', controller=ctrl, action='show_portal_datapage')
         map.connect('/contact', controller=ctrl, action='show_portal_contentpage', page_name='contact')
-        map.connect('/about', controller=ctrl, action='show_portal_contentpage', page_name='about')
+        map.connect('/aboutportal', controller=ctrl, action='show_portal_contentpage', page_name='about')
         map.connect('/help', controller=ctrl, action='show_portal_contentpage', page_name='help')
         map.connect('/resources', controller=ctrl, action='show_portal_contentpage', page_name='resources')
         map.connect('/glossary', controller=ctrl, action='show_portal_contentpage', page_name='glossary')
-        map.connect('/page/{page_name}', controller=ctrl, action='show_portal_custompage')
+        map.connect('/pages/{page_name}', controller=ctrl, action='show_portal_custompage')
         map.connect('/subdashboard/{subdashboard_name}', controller=ctrl, action='show_portal_subdashboardpage')
 
 

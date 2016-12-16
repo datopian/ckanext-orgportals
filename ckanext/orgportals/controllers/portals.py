@@ -987,102 +987,22 @@ class OrgportalsController(PackageController):
         return p.toolkit.render('portals/pages/subdashboard.html', extra_vars=extra_vars)
 
     def show_portal_homepage(self):
-        name = None
-        request_url = urlparse(p.toolkit.request.url)
-        ckan_base_url = urlparse(config.get('ckan.site_url'))
-
-        if request_url.netloc != ckan_base_url.netloc:
-
-            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
-
-            for org in org_list:
-                if 'orgportals_portal_url' in org:
-                    org_url = urlparse(org['orgportals_portal_url'])
-                    if org_url.netloc == request_url.netloc:
-                        name = org['name']
-
-            if name is None:
-                c.url = p.toolkit.request.url
-                return p.toolkit.render('portals/snippets/domain_not_registered.html')
-            else:
-                return self.view_portal(name)
-
-        else:
-            return p.toolkit.render('home/index.html')
+        return self._get_portal_page(self.view_portal)
 
     def show_portal_datapage(self):
-        name = None
-        request_url = urlparse(p.toolkit.request.url)
-        ckan_base_url = urlparse(config.get('ckan.site_url'))
-
-        if request_url.netloc != ckan_base_url.netloc:
-
-            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
-
-            for org in org_list:
-                if 'orgportals_portal_url' in org:
-                    org_url = urlparse(org['orgportals_portal_url'])
-                    if org_url.netloc == request_url.netloc:
-                        name = org['name']
-
-            if name is None:
-                c.url = p.toolkit.request.url
-                return p.toolkit.render('portals/snippets/domain_not_registered.html')
-            else:
-                return self.datapage_show(name)
-
-        else:
-            return p.toolkit.render('home/index.html')
+        return self._get_portal_page(self.datapage_show)
 
     def show_portal_contentpage(self, page_name):
-        name = None
-        request_url = urlparse(p.toolkit.request.url)
-        ckan_base_url = urlparse(config.get('ckan.site_url'))
-
-        if request_url.netloc != ckan_base_url.netloc:
-
-            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
-
-            for org in org_list:
-                if 'orgportals_portal_url' in org:
-                    org_url = urlparse(org['orgportals_portal_url'])
-                    if org_url.netloc == request_url.netloc:
-                        name = org['name']
-
-            if name is None:
-                c.url = p.toolkit.request.url
-                return p.toolkit.render('portals/snippets/domain_not_registered.html')
-            else:
-                return self.contentpage_show(name, page_name)
-
-        else:
-            return p.toolkit.render('home/index.html')
+        return self._get_portal_page(self.contentpage_show, page_name)
 
     def show_portal_custompage(self, page_name):
-        name = None
-        request_url = urlparse(p.toolkit.request.url)
-        ckan_base_url = urlparse(config.get('ckan.site_url'))
-
-        if request_url.netloc != ckan_base_url.netloc:
-
-            org_list = get_action('organization_list')({}, {'all_fields': True, 'include_extras': True})
-
-            for org in org_list:
-                if 'orgportals_portal_url' in org:
-                    org_url = urlparse(org['orgportals_portal_url'])
-                    if org_url.netloc == request_url.netloc:
-                        name = org['name']
-
-            if name is None:
-                c.url = p.toolkit.request.url
-                return p.toolkit.render('portals/snippets/domain_not_registered.html')
-            else:
-                return self.custompage_show(name, page_name)
-
-        else:
-            return p.toolkit.render('home/index.html')
+        return self._get_portal_page(self.custompage_show, page_name)
 
     def show_portal_subdashboardpage(self, subdashboard_name):
+        return self._get_portal_page(self.subdashboardpage_show, subdashboard_name)
+
+
+    def _get_portal_page(self, callback, requested_page_name=None):
         name = None
         request_url = urlparse(p.toolkit.request.url)
         ckan_base_url = urlparse(config.get('ckan.site_url'))
@@ -1101,10 +1021,14 @@ class OrgportalsController(PackageController):
                 c.url = p.toolkit.request.url
                 return p.toolkit.render('portals/snippets/domain_not_registered.html')
             else:
-                return self.subdashboardpage_show(name, subdashboard_name)
+                if requested_page_name is None:
+                    return callback(name)
+                else:
+                    return callback(name, requested_page_name)
 
         else:
             return p.toolkit.render('home/index.html')
+
 
 
 def _is_portal_active(orgnization_name):
