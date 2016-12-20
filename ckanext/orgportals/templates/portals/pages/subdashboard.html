@@ -82,7 +82,8 @@
     {% snippet 'portals/snippets/pagination.html',
       current=c.page.page,
       per_page=c.page.items_per_page,
-      total=c.page.item_count
+      total=c.page.item_count,
+      subdashboard=subdashboard
     %}
   {% endif %}
 {% endblock %}

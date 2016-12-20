@@ -98,11 +98,13 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
         url = lib_helpers.url_for(controller=controller,
                                   action=action,
                                   org_name=context_name,
-                                  subdashboard_name=subdashboard_name)
+                                  subdashboard_name=subdashboard_name,
+                                  source='admin')
     else:
         url = lib_helpers.url_for(controller=controller,
                                   action=action,
-                                  org_name=context_name)
+                                  org_name=context_name,
+                                  source='admin')
 
 
     params = [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
@@ -111,9 +113,19 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
     return url + u'?' + urlencode(params)
 
 
-def orgportals_get_current_url(page, params, controller, action, name,
+def orgportals_get_current_url(page, params, controller, action, name, subdashboard_name,
                                exclude_param=''):
-    url = lib_helpers.url_for(controller=controller, action=action, org_name=name)
+    if subdashboard_name:
+        url = lib_helpers.url_for(controller=controller,
+                                  action=action,
+                                  org_name=name,
+                                  subdashboard_name=subdashboard_name,
+                                  source='admin')
+    else:
+        url = lib_helpers.url_for(controller=controller,
+                                  action=action,
+                                  org_name=name,
+                                  source='admin')
 
     for k, v in params:
         if k == exclude_param:
