@@ -193,7 +193,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
           var select_dataset = $('#dataset');
           var select_resource = $('#orgportals_resource');
-          select_dataset.append('<option>Select Data Point</option>');
+          select_dataset.append('<option>' + map_selector_name + '</option>');
 
           for (var elem in layers) {
             select_dataset.append('<option>' + layers[elem].name + '</option>');
