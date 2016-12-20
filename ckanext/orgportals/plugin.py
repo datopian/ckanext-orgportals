@@ -9,15 +9,19 @@ import db
 import actions
 import auth
 
+from ckan.lib.plugins import DefaultTranslation
+
 
 class OrgportalsPlugin(plugins.SingletonPlugin,
-                       lib_plugins.DefaultOrganizationForm):
+                       lib_plugins.DefaultOrganizationForm,
+                       DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IAuthFunctions, inherit=True)
     plugins.implements(plugins.IGroupForm, inherit=True)
+    plugins.implements(plugins.ITranslation)
 
     def __init__(self, name='OrgportalsPlugin'):
         db.init()
