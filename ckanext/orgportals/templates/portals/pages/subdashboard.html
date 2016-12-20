@@ -19,7 +19,6 @@
   {% resource 'orgportals/map' %}
   {% resource 'orgportals/jspdf' %}
   {% resource 'orgportals/vendor/bootstrap/dropdown.js' %}
-  {% resource 'orgportals/canvas2image.js' %}
   {% resource 'orgportals/goto-next-section.js' %}
 {% endblock %}
 
@@ -35,6 +34,8 @@
 
     <!-- Your share button code -->
     <div class="fb-share-button" data-href="https://montrose-devel.ckan.io/en/organization/test-organization/portal/subdashboard/population" data-layout="button" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div> #}
+  <div id="subdashboard-meta" hidden data-org-name="{{ organization.name }}" data-subdashboard-name="{{ subdashboard.name }}"></div>
+
   {% if organization.orgportals_base_color %}
     {% set base_color = "#" + organization.orgportals_base_color %}
   {% else %}
