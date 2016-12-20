@@ -4,7 +4,7 @@ ckan.module('orgportals_map', function ($, _) {
   return {
     initialize: function() {
       ckan.orgportals.dashboardmap.init(this.options.id,
-                                        this.options.organization_name,
+                                        this.options.country_name,
                                         this.options.mapurl,
                                         this.options.color,
                                         this.options.main_property,
