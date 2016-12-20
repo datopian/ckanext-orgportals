@@ -48,9 +48,9 @@
     }
   }
 
-  var downloadAsBtn = $('.snapshot-dashboard-menu');
+  var snapshotDashboardMenu = $('.snapshot-dashboard-menu');
 
-  downloadAsBtn.on('click', function(event) {
+  snapshotDashboardMenu.on('click', function(event) {
     var target = event.target;
     var dataAttribute = target.getAttribute('data-download-as');
     var renderedCanvas;
@@ -79,18 +79,32 @@
   var heroMap = $('.hero-map-wrap');
   var newData = $('.new-data');
   var allData = $('.all-data');
+  var goDownArrows = $('.go-down-arrow');
+  var downloadAsBtn = $('#download-as-pdf');
+  var mediaSection = $('[data-section="media"]');
+  var downloadGraphBtns = $('.download-graph-btn');
 
   function _hideElementsBeforeDownload() {
-    downloadAsBtn.parent().toggleClass('open');
+    snapshotDashboardMenu.parent().toggleClass('open');
     heroMap.hide();
     newData.hide();
     allData.hide();
+    goDownArrows.hide();
+    downloadAsBtn.hide();
+    downloadGraphBtns.hide();
+
+    mediaSection.css('margin-bottom', '70px');
   }
 
   function _showElementsAfterDownload() {
     heroMap.show();
     newData.show();
     allData.show();
+    goDownArrows.show();
+    downloadAsBtn.show();
+    downloadGraphBtns.show();
+
+    mediaSection.css('margin-bottom', 'initial');
   }
 
   var mediaContainer = $('div[data-section="media"]');
