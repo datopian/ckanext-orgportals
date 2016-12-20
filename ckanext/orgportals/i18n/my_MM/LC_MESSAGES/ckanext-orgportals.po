@@ -525,7 +525,7 @@ msgstr ""
 
 #: ckanext/orgportals/templates/portals/snippets/map.html:42
 msgid "Select Data Point"
-msgstr ""
+msgstr "ေဒတာအခ်က္ကို ေရြးခ်ယ္ပါ။"
 
 #: ckanext/orgportals/templates/portals/snippets/map.html:66
 msgid "contributors"
@@ -618,6 +618,3 @@ msgstr "မလုပ္ဘူး၊ ေက်းဇူးပါ။"
 
 msgid "Yes, I'll give feedback"
 msgstr "ဟုတ္။ သေဘာထားထင္ျမင္ခ်က္ ေပးပါမည္။"
-
-msgid "Select Data Point"
-msgstr "ေဒတာအခ်က္ကို ေရြးခ်ယ္ပါ။"
