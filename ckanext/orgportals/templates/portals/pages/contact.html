@@ -8,18 +8,17 @@
       <h3>{{ page.content_title }}</h3>
       {# <h4>Lorem ipsum</h4> #}
       <fieldset>
-        <input type="text" placeholder="Your name" name="contact_name" tabindex="1" required autofocus />
+        <input type="text" placeholder="{{ _('Your name') }}" name="contact_name" tabindex="1" required autofocus />
       </fieldset>
       <fieldset>
-        <input type="email" placeholder="Your email address" name="contact_email" tabindex="2" required />
+        <input type="email" placeholder="{{ _('Your email address') }}" name="contact_email" tabindex="2" required />
       </fieldset>
       <fieldset>
-        <textarea placeholder="Type your message here...." name="contact_message" tabindex="3" required></textarea>
+        <textarea placeholder="{{ _('Type your message here') }}..." name="contact_message" tabindex="3" required></textarea>
       </fieldset>
       <fieldset>
-        <button name="submit" type="submit" id="contact-submit">Submit</button>
+        <button name="submit" type="submit" id="contact-submit">{{ _('Submit') }}</button>
       </fieldset>
-
       <p>{{ page.contact_response_message }}</p>
     </form>
   </div>

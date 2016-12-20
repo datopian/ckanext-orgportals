@@ -1,18 +1,5 @@
 {% extends 'portals/index.html' %}
 
-{# {% block meta %}
-  {{ super() }}
-
-<meta property="og:url"           content="https://montrose-devel.ckan.io/en/organization/test-organization/portal/subdashboard/population" />
-  <meta property="og:type"          content="website" />
-  <meta property="og:title"         content="Your Website Title" />
-  <meta property="og:description"   content="Your description" />
-  <meta property="og:image:secure_url" content="https://montrose-devel.ckan.io/images/usedata.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="400" />
-  <meta property="og:image:height" content="300" />
-{% endblock %} #}
-
 {% block scripts %}
   {{ super() }}
 
@@ -23,17 +10,6 @@
 {% endblock %}
 
 {% block content %}
- {#  <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-    <!-- Your share button code -->
-    <div class="fb-share-button" data-href="https://montrose-devel.ckan.io/en/organization/test-organization/portal/subdashboard/population" data-layout="button" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div> #}
   <div id="subdashboard-meta" hidden data-org-name="{{ organization.name }}" data-subdashboard-name="{{ subdashboard.name }}"></div>
 
   {% if organization.orgportals_base_color %}
@@ -67,10 +43,10 @@
   {% endif %}
 
   <div class="btn-group">
-    <i id="download-as-pdf" class="fa fa-download fa-lg snapshot-dashboard" data-toggle="dropdown" aria-hidden="true" title="Download subdashboard"></i>
+    <i id="download-as-pdf" class="fa fa-download fa-lg snapshot-dashboard" data-toggle="dropdown" aria-hidden="true" title="{{ _('Download subdashboard') }}"></i>
     <ul class="dropdown-menu snapshot-dashboard-menu">
-      <li><a href="#" data-download-as="pdf">Download as PDF</a></li>
-      <li><a href="#" data-download-as="image">Download as Image</a></li>
+      <li><a href="#" data-download-as="pdf">{{ _('Download as PDF') }}</a></li>
+      <li><a href="#" data-download-as="image">{{ _('Download as Image') }}</a></li>
     </ul>
   </div>
 
