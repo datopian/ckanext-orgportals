@@ -8,11 +8,18 @@
 {% set controller = c.controller %}
 {% set action = c.action %}
 {% set name = c.org_name %}
+
+{% if subdashboard and subdashboard.name %}
+  {% set subdashboard_name = subdashboard.name %}
+{% else %}
+  {% set subdashboard_name = None %}
+{% endif %}
+
   <ul class="pagination pull-right">
-    {% if current != 1 %}<li><a href="{{ h.orgportals_get_current_url(current - 1, params, controller, action, name, exclude_param='page') }}#search-data" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>{% endif %}
+    {% if current != 1 %}<li><a href="{{ h.orgportals_get_current_url(current - 1, params, controller, action, name, subdashboard_name, exclude_param='page') }}#search-data" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>{% endif %}
     {% for index in range(1, end+1) %}
-      <li{% if index == current %} class="active"{% endif %}><a href="{{ h.orgportals_get_current_url(index, params, controller, action, name, exclude_param='page') }}#search-data">{{ index }}</a></li>
+      <li{% if index == current %} class="active"{% endif %}><a href="{{ h.orgportals_get_current_url(index, params, controller, action, name, subdashboard_name, exclude_param='page') }}#search-data">{{ index }}</a></li>
     {% endfor %}
-    {% if current < end %}<li><a href="{{ h.orgportals_get_current_url(current + 1, params, controller, action, name, exclude_param='page') }}#search-data" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>{% endif %}
+    {% if current < end %}<li><a href="{{ h.orgportals_get_current_url(current + 1, params, controller, action, name, subdashboard_name, exclude_param='page') }}#search-data" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>{% endif %}
   </ul>
 </nav>

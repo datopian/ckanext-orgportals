@@ -11,7 +11,6 @@
       {% set chart = h.orgportals_get_chart_resources(data['chart_resourceview']) %}
 
       {% if chart is not none %}
-
           {% set dataset_name = chart[2].title %}
           {% set resource_name = chart[1].name %}
           {% set view_name = chart[0].title %}
@@ -20,6 +19,7 @@
             <b>Dataset:</b> {{ dataset_name }} <br>
             <b>Resource:</b> {% if resource_name %}{{ chart[1].name }}{% else %}Unnamed resourcce{% endif %} <br>
             <b>View name:</b> {{ view_name }} <br>
+            <b>Chart size:</b> {{ data.media_size|capitalize }} <br>
             <b>Subheader:</b> {{ chart_subheader }} <br>
 
             {% snippet 'portals/snippets/resource_view.html',

@@ -2,13 +2,47 @@
   <div class="row">
     <div class="col-md-2 col-lg-4">
       <ul class="list-unstyled list-footer-nav">
-        <li><a href="home">Home</a></li>
-        <li><a href="data">Data</a></li>
-        <li><a href="about">About</a></li>
-        <li><a href="help">Help</a></li>
-        <li><a href="resources">Resources</a></li>
-        <li><a href="glossary">Glossary</a></li>
-        <li><a href="contact">Contact</a></li>
+        {% set ctrl = 'ckanext.orgportals.controllers.portals:OrgportalsController' %}
+        {% set source = 'admin' %}
+        {% set pages = h.orgportals_get_pages(c.org_name) %}
+
+        {% for page in pages %}
+
+          {% if page.type == 'home' %}
+
+            {% if c.source == 'admin' %}
+              {% set page_link = h.url_for(controller=ctrl, action='view_portal', org_name=c.org_name, source=source) %}
+            {% else %}
+              {% set page_link = h.url_for(controller=ctrl, action='show_portal_homepage') %}
+            {% endif %}
+
+          {% elif page.type == 'data' %}
+
+            {% if c.source == 'admin' %}
+              {% set page_link = h.url_for(controller=ctrl, action='datapage_show', org_name=c.org_name, source=source) %}
+            {% else %}
+              {% set page_link = h.url_for(controller=ctrl, action='show_portal_datapage') %}
+            {% endif %}
+
+          {% elif page.type == 'default' %}
+
+            {% if c.source == 'admin' %}
+              {% set page_link = h.url_for(controller=ctrl, action='contentpage_show', org_name=c.org_name, page_name=page.name, source=source) %}
+            {% else %}
+              {% set page_link = h.url_for(controller=ctrl, action='show_portal_contentpage', page_name=page.name) %}
+            {% endif %}
+
+          {% elif page.type == 'custom' %}
+
+            {% if c.source == 'admin' %}
+              {% set page_link = h.url_for(controller=ctrl, action='custompage_show', org_name=c.org_name, page_name=page.name, source=source) %}
+            {% else %}
+              {% set page_link = h.url_for(controller=ctrl, action='show_portal_custompage', page_name=page.name) %}
+            {% endif %}
+          {% endif %}
+
+          <li><a href="{{ page_link }}">{{ page.page_title }}</a></li>
+        {% endfor %}
       </ul>
     </div>
     <div class="col-md-2 col-lg-3">

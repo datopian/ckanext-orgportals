@@ -4,8 +4,8 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
 (function (self, $) {
 
-  self.init = function init(elementId, organizationName, mapURL, color, mainProperty, map_selector_name, organization_entity_name) {
-    renderMap(elementId, organizationName, mapURL, color, mainProperty, map_selector_name, organization_entity_name);
+  self.init = function init(elementId, countryName, mapURL, color, mainProperty, map_selector_name, organization_entity_name) {
+    renderMap(elementId, countryName, mapURL, color, mainProperty, map_selector_name, organization_entity_name);
   };
 
   var disclaimerText = $('.hero-info .media-body');
@@ -35,7 +35,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
     }
   });
 
-  function renderMap(elementId, organizationName, mapURL, color, mainProperty, map_selector_name, organization_entity_name) {
+  function renderMap(elementId, countryName, mapURL, color, mainProperty, map_selector_name, organization_entity_name) {
     var mainProperties = [];
     var fitBounds = false;
 
@@ -45,8 +45,8 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
       mainProperties = mainProperty.split(',');
     }
 
-    if (organization_entity_name === 'country') {
-      $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(organizationName)).done(function (data) {
+    if (organization_entity_name === 'country' && countryName !== 'none') {
+      $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(countryName)).done(function (data) {
          if (data['status'] == 'ZERO_RESULTS') {
            initLeaflet(elementId, 39, 40, 2);
          } else {
@@ -102,10 +102,9 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
         var siteURL = $('body').attr('data-site-root');
         var countriesUrl = siteURL + 'countries.json';
         var country;
-
         $.getJSON(countriesUrl).done(function(data) {
           data.features.some(function(feature) {
-            if (feature.properties.name === organizationName) {
+            if (feature.properties.name === countryName && countryName !== 'none') {
               country = L.geoJson(feature);
               country.setStyle({fill: false})
               map.addLayer(country);
@@ -194,7 +193,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
           var select_dataset = $('#dataset');
           var select_resource = $('#orgportals_resource');
-          select_dataset.append('<option>Select Data Point</option>');
+          select_dataset.append('<option>' + map_selector_name + '</option>');
 
           for (var elem in layers) {
             select_dataset.append('<option>' + layers[elem].name + '</option>');

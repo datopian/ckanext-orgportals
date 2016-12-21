@@ -1,6 +1,8 @@
 from datetime import datetime
 from urllib import urlencode
 import urllib
+import os
+from operator import itemgetter
 
 from pylons import config
 
@@ -69,6 +71,8 @@ def orgportals_get_resource_view_url(id, dataset):
 def orgportals_get_group_entity_name():
     return config.get('ckanext.orgportals.group_entity_name', 'group')
 
+def orgportals_get_organization_entity_name():
+    return config.get('ckanext.orgportals.organization_entity_name', 'organization')
 
 def orgportals_get_facet_items_dict(value):
     try:
@@ -94,11 +98,13 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
         url = lib_helpers.url_for(controller=controller,
                                   action=action,
                                   org_name=context_name,
-                                  subdashboard_name=subdashboard_name)
+                                  subdashboard_name=subdashboard_name,
+                                  source='admin')
     else:
         url = lib_helpers.url_for(controller=controller,
                                   action=action,
-                                  org_name=context_name)
+                                  org_name=context_name,
+                                  source='admin')
 
 
     params = [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
@@ -107,9 +113,19 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
     return url + u'?' + urlencode(params)
 
 
-def orgportals_get_current_url(page, params, controller, action, name,
+def orgportals_get_current_url(page, params, controller, action, name, subdashboard_name,
                                exclude_param=''):
-    url = lib_helpers.url_for(controller=controller, action=action, org_name=name)
+    if subdashboard_name:
+        url = lib_helpers.url_for(controller=controller,
+                                  action=action,
+                                  org_name=name,
+                                  subdashboard_name=subdashboard_name,
+                                  source='admin')
+    else:
+        url = lib_helpers.url_for(controller=controller,
+                                  action=action,
+                                  org_name=name,
+                                  source='admin')
 
     for k, v in params:
         if k == exclude_param:
@@ -360,3 +376,20 @@ def orgportals_get_facebook_app_id():
 
 
     return config.get('ckanext.orgportals.facebook_app_id', '')
+
+def orgportals_get_countries():
+    get_countries_path = lambda: os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                              'public/countries.json')
+    r = urllib.urlopen(get_countries_path())
+
+    data = unicode(r.read(), errors='ignore')
+    countries = json.loads(data)
+    result = []
+
+    for item in countries['features']:
+        result.append({'value': item['properties']['name'], 'text': item['properties']['name']})
+
+    result.sort(key=itemgetter('text'))
+    result.insert(0, {'value': 'none', 'text': 'None'})
+
+    return result

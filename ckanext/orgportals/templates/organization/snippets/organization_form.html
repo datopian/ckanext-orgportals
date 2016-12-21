@@ -88,6 +88,13 @@
       {{ form.select('orgportals_secondary_language', 'orgportals_secondary_language', _('Choose secondary language'), options=h.orgportals_get_available_languages(), selected=data.orgportals_secondary_language) }}
     {% endif %}
 
+    {% set organization_entity_name = h.orgportals_get_organization_entity_name() %}
+
+    {% if organization_entity_name == 'country' %}
+      {{ form.select('orgportals_country', 'orgportals_country', _('Choose country'), options=h.orgportals_get_countries(), selected=data.orgportals_country) }}
+    {% endif %}
+
+
     {{ form.markdown('orgportals_copyright', label=_('Portal copyright'), id='orgportals_copyright', placeholder=_('Set the portal copyright'), value=data.orgportals_copyright, error=errors.orgportals_copyright) }}
 
     {% if data.id %}

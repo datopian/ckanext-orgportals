@@ -1,18 +1,5 @@
 {% extends 'portals/index.html' %}
 
-{# {% block meta %}
-  {{ super() }}
-
-<meta property="og:url"           content="https://montrose-devel.ckan.io/en/organization/test-organization/portal/subdashboard/population" />
-  <meta property="og:type"          content="website" />
-  <meta property="og:title"         content="Your Website Title" />
-  <meta property="og:description"   content="Your description" />
-  <meta property="og:image:secure_url" content="https://montrose-devel.ckan.io/images/usedata.jpg" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="400" />
-  <meta property="og:image:height" content="300" />
-{% endblock %} #}
-
 {% block scripts %}
   {{ super() }}
 
@@ -57,10 +44,10 @@
   {% endif %}
 
   <div class="btn-group">
-    <i id="download-as-pdf" class="fa fa-download fa-lg snapshot-dashboard" data-toggle="dropdown" aria-hidden="true" title="Download subdashboard"></i>
+    <i id="download-as-pdf" class="fa fa-download fa-lg snapshot-dashboard" data-toggle="dropdown" aria-hidden="true" title="{{ _('Download subdashboard') }}"></i>
     <ul class="dropdown-menu snapshot-dashboard-menu">
-      <li><a href="#" data-download-as="pdf">Download as PDF</a></li>
-      <li><a href="#" data-download-as="image">Download as Image</a></li>
+      <li><a href="#" data-download-as="pdf">{{ _('Download as PDF') }}</a></li>
+      <li><a href="#" data-download-as="image">{{ _('Download as Image') }}</a></li>
     </ul>
   </div>
 
@@ -96,7 +83,8 @@
     {% snippet 'portals/snippets/pagination.html',
       current=c.page.page,
       per_page=c.page.items_per_page,
-      total=c.page.item_count
+      total=c.page.item_count,
+      subdashboard=subdashboard
     %}
   {% endif %}
 {% endblock %}

@@ -9,15 +9,19 @@ import db
 import actions
 import auth
 
+from ckan.lib.plugins import DefaultTranslation
+
 
 class OrgportalsPlugin(plugins.SingletonPlugin,
-                       lib_plugins.DefaultOrganizationForm):
+                       lib_plugins.DefaultOrganizationForm,
+                       DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IAuthFunctions, inherit=True)
     plugins.implements(plugins.IGroupForm, inherit=True)
+    plugins.implements(plugins.ITranslation)
 
     def __init__(self, name='OrgportalsPlugin'):
         db.init()
@@ -167,7 +171,11 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_secondary_dashboard':
                 helpers.orgportals_get_secondary_dashboard,
             'orgportals_get_facebook_app_id':
-                helpers.orgportals_get_facebook_app_id
+                helpers.orgportals_get_facebook_app_id,
+            'orgportals_get_countries':
+                helpers.orgportals_get_countries,
+            'orgportals_get_organization_entity_name':
+                helpers.orgportals_get_organization_entity_name
         }
 
     # IGroupForm
@@ -234,6 +242,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_secondary_portal': default_validators,
             'orgportals_secondary_language': default_validators,
             'orgportals_portal_url': [_ignore_missing, _convert_to_extras, _domain_validator],
+            'orgportals_country': default_validators
         })
 
         return schema
@@ -263,6 +272,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'num_followers': [_not_empty],
             'package_count': [_not_empty],
             'orgportals_portal_url': [_convert_from_extras, _ignore_missing, _domain_validator],
+            'orgportals_country': default_validators
         })
 
         return schema

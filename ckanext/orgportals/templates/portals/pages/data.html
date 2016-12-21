@@ -43,7 +43,7 @@
       base_color=base_color,
       map=data_page.map,
       map_main_property=data_page.map_main_property,
-      org_display_name=organization.display_name
+      country_name=organization.orgportals_country
     %}
   {% endif %}
 
@@ -55,7 +55,6 @@
       {% endfor %}
     </div>
   </div>
-
 
   {% snippet 'portals/snippets/new_data.html',
     base_color=base_color,
