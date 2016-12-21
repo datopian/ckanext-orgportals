@@ -19,11 +19,11 @@
                 {% endif %}
               {% else %}
                 {% if action == 'subdashboardpage_show' %}
-                  {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, subdashboard_name=c.subdashboard_name, locale='en') %}
+                  {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, subdashboard_name=c.subdashboard_name, locale='en', source='admin') %}
                 {% elif action == 'view_portal' or action == 'datapage_show' %}
-                  {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, locale='en') %}
+                  {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, locale='en', source='admin') %}
                 {% elif action == 'contentpage_show' or action == 'custompage_show' %}
-                  {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, page_name=c.page_name, locale='en') %}
+                  {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, page_name=c.page_name, locale='en', source='admin') %}
                 {% endif %}
                 <img class="language-flag" src="/images/flags/en.svg" width="20" alt="UK flag">
                 <a href="{{ url }}" class="language-picker-link">
@@ -65,11 +65,11 @@
                   {% endif %}
                 {% else %}
                   {% if action == 'subdashboardpage_show' %}
-                    {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, subdashboard_name=c.subdashboard_name, locale=current_locale) %}
+                    {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, subdashboard_name=c.subdashboard_name, locale=current_locale, source='admin') %}
                   {% elif action == 'view_portal' or action == 'datapage_show' %}
-                    {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, locale=current_locale) %}
+                    {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, locale=current_locale, source='admin') %}
                   {% elif action == 'contentpage_show' or action == 'custompage_show' %}
-                    {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, page_name=c.page_name, locale=current_locale) %}
+                    {% set url = h.url_for(controller=c.controller, action=action, org_name=organization_name, page_name=c.page_name, locale=current_locale, source='admin') %}
                   {% endif %}
 
                   <img class="language-flag" src="{{ flag_url }}" width="20" alt="{{ country_short_name | upper }} flag">
