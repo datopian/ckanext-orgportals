@@ -5,17 +5,18 @@
   var caption = window.location.href;
 
   mediaContainer.on('click', function onMediaContainerClick(event) {
-    FB.login(function(response) {
+    var target = $(event.target);
 
-      if (response.authResponse) {
-        var accessToken =   FB.getAuthResponse()['accessToken'];
-        var userID =   FB.getAuthResponse()['userID'];
+    if (target.hasClass('share-graph-fb-btn')) {
+      FB.login(function(response) {
 
-        var target = $(event.target);
-        var graphTitle = target.siblings('.graph-title').text();
-        var svg;
+        if (response.authResponse) {
+          var accessToken =   FB.getAuthResponse()['accessToken'];
+          var userID =   FB.getAuthResponse()['userID'];
 
-        if (target.hasClass('share-graph-btn')) {
+          var graphTitle = target.siblings('.graph-title').text();
+          var svg;
+
           svg = target.parent('.graph-container').find('svg')[0];
 
           convertSVGGraphToImage(svg, graphTitle, function(imageData) {
@@ -23,12 +24,12 @@
             fbUpload(accessToken, userID, imageData, caption);
 
           });
-        }
 
-      } else {
-        console.log('User cancelled login or did not fully authorize.');
-      }
-    }, {scope: 'publish_actions'});
+        } else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+      }, {scope: 'publish_actions'});
+    }
   });
 
 })($);
