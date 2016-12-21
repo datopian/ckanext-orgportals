@@ -165,7 +165,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_country_short_name':
                 helpers.orgportals_get_country_short_name,
             'orgportals_get_secondary_dashboard':
-                helpers.orgportals_get_secondary_dashboard
+                helpers.orgportals_get_secondary_dashboard,
+            'orgportals_get_facebook_app_id':
+                helpers.orgportals_get_facebook_app_id
         }
 
     # IGroupForm

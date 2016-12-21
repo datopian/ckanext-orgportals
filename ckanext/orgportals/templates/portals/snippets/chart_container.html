@@ -1,4 +1,5 @@
 {% set chart = h.orgportals_get_chart_resources(resource_view_id) %}
+{% set facebook_app_id = h.orgportals_get_facebook_app_id() %}
 
 {% if chart is not none %}
   {% if media_size == 'single' %}
@@ -11,6 +12,30 @@
     {% set graph_size = 'col-md-8' %}
     {% set graph_height = 740 %}
   {% endif %}
+  <script>
+
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : {{ facebook_app_id }},
+      cookie     : true,  // enable cookies to allow the server to access
+                            // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.8' // use graph api version 2.8
+    });
+
+  };
+
+  // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  </script>
+
   <div class="{{ graph_size }} graph-container">
     <h3 class="graph-title"><a target="_blank" href="{{ h.orgportals_get_resource_view_url(dataset=chart[1].package_id, id=chart[1].id) }}">{{ chart[1].name }}</a></h3>
     <h4 class="graph-subtitle">{{ subheader }}</h4>
@@ -21,5 +46,6 @@
                            graph_height=graph_height %}
     <p class="graph-description">{{ chart[0].description }}</p>
     <i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="Download graph"></i>
+    <i class="fa fa-download fa-lg share-graph-btn" aria-hidden="true" title="Share graph">Share</i>
   </div>
 {% endif %}

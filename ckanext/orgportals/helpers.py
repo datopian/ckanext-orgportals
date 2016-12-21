@@ -355,3 +355,8 @@ def orgportals_get_secondary_dashboard(organization_name):
         return organization['orgportals_secondary_portal']
     else:
         return 'none'
+
+def orgportals_get_facebook_app_id():
+
+
+    return config.get('ckanext.orgportals.facebook_app_id', '')
