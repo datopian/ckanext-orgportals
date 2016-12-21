@@ -170,6 +170,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_get_country_short_name,
             'orgportals_get_secondary_dashboard':
                 helpers.orgportals_get_secondary_dashboard,
+            'orgportals_get_facebook_app_id':
+                helpers.orgportals_get_facebook_app_id,
             'orgportals_get_countries':
                 helpers.orgportals_get_countries,
             'orgportals_get_organization_entity_name':

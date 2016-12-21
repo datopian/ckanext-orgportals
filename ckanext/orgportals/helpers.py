@@ -372,6 +372,11 @@ def orgportals_get_secondary_dashboard(organization_name):
     else:
         return 'none'
 
+def orgportals_get_facebook_app_id():
+
+
+    return config.get('ckanext.orgportals.facebook_app_id', '')
+
 def orgportals_get_countries():
     get_countries_path = lambda: os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                                               'public/countries.json')
