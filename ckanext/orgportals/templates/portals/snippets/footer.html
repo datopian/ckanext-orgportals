@@ -41,13 +41,7 @@
             {% endif %}
           {% endif %}
 
-          {% if c.page_name == page.name %}
-            {% set page_active = 'true' %}
-          {% else %}
-            {% set page_active = 'false' %}
-          {% endif %}
-
-          <li><a href="{{ page_link }}" data-page-active="{{ page_active }}">{{ page.page_title }}</a></li>
+          <li><a href="{{ page_link }}">{{ page.page_title }}</a></li>
         {% endfor %}
       </ul>
     </div>
