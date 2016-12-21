@@ -7091,11 +7091,26 @@ button.close {
     position: relative;
 }
 
-.download-graph-btn {
+.download-graph-btn,
+.share-graph-fb-btn,
+.share-graph-twitter-btn {
   position: absolute;
-  top: 60px;
   right: 10px;
   cursor: pointer;
+}
+
+.download-graph-btn {
+  top: 60px;
+}
+
+.share-graph-fb-btn {
+  top: 85px;
+  color: #3b5998;
+}
+
+.share-graph-twitter-btn {
+  top: 110px;
+  color: #0099CC;
 }
 
 .graph-flex {
