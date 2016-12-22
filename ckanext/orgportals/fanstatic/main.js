@@ -92,6 +92,8 @@
   var downloadAsBtn = $('#download-as-pdf');
   var mediaSection = $('[data-section="media"]');
   var downloadGraphBtns = $('.download-graph-btn');
+  var shareGraphFb = $('.share-graph-fb-btn');
+  var shareGraphTwitter = $('.share-graph-twitter-btn');
 
   function _hideElementsBeforeDownload() {
     snapshotDashboardMenu.parent().toggleClass('open');
@@ -101,6 +103,8 @@
     goDownArrows.hide();
     downloadAsBtn.hide();
     downloadGraphBtns.hide();
+    shareGraphFb.hide();
+    shareGraphTwitter.hide();
 
     mediaSection.css('margin-bottom', '70px');
   }
@@ -112,6 +116,8 @@
     goDownArrows.show();
     downloadAsBtn.show();
     downloadGraphBtns.show();
+    shareGraphFb.show();
+    shareGraphTwitter.show();
 
     mediaSection.css('margin-bottom', 'initial');
   }
