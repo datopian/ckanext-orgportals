@@ -7555,15 +7555,12 @@ footer .container {
 }
 
 .content-page-container__text {
-  margin-top: 100px;
-  margin-bottom: 50px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 30px;
 }
 
 .content-page-container__image {
     max-width: 100%;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .contact-form-container {
@@ -7687,6 +7684,8 @@ a[data-page-active="true"] {
   cursor: pointer;
   margin-left: 20px;
   margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .go-down-arrow {
