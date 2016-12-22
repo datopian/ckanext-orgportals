@@ -1801,7 +1801,7 @@ pre code {
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1320px) {
     .container {
         width: 1290px;
     }
@@ -4867,7 +4867,9 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
 
 .pagination {
     padding-left: 0;
-    margin: 20px 0;
+    margin-top: 20px;
+    margin-bottom: 80px;
+    margin-right: 20px;
     border-radius: 4px
 }
 
@@ -7372,6 +7374,10 @@ main:after {
     .btn-download {
         margin-top: 10px
     }
+
+    .list-footer-logos {
+      margin-top: 25px;
+    }
 }
 
 .btn-download img {
@@ -7497,7 +7503,9 @@ footer .container {
 }
 
 .footer-container {
-  padding: 60px 20px;
+  margin-top: 70px;
+  padding-bottom: 60px;
+  padding-left: 23px;
 }
 
 .hero-content-container__header {
@@ -7727,4 +7735,19 @@ div[data-section="media"] {
 .content-image-container {
   position: relative;
   top: 20px;
+}
+
+.email-subscription-container {
+  margin: 50px auto 0;
+  max-width: 300px;
+}
+
+.list-footer-logos,
+.list-social-buttons,
+.copyright {
+  text-align: center;
+}
+
+.list-social-buttons {
+  margin-top: 30px;
 }
