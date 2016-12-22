@@ -7223,6 +7223,7 @@ header {
     margin-top: 20px;
     margin-right: 28px;
     margin-bottom: -10px;
+    z-index: 1;
 }
 
 @media (min-width: 768px) {
