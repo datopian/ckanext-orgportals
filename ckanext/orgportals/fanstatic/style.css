@@ -6913,6 +6913,12 @@ button.close {
         margin-top: -30px;
         padding-top: 165px;
     }
+
+    .snapshot-dashboard .dropdown-menu {
+      top: auto;
+      bottom: 100%;
+      margin-bottom: 2px;
+    }
 }
 
 .hero-info {
@@ -7685,7 +7691,7 @@ a[data-page-active="true"] {
   margin-left: 20px;
   margin-bottom: 10px;
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 .go-down-arrow {
