@@ -7484,6 +7484,7 @@ footer .container {
 
 .hero-content-container {
   position: relative;
+  margin-bottom: -70px;
 }
 
 .hero-content-container__content {
