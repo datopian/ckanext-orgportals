@@ -7,10 +7,51 @@
   {% resource 'orgportals/jspdf' %}
   {% resource 'orgportals/vendor/bootstrap/dropdown.js' %}
   {% resource 'orgportals/goto-next-section.js' %}
-  {% resource 'orgportals/facebook-share.js' %}
+  {% resource 'orgportals/codebird.js' %}
+  {% resource 'orgportals/social-media-share.js' %}
 {% endblock %}
 
 {% block content %}
+
+  {% set facebook_app_id = h.orgportals_get_facebook_app_id() %}
+
+  {% if facebook_app_id %}
+    <script>
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId: {{ facebook_app_id }},
+          cookie: true, // enable cookies to allow the server to access the session
+          xfbml: true,  // parse social plugins on this page
+          version: 'v2.8' // use graph api version 2.8
+        });
+      };
+
+      // Load the SDK asynchronously
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+    </script>
+  {% endif %}
+
+  {% set twitter_keys = h.orgportals_get_twitter_consumer_keys() %}
+  {% set twitter_consumer_key = twitter_keys.twitter_consumer_key %}
+  {% set twitter_consumer_secret = twitter_keys.twitter_consumer_secret %}
+
+  {% if twitter_consumer_key and twitter_consumer_secret %}
+    <script type="text/javascript">
+
+      window.twitterConsumerKey = '{{ twitter_consumer_key }}';
+      window.twitterConsumerSecret = '{{ twitter_consumer_secret }}';
+
+    </script>
+  {% endif %}
+
   <div id="subdashboard-meta" hidden data-org-name="{{ organization.name }}" data-subdashboard-name="{{ subdashboard.name }}"></div>
 
   {% if organization.orgportals_base_color %}
@@ -89,3 +130,4 @@
     %}
   {% endif %}
 {% endblock %}
+

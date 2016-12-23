@@ -7751,3 +7751,11 @@ div[data-section="media"] {
 .list-social-buttons {
   margin-top: 30px;
 }
+
+.social-media-share-alert {
+  display: none;
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  z-index: 10;
+}

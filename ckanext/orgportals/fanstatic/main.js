@@ -55,6 +55,16 @@
   var date = new Date().toJSON().slice(0, 10);
   var subdashboardFileName = 'dashboard-[org-name]-[subdashboard-name]-[date]'.replace('[org-name]', orgName).replace('[subdashboard-name]', subdashboardName).replace('[date]', date);
 
+  var heroMap = $('.hero-map-wrap');
+  var newData = $('.new-data');
+  var allData = $('.all-data');
+  var goDownArrows = $('.go-down-arrow');
+  var downloadAsBtn = $('#download-as-pdf');
+  var mediaSection = $('[data-section="media"]');
+  var downloadGraphBtns = $('.download-graph-btn');
+  var shareGraphFb = $('.share-graph-fb-btn');
+  var shareGraphTwitter = $('.share-graph-twitter-btn');
+
   snapshotDashboardMenu.on('click', function(event) {
     var target = event.target;
     var dataAttribute = target.getAttribute('data-download-as');
@@ -84,16 +94,6 @@
       _showElementsAfterDownload();
     });
   });
-
-  var heroMap = $('.hero-map-wrap');
-  var newData = $('.new-data');
-  var allData = $('.all-data');
-  var goDownArrows = $('.go-down-arrow');
-  var downloadAsBtn = $('#download-as-pdf');
-  var mediaSection = $('[data-section="media"]');
-  var downloadGraphBtns = $('.download-graph-btn');
-  var shareGraphFb = $('.share-graph-fb-btn');
-  var shareGraphTwitter = $('.share-graph-twitter-btn');
 
   function _hideElementsBeforeDownload() {
     snapshotDashboardMenu.parent().toggleClass('open');

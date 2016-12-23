@@ -1,5 +1,9 @@
 import datetime
 import json
+import base64
+import os
+
+import twitter
 
 import ckan.plugins as p
 import ckan.lib.navl.dictization_functions as df
@@ -376,3 +380,33 @@ def orgportals_resource_show_resource_views(context, data_dict):
     data = filter(lambda i: i['view_type'] == data_dict['view_type'], data)
 
     return data
+
+@p.toolkit.side_effect_free
+def orgportals_share_graph_on_twitter(context, data_dict):
+    access_token_key = data_dict['oauth_token']
+    access_token_secret = data_dict['oauth_token_secret']
+    image = data_dict['image']
+    graph_title = data_dict['graph_title']
+    subdashboard_url = data_dict['subdashboard_url']
+
+    twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
+
+    try:
+        api = twitter.Api(consumer_key=twitter_keys['twitter_consumer_key'],
+                          consumer_secret=twitter_keys['twitter_consumer_secret'],
+                          access_token_key=access_token_key,
+                          access_token_secret=access_token_secret)
+
+        image_data = base64.b64decode(image)
+        file = os.path.dirname(os.path.realpath(__file__)) + '/graph_image.png'
+
+        with open(file, 'wb') as f:
+            f.write(image_data)
+
+        api.PostUpdate('{0} {1}'.format(graph_title, subdashboard_url), media=file)
+
+        os.remove(file)
+    except:
+        return {'share_status_success': False}
+
+    return {'share_status_success': True}

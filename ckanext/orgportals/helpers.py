@@ -393,3 +393,12 @@ def orgportals_get_countries():
     result.insert(0, {'value': 'none', 'text': 'None'})
 
     return result
+
+def orgportals_get_twitter_consumer_keys():
+    twitter_consumer_key = config.get('ckanext.orgportals.twitter_consumer_key', '')
+    twitter_consumer_secret = config.get('ckanext.orgportals.twitter_consumer_secret', '')
+
+    return {
+        'twitter_consumer_key': twitter_consumer_key,
+        'twitter_consumer_secret': twitter_consumer_secret
+    }

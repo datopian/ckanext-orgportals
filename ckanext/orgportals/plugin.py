@@ -105,6 +105,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_show_datasets': actions.orgportals_show_datasets,
             'orgportals_dataset_show_resources': actions.orgportals_dataset_show_resources,
             'orgportals_resource_show_resource_views': actions.orgportals_resource_show_resource_views,
+            'orgportals_share_graph_on_twitter': actions.orgportals_share_graph_on_twitter
         }
         return actions_dict
 
@@ -175,7 +176,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_countries':
                 helpers.orgportals_get_countries,
             'orgportals_get_organization_entity_name':
-                helpers.orgportals_get_organization_entity_name
+                helpers.orgportals_get_organization_entity_name,
+            'orgportals_get_twitter_consumer_keys':
+                helpers.orgportals_get_twitter_consumer_keys
         }
 
     # IGroupForm
