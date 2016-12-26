@@ -159,6 +159,7 @@
 
       convertSVGGraphToImage(svg, graphTitle, function(imageData) {
         imageData = imageData.substr(22);
+        imageData = encodeURIComponent(imageData);
 
         var params = {
           oauth_token: twitterUserToken,
@@ -169,7 +170,7 @@
         };
         var message, className, duration;
 
-        api.get('orgportals_share_graph_on_twitter', params)
+        api.post('orgportals_share_graph_on_twitter', params)
           .done(function(data) {
             if (data.success && data.result.share_status_success) {
               message = 'The graph is successfully shared on Twitter!';
