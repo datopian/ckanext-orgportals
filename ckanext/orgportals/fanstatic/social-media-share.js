@@ -22,7 +22,6 @@
   var twitterUserTokenSecret = localStorage.twitter_user_oauth_token_secret;
   var twitterOAuthToken = localStorage.twitter_oauth_token;
   var twitterOAuthTokenSecret = localStorage.twitter_oauth_token_secret;
-  var socialMediaShareAlert = $('.social-media-share-alert');
   var cb, urlLocationSearch;
 
   if (twitterConsumerKey && twitterConsumerSecret) {
@@ -60,10 +59,9 @@
 
     if (target.hasClass('share-graph-fb-btn')) {
       FB.login(function(response) {
-
         if (response.authResponse) {
-          var accessToken =   FB.getAuthResponse()['accessToken'];
-          var userID =   FB.getAuthResponse()['userID'];
+          var accessToken = FB.getAuthResponse()['accessToken'];
+          var userID = FB.getAuthResponse()['userID'];
 
           var graphTitle = target.siblings('.graph-title').text();
           var svg;
@@ -71,11 +69,8 @@
           svg = target.parent('.graph-container').find('svg')[0];
 
           convertSVGGraphToImage(svg, graphTitle, function(imageData) {
-
             fbUpload(accessToken, userID, imageData, caption);
-
           });
-
         } else {
           console.log('User cancelled login or did not fully authorize.');
         }
@@ -110,7 +105,7 @@
                 window.open(auth_url);
               });
             } else {
-              message = 'Error while connecting to the Twitter API.';
+              message = 'An error occured.';
               className = 'alert-danger';
               duration = 3000;
 
@@ -135,17 +130,6 @@
       }
     }
   });
-
-  function _showAlert(message, className, duration) {
-    socialMediaShareAlert.find('.alert-text').text(message);
-    socialMediaShareAlert.addClass(className);
-    socialMediaShareAlert.show();
-
-    setTimeout(function() {
-      socialMediaShareAlert.hide();
-      socialMediaShareAlert.removeClass(className);
-    }, duration);
-  }
 
   function _shareGraphOnTwitter(target) {
     var graphTitle, svg;
@@ -242,7 +226,7 @@
 
           _shareGraphOnTwitter(target);
         } else {
-          message = 'Error while connecting to the Twitter API.';
+          message = 'An error occured.';
           className = 'alert-danger';
           duration = 3000;
 
@@ -253,6 +237,19 @@
   }
 
 })($);
+
+function _showAlert(message, className, duration) {
+  var socialMediaShareAlert = $('.social-media-share-alert');
+
+  socialMediaShareAlert.find('.alert-text').text(message);
+  socialMediaShareAlert.addClass(className);
+  socialMediaShareAlert.show();
+
+  setTimeout(function() {
+    socialMediaShareAlert.hide();
+    socialMediaShareAlert.removeClass(className);
+  }, duration);
+}
 
 function convertSVGGraphToImage(svg, graphTitle, callback) {
   var width = 0;
@@ -304,20 +301,38 @@ function convertSVGGraphToImage(svg, graphTitle, callback) {
   };
 };
 
-function fbUpload(accessToken, userID, imageData, caption){
+function fbUpload(accessToken, userID, imageData, caption) {
   var dataURL = imageData;
   var blob = dataURItoBlob(dataURL);
   var formData = new FormData();
+
   formData.append('token', accessToken);
   formData.append('source', blob);
   formData.append('caption', caption);
 
   var xhr = new XMLHttpRequest();
-  xhr.open( 'POST', 'https://graph.facebook.com/'+ userID +'/photos?access_token=' + accessToken, true );
-  xhr.onload = xhr.onerror = function() {
-    console.log( xhr.responseText )
+
+  xhr.open('POST', 'https://graph.facebook.com/'+ userID +'/photos?access_token=' + accessToken, true);
+
+  xhr.onreadystatechange = function(data) {
+    if (xhr.readyState === 4) {
+      message = 'The graph is successfully shared on Facebook!';
+      className = 'alert-success';
+      duration = 3000;
+
+      _showAlert(message, className, duration);
+    }
   };
-  xhr.send( formData );
+
+  xhr.onerror = function(error) {
+    message = 'An error occured.';
+    className = 'alert-danger';
+    duration = 3000;
+
+    _showAlert(message, className, duration);
+  };
+
+  xhr.send(formData);
 }
 
 function dataURItoBlob(dataURI) {
