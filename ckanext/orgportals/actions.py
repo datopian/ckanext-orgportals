@@ -401,7 +401,8 @@ def orgportals_share_graph_on_twitter(context, data_dict):
                           access_token_secret=access_token_secret)
 
         image_data = base64.b64decode(image)
-        file = '{0}/{1}'.format(config.get('ckan.storage_path'), 'graph_image.png')
+        fallback_storage_path = os.path.dirname(os.path.realpath(__file__))
+        file = '{0}/{1}'.format(config.get('ckan.storage_path', fallback_storage_path), 'graph_image.png')
 
         with open(file, 'wb') as f:
             f.write(image_data)
