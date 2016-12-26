@@ -5,6 +5,7 @@ import os
 import logging
 
 import twitter
+from pylons import config
 
 import ckan.plugins as p
 import ckan.lib.navl.dictization_functions as df
@@ -400,14 +401,14 @@ def orgportals_share_graph_on_twitter(context, data_dict):
                           access_token_secret=access_token_secret)
 
         image_data = base64.b64decode(image)
-        file = os.path.dirname(os.path.realpath(__file__)) + '/graph_image.png'
-
-        os.chmod(file, 0777)
+        file = '{0}/{1}'.format(config.get('ckan.storage_path'), 'graph_image.png')
 
         with open(file, 'wb') as f:
             f.write(image_data)
 
         api.PostUpdate('{0} {1}'.format(graph_title, subdashboard_url), media=file)
+
+        os.remove(file)
     except Exception, e:
         log.error(e)
 
