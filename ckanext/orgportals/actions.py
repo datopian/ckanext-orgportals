@@ -383,11 +383,11 @@ def orgportals_resource_show_resource_views(context, data_dict):
 
 @p.toolkit.side_effect_free
 def orgportals_share_graph_on_twitter(context, data_dict):
-    access_token_key = data_dict['oauth_token']
-    access_token_secret = data_dict['oauth_token_secret']
-    image = data_dict['image']
-    graph_title = data_dict['graph_title']
-    subdashboard_url = data_dict['subdashboard_url']
+    # access_token_key = data_dict['oauth_token']
+    # access_token_secret = data_dict['oauth_token_secret']
+    # image = data_dict['image']
+    # graph_title = data_dict['graph_title']
+    # subdashboard_url = data_dict['subdashboard_url']
 
     # twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
 
