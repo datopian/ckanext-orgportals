@@ -402,6 +402,8 @@ def orgportals_share_graph_on_twitter(context, data_dict):
         image_data = base64.b64decode(image)
         file = os.path.dirname(os.path.realpath(__file__)) + '/graph_image.png'
 
+        os.chmod(file, 0777)
+
         with open(file, 'wb') as f:
             f.write(image_data)
 
