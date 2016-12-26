@@ -403,9 +403,9 @@ def orgportals_share_graph_on_twitter(context, data_dict):
         with open(file, 'wb') as f:
             f.write(image_data)
 
-        api.PostUpdate('{0} {1}'.format(graph_title, subdashboard_url), media=file)
+        # api.PostUpdate('{0} {1}'.format(graph_title, subdashboard_url), media=file)
 
-        os.remove(file)
+        # os.remove(file)
     except:
         return {'share_status_success': False}
 
