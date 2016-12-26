@@ -389,24 +389,24 @@ def orgportals_share_graph_on_twitter(context, data_dict):
     graph_title = data_dict['graph_title']
     subdashboard_url = data_dict['subdashboard_url']
 
-    twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
+    # twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
 
-    try:
-        api = twitter.Api(consumer_key=twitter_keys['twitter_consumer_key'],
-                          consumer_secret=twitter_keys['twitter_consumer_secret'],
-                          access_token_key=access_token_key,
-                          access_token_secret=access_token_secret)
+    # try:
+    #     api = twitter.Api(consumer_key=twitter_keys['twitter_consumer_key'],
+    #                       consumer_secret=twitter_keys['twitter_consumer_secret'],
+    #                       access_token_key=access_token_key,
+    #                       access_token_secret=access_token_secret)
 
-        image_data = base64.b64decode(image)
-        file = os.path.dirname(os.path.realpath(__file__)) + '/graph_image.png'
+    #     image_data = base64.b64decode(image)
+    #     file = os.path.dirname(os.path.realpath(__file__)) + '/graph_image.png'
 
-        with open(file, 'wb') as f:
-            f.write(image_data)
+    #     with open(file, 'wb') as f:
+    #         f.write(image_data)
 
-        # api.PostUpdate('{0} {1}'.format(graph_title, subdashboard_url), media=file)
+    #     # api.PostUpdate('{0} {1}'.format(graph_title, subdashboard_url), media=file)
 
-        # os.remove(file)
-    except:
-        return {'share_status_success': False}
+    #     # os.remove(file)
+    # except:
+    #     return {'share_status_success': False}
 
     return {'share_status_success': True}
