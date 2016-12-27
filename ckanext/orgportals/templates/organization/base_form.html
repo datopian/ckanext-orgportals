@@ -32,7 +32,7 @@
   {% endblock %}
 
   {% if page.id is undefined or (page.type != 'data') %}
-    {{ form.input('page_title', id='field-title', label=_('Page title'), placeholder=title_placeholder, value=page.page_title, error=errors.page_title, classes=['control-full', 'control-large'], is_required=true) }}
+    {{ form.input('page_title', id='field-title', label=_('Page title'), placeholder=title_placeholder, value=page.page_title, error=errors.page_title, classes=['control-full', 'control-large'], is_required=true, attrs={'required': 'true'}) }}
 
     {{ form.input('content_title', id='field-title', label=_('Content title'), value=page.content_title, error=errors.content_title, classes=['control-full']) }}
   {% endif %}
@@ -42,7 +42,7 @@
   {% endif %}
 
   {% set prefix = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='custompage_show', org_name=org_name, page_name='', source='admin') %}
-  {% set attrs = {'data-module': 'slug-preview-target'} %}
+  {% set attrs = {'data-module': 'slug-preview-target', 'required': 'true'} %}
 
   {% if page.id is undefined or page.type == 'custom' %}
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-page'), value=page.name, error=errors.name, attrs=attrs, is_required=true) }}

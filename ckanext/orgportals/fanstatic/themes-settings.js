@@ -33,7 +33,7 @@
 
         themeTitle.attr('id', 'theme_title_' + totalItems);
         themeTitle.attr('name', 'theme_title_' + totalItems);
-        themeTitle.attr('required', 'true' + totalItems);
+        themeTitle.attr('required', 'true');
 
         themeSubdashboard.attr('id', 'theme_subdashboard_' + totalItems);
         themeSubdashboard.attr('name', 'theme_subdashboard_' + totalItems);
