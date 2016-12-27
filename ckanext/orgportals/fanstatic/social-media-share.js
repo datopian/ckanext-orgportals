@@ -315,9 +315,16 @@ function fbUpload(accessToken, userID, imageData, caption) {
   xhr.open('POST', 'https://graph.facebook.com/'+ userID +'/photos?access_token=' + accessToken, true);
 
   xhr.onreadystatechange = function(data) {
-    if (xhr.readyState === 4) {
+    if (xhr.readyState==4 && xhr.status==200) {
       message = 'The graph is successfully shared on Facebook!';
       className = 'alert-success';
+      duration = 3000;
+
+      _showAlert(message, className, duration);
+    } else {
+
+      message = 'An error occured.';
+      className = 'alert-danger';
       duration = 3000;
 
       _showAlert(message, className, duration);
