@@ -145,3 +145,5 @@ More information on translating extensions can be found on the offical
 documentation on CKAN.
 
 Additional flags for countries can be taken from http://flag-icon-css.lip.is
+
+pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
