@@ -82,7 +82,7 @@ def orgportals_get_facet_items_dict(value):
 
 
 def orgportals_replace_or_add_url_param(name, value, params, controller,
-                                        action, context_name, subdashboard_name):
+                                        action, context_name, subdashboard_name, source):
     for k, v in params:
         # Reset the page to the first one
         if k == 'page':
@@ -95,16 +95,25 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
     params.append((name, value))
 
     if subdashboard_name:
-        url = lib_helpers.url_for(controller=controller,
-                                  action=action,
-                                  org_name=context_name,
-                                  subdashboard_name=subdashboard_name,
-                                  source='admin')
+        if source and source == 'admin':
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action,
+                                      org_name=context_name,
+                                      subdashboard_name=subdashboard_name,
+                                      source='admin')
+        else:
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action,
+                                      subdashboard_name=subdashboard_name)
     else:
-        url = lib_helpers.url_for(controller=controller,
-                                  action=action,
-                                  org_name=context_name,
-                                  source='admin')
+        if source and source == 'admin':
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action,
+                                      org_name=context_name,
+                                      source='admin')
+        else:
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action)
 
 
     params = [(k, v.encode('utf-8') if isinstance(v, basestring) else str(v))
@@ -113,19 +122,32 @@ def orgportals_replace_or_add_url_param(name, value, params, controller,
     return url + u'?' + urlencode(params)
 
 
-def orgportals_get_current_url(page, params, controller, action, name, subdashboard_name,
+def orgportals_get_current_url(page, params, controller, action, name, subdashboard_name, source,
                                exclude_param=''):
     if subdashboard_name:
-        url = lib_helpers.url_for(controller=controller,
-                                  action=action,
-                                  org_name=name,
-                                  subdashboard_name=subdashboard_name,
-                                  source='admin')
+
+        if source and source == 'admin':
+
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action,
+                                      org_name=name,
+                                      subdashboard_name=subdashboard_name,
+                                      source='admin')
+        else:
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action,
+                                      subdashboard_name=subdashboard_name)
     else:
-        url = lib_helpers.url_for(controller=controller,
-                                  action=action,
-                                  org_name=name,
-                                  source='admin')
+        if source and source == 'admin':
+
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action,
+                                      org_name=name,
+                                      source='admin')
+        else:
+            url = lib_helpers.url_for(controller=controller,
+                                      action=action)
+
 
     for k, v in params:
         if k == exclude_param:

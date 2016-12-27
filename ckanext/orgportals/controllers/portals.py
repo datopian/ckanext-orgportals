@@ -305,9 +305,9 @@ class OrgportalsController(PackageController):
         page = self._get_page_number(request.params)
 
         try:
-            limit = int(org['orgdashboards_datasets_per_page'])
+            limit = int(org['orgportals_datasets_per_page'])
         except KeyError, ValueError:
-            limit = int(config.get('ckanext.orgdashboards.datasets_per_page',
+            limit = int(config.get('ckanext.orgportals.datasets_per_page',
                                    '6'))
 
         # most search operations should reset the page counter:
@@ -794,12 +794,11 @@ class OrgportalsController(PackageController):
         c.query_error = False
         page = self._get_page_number(request.params)
 
-        # try:
-        #     limit = int(org['orgdashboards_datasets_per_page'])
-        # except KeyError, ValueError:
-        #     limit = int(config.get('ckanext.orgdashboards.datasets_per_page',
-        #                            '6'))
-        limit = 5
+        try:
+            limit = int(org['orgportals_datasets_per_page'])
+        except KeyError, ValueError:
+            limit = int(config.get('ckanext.orgportals.datasets_per_page',
+                                   '6'))
 
         # most search operations should reset the page counter:
         params_nopage = [(k, v) for k, v in request.params.items()

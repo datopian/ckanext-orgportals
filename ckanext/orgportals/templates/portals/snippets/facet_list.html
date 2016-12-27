@@ -19,11 +19,25 @@ name
     <select class="form-control orgportals-filters {{ organization_name|lower }}">
       {% block facet_list_items %}
         {% with items = h.get_facet_items_dict(name.value) %}
-          {% set extras={'org_name': c.org_name} %}
+
+          {% if c.source == 'admin' %}
+            {% if subdashboard_name %}
+              {% set extras={'org_name': c.org_name, 'source': 'admin', 'subdashboard_name': subdashboard_name} %}
+            {% else %}
+              {% set extras={'org_name': c.org_name, 'source': 'admin'} %}
+            {% endif %}
+          {% else %}
+            {% if subdashboard_name %}
+              {% set extras={'subdashboard_name': subdashboard_name} %}
+            {% else %}
+              {% set extras={} %}
+            {% endif %}
+          {% endif %}
+
           <option value="{{ h.remove_url_param(key=name.value, controller=c.controller, action=c.action, extras=extras) }}">{{ name.name }}</option>
           {% if items %}
             {% for item in items %}
-              {% set href = h.orgportals_replace_or_add_url_param(name=name.value, value=item.name, params=request.params.items(), controller=c.controller, action=c.action, context_name=c.org_name, subdashboard_name=subdashboard_name) %}
+              {% set href = h.orgportals_replace_or_add_url_param(name=name.value, value=item.name, params=request.params.items(), controller=c.controller, action=c.action, context_name=c.org_name, subdashboard_name=subdashboard_name, source=c.source) %}
               {% set label = label_function(item) if label_function else item.display_name %}
               {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
               {% if item.active %}
