@@ -58,7 +58,7 @@ def page_name_validator(key, data, errors, context):
 
     if result:
         errors[key].append(
-            p.toolkit._('Page name already exists in database'))
+            p.toolkit._('This page name already exists. Choose another one.'))
 
 def subdashboard_name_validator(key, data, errors, context):
     session = context['session']
@@ -74,7 +74,7 @@ def subdashboard_name_validator(key, data, errors, context):
 
     if result:
         errors[key].append(
-            p.toolkit._('Subdashboard name already exists in database.'))
+            p.toolkit._('This subdashboard name already exists. Choose another one.'))
 
 pages_schema = {
     'id': [p.toolkit.get_validator('ignore_empty'), unicode],
