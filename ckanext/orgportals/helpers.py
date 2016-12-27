@@ -28,10 +28,10 @@ def _get_action(action, context_dict, data_dict):
 
 
 def orgportals_get_newly_released_data(organization_name, subdashboard_group_name, limit=4):
-    fq = ' organization:"{}"'.format(organization_name)
-
     if subdashboard_group_name:
-        fq = '{0}+groups:{1}'.format(fq, subdashboard_group_name)
+        fq = 'organization:"{0}"+groups:"{1}"'.format(organization_name, subdashboard_group_name)
+    else:
+        fq = 'organization:{}'.format(organization_name)
 
     try:
         pkg_search_results = toolkit.get_action('package_search')(data_dict={
