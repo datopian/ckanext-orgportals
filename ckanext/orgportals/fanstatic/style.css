@@ -7339,6 +7339,7 @@ main:after {
 .resources-dropdown .data-block-header {
     margin: 15px 0px 0px 0px;
     padding: 10px 15px;
+    font-weight: bold;
 }
 
 .resources-dropdown {
@@ -7562,6 +7563,10 @@ footer .container {
 
 .subdashboards-container li a {
   display: block;
+}
+
+.content-page-container {
+  margin-bottom: -70px;
 }
 
 .content-page-container__header {
