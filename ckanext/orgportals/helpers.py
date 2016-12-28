@@ -386,17 +386,7 @@ def orgportals_get_country_short_name(current_locale):
         if current_locale == str(locale):
             return locale.english_name[:3]
 
-def orgportals_get_secondary_dashboard(organization_name):
-    organization = _get_action('organization_show', {}, {'id': organization_name})
-
-    if 'orgportals_secondary_portals' in organization:
-        return organization['orgportals_secondary_portal']
-    else:
-        return 'none'
-
 def orgportals_get_facebook_app_id():
-
-
     return config.get('ckanext.orgportals.facebook_app_id', '')
 
 def orgportals_get_countries():
