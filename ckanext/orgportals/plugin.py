@@ -165,6 +165,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_get_available_languages,
             'orgportals_get_current_organization':
                 helpers.orgportals_get_current_organization,
+            'orgportals_get_secondary_portal':
+                helpers.orgportals_get_secondary_portal,
             'orgportals_get_secondary_language':
                 helpers.orgportals_get_secondary_language,
             'orgportals_get_country_short_name':
@@ -177,6 +179,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                 helpers.orgportals_get_organization_entity_name,
             'orgportals_get_twitter_consumer_keys':
                 helpers.orgportals_get_twitter_consumer_keys,
+            'orgportals_get_portal_page_url':
+                helpers.orgportals_get_portal_page_url,
             'orgportals_get_organization_image':
                 helpers.orgportals_get_organization_image
         }
