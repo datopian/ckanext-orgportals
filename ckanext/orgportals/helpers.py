@@ -1,5 +1,7 @@
+import logging
 from datetime import datetime
 from urllib import urlencode
+from urlparse import urlsplit, urlunsplit
 import urllib
 import os
 from operator import itemgetter
@@ -14,6 +16,8 @@ from ckan.logic.validators import resource_id_exists
 from ckan import model
 from ckan.common import json
 import ckan.logic as l
+
+log = logging.getLogger(__name__)
 
 
 def _get_ctx():
@@ -373,6 +377,14 @@ def orgportals_get_current_organization(org_name):
 
     return organization
 
+def orgportals_get_secondary_portal(organization_name):
+    organization = _get_action('organization_show', {}, {'id': organization_name})
+
+    if 'orgportals_secondary_portal' in organization:
+        return organization['orgportals_secondary_portal']
+    else:
+        return 'none'
+
 def orgportals_get_secondary_language(organization_name):
     organization = _get_action('organization_show', {}, {'id': organization_name})
 
@@ -414,3 +426,23 @@ def orgportals_get_twitter_consumer_keys():
         'twitter_consumer_key': twitter_consumer_key,
         'twitter_consumer_secret': twitter_consumer_secret
     }
+
+def orgportals_get_portal_page_url(org_name, current_locale):
+
+    org = _get_action('organization_show', {}, {'id': org_name})
+
+    if 'orgportals_portal_url' in org and org['orgportals_portal_url'] != '':
+
+        new_base_url = urlsplit(org['orgportals_portal_url'])
+
+        request_url = urlsplit(toolkit.request.url)
+
+        tmp_url = list(request_url)
+        tmp_url[0] = new_base_url.scheme
+        tmp_url[1] = new_base_url.netloc
+        tmp_url[2] = '/'+ current_locale + request_url.path
+        url = urlunsplit(tmp_url)
+
+        return url
+    else:
+        return ''
