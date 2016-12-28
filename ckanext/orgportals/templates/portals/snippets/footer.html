@@ -59,26 +59,28 @@
         </li>
       </ul>
 
-      <ul class="list-inline list-social-buttons">
-        <li>
-          <a class="btn-animated" href="https://www.facebook.com/usingextractivesdata" target="_blank">
-            <img src="/images/facebook-circle-color.svg" width="50" height="50" alt="Share on Facebook" />
-          </a>
-        </li>
-        <li>
-          <a class="btn-animated" href="https://twitter.com/usedata15" target="_blank">
-            <img src="/images/twitter-circle-color.svg" width="50" height="50" alt="Tweet">
-          </a>
-        </li>
-      </ul>
+      <div class="row" style="margin-top: 30px;">
+        <ul class="list-inline list-social-buttons col-md-4">
+          <li>
+            <a class="btn-animated" href="https://www.facebook.com/usingextractivesdata" target="_blank">
+              <img src="/images/facebook-circle-color.svg" width="50" height="50" alt="Share on Facebook" />
+            </a>
+          </li>
+          <li>
+            <a class="btn-animated" href="https://twitter.com/usedata15" target="_blank">
+              <img src="/images/twitter-circle-color.svg" width="50" height="50" alt="Tweet">
+            </a>
+          </li>
+        </ul>
 
-      <div class="input-group email-subscription-container">
-        <input type="text" class="form-control" placeholder="example@mail.com">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button">Subscribe</button>
-        </span>
+        <div class="input-group email-subscription-container col-md-4">
+          <input type="text" class="form-control" placeholder="example@mail.com">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Subscribe</button>
+          </span>
+        </div>
+        <div class="copyright col-md-4">© {{ h.orgportals_get_copyright_text(c.org_name) }}</div>
       </div>
     </div>
   </div>
-  <div class="copyright">© {{ h.orgportals_get_copyright_text(c.org_name) }}</div>
 </footer>

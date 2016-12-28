@@ -7381,6 +7381,10 @@ main:after {
     }
 }
 
+.list-footer-logos {
+  margin-top: 30px;
+}
+
 .btn-download img {
     width: 40px;
     height: 40px
@@ -7405,9 +7409,17 @@ footer:before {
     background-color: #fff
 }
 
+.copyright {
+    margin-top: 16px;
+}
+
 @media (max-width: 991px) {
     footer {
         text-align: center
+    }
+
+    .copyright {
+      margin-top: 85px;
     }
 }
 
@@ -7431,10 +7443,6 @@ footer .container {
 
 .list-footer-nav li {
     margin-bottom: 15px
-}
-
-.copyright {
-    margin-top: 30px
 }
 
 .noclick {
@@ -7507,7 +7515,7 @@ footer .container {
 .footer-container {
   margin-top: 70px;
   padding-bottom: 60px;
-  padding-left: 23px;
+  padding-left: 56px;
 }
 
 .hero-content-container__header {
@@ -7744,18 +7752,14 @@ div[data-section="media"] {
 }
 
 .email-subscription-container {
-  margin: 50px auto 0;
-  max-width: 300px;
+  margin-top: 8px;
+  float: left !important;
 }
 
 .list-footer-logos,
 .list-social-buttons,
 .copyright {
   text-align: center;
-}
-
-.list-social-buttons {
-  margin-top: 30px;
 }
 
 .social-media-share-alert {
