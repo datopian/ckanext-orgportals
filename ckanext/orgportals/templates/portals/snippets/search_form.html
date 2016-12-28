@@ -7,9 +7,17 @@
 {% set form_id = form_id if form_id else false %}
 
 {% if subdashboard %}
-  {% set exit_search_href = h.url_for(controller=c.controller, action=c.action, org_name=c.org_name, subdashboard_name=subdashboard.name) %}
+  {% if c.source == 'admin' %}
+    {% set exit_search_href = h.url_for(controller=c.controller, action=c.action, org_name=c.org_name, subdashboard_name=subdashboard.name, source='admin') %}
+  {% else %}
+    {% set exit_search_href = h.url_for(controller=c.controller, action=c.action, subdashboard_name=subdashboard.name) %}
+  {% endif %}
 {% else %}
-  {% set exit_search_href = h.url_for(controller=c.controller, action=c.action, org_name=c.org_name) %}
+  {% if c.source == 'admin' %}
+    {% set exit_search_href = h.url_for(controller=c.controller, action=c.action, org_name=c.org_name, source='admin') %}
+  {% else %}
+    {% set exit_search_href = h.url_for(controller=c.controller, action=c.action) %}
+  {% endif %}
 {% endif %}
 <div class="data-block-header" style="background: {{ secondary_color }}">
   <div class="row">
@@ -24,7 +32,7 @@
                  class="form-control input-search-data" placeholder="{{ placeholder }}"
                  style="border-color: {{ base_color }} ">
             {% if h.orgportals_show_exit_button(request.params) %}
-              <a class="btn btn-default exit-search-btn" href="{{ exit_search_href }}#search-data" role="button">Exit search</a>
+              <a class="btn btn-default exit-search-btn" href="{{ exit_search_href }}#search-data" title="Exit search" role="button"><i class="fa fa-times fa-lg" aria-hidden="true"></i></a>
             {% endif %}
           </div>
       </form>
