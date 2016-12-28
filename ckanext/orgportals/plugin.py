@@ -176,7 +176,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_organization_entity_name':
                 helpers.orgportals_get_organization_entity_name,
             'orgportals_get_twitter_consumer_keys':
-                helpers.orgportals_get_twitter_consumer_keys
+                helpers.orgportals_get_twitter_consumer_keys,
+            'orgportals_get_organization_image':
+                helpers.orgportals_get_organization_image
         }
 
     # IGroupForm
