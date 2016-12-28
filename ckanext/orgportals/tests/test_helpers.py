@@ -10,9 +10,10 @@ from ckan.plugins import toolkit
 from pylons import config
 
 from ckanext.orgportals.tests.helpers import (id_generator,
-                                                 create_mock_data,
-                                                 upload_json_resource,
-                                                 mock_map_properties)
+                                              create_mock_data,
+                                              upload_json_resource,
+                                              mock_map_properties,
+                                              create_subdashboard)
 from ckanext.orgportals import helpers
 
 
@@ -42,20 +43,7 @@ class TestHelpers():
             resource_name=resource_name,
             resource_view_title=resource_view_title)
 
-        data_dict = {
-            'name': self.mock_data['group_name'],
-            'org_name': self.mock_data['organization_name'],
-            'group': self.mock_data['group_name'],
-            'is_active': True,
-            'description': 'some description',
-            'data_section_enabled': True,
-            'content_section_enabled': True
-        }
-
-        self.subdashboard = toolkit.\
-            get_action('orgportals_subdashboards_update')(
-                self.mock_data['context'],
-                data_dict)
+        self.subdashboard = create_subdashboard(self.mock_data)
 
     @classmethod
     def teardown_class(self):
@@ -104,41 +92,78 @@ class TestHelpers():
 
         assert formatted_date == today.strftime("%d %B %Y")
 
-    # def test_replace_or_add_url_param(self):
-    #     organization_name = self.mock_data['organization_name']
-    #     author = 'Aleksandar Jovanov'
-    #     controller =\
-    #         'ckanext.orgportals.controllers.dashboard:DashboardsController'
-    #     action = 'organization_dashboard'
-    #     name = 'tags'
-    #     value = 'nature'
+    def test_replace_or_add_url_param(self):
+        organization_name = self.mock_data['organization_name']
+        subdashboard_name = self.subdashboard['name']
+        author = 'John Doe'
+        controller =\
+            'ckanext.orgportals.controllers.portals:OrgportalsController'
+        action = 'show_portal_datapage'
+        name = 'tags'
+        value = 'nature'
 
-    #     url = helpers.orgportals_replace_or_add_url_param(
-    #         name=name,
-    #         value=value,
-    #         params=[],
-    #         controller=controller,
-    #         action=action,
-    #         context_name=organization_name)
+        url = helpers.orgportals_replace_or_add_url_param(
+            name=name,
+            value=value,
+            params=[],
+            controller=controller,
+            action=action,
+            context_name=organization_name,
+            subdashboard_name=None,
+            source=None)
+        assert url == '/data?{0}={1}'.format(name, value)
 
-    #     assert url == '/organization/{0}/dashboard?{1}={2}'.format(
-    #         organization_name, name, value)
+        url = helpers.orgportals_replace_or_add_url_param(
+            name=name,
+            value=value,
+            params=[('page', '2'), ('author', author)],
+            controller=controller,
+            action=action,
+            context_name=organization_name,
+            subdashboard_name=None,
+            source=None)
+        new_url = '/data?page=1&author={0}&{1}={2}'\
+            .format('+'.join(author.split(' ')), name, value)
+        assert url == new_url
 
-    #     url = helpers.orgportals_replace_or_add_url_param(
-    #         name=name,
-    #         value=value,
-    #         params=[('page', '2'), ('author', author)],
-    #         controller=controller,
-    #         action=action,
-    #         context_name=organization_name)
+        action = 'show_portal_subdashboardpage'
+        url = helpers.orgportals_replace_or_add_url_param(
+            name=name,
+            value=value,
+            params=[],
+            controller=controller,
+            action=action,
+            context_name=organization_name,
+            subdashboard_name=subdashboard_name,
+            source=None)
+        assert url == '/subdashboard/{0}?{1}={2}'.format(
+            subdashboard_name, name, value)
 
-    #     new_url = '/organization/{0}/dashboard?page=1&author={1}&{2}={3}'\
-    #         .format(organization_name,
-    #                 '+'.join(author.split(' ')),
-    #                 name,
-    #                 value)
+        action = 'datapage_show'
+        url = helpers.orgportals_replace_or_add_url_param(
+            name=name,
+            value=value,
+            params=[],
+            controller=controller,
+            action=action,
+            context_name=organization_name,
+            subdashboard_name=None,
+            source='admin')
+        assert url == '/organization/{0}/portal/data?{1}={2}'.format(
+            organization_name, name, value)
 
-    #     assert url == new_url
+        action = 'subdashboardpage_show'
+        url = helpers.orgportals_replace_or_add_url_param(
+            name=name,
+            value=value,
+            params=[],
+            controller=controller,
+            action=action,
+            context_name=organization_name,
+            subdashboard_name=subdashboard_name,
+            source='admin')
+        assert url == '/organization/{0}/portal/subdashboard/{1}?{2}={3}'.\
+            format(organization_name, subdashboard_name, name, value)
 
     def test_get_resourceview_resource_package(self):
         chart_resources = helpers.orgportals_get_resourceview_resource_package(
@@ -152,227 +177,219 @@ class TestHelpers():
         assert resource['name'] == self.mock_data['resource_name']
         assert package['name'] == self.mock_data['dataset_name']
 
-    def test_get_organization_list(self):
-        organization_list = helpers.orgportals_get_organization_list()
+    def test_get_all_organizations(self):
 
-        assert len(organization_list) > 0
+        # Create another organization.
+        factories.Organization(name='another_organization')
 
-        for item in organization_list:
-            assert 'is_organization' in item
+        organizations = helpers.orgportals_get_all_organizations(
+            self.mock_data['organization_name'])
 
-    # def test_get_all_organizations(self):
+        assert len(organizations) > 0
 
-    #     # Create another organization.
-    #     factories.Organization(name='another_organization')
+        assert organizations[0]['text'] == 'None'
+        assert organizations[0]['value'] == 'none'
 
-    #     organizations = helpers.orgportals_get_all_organizations(
-    #         self.mock_data['organization_name'])
+        assert organizations[1]['text'] == 'Test Organization'
+        assert organizations[1]['value'] == 'another_organization'
 
-    #     assert len(organizations) > 0
+    def test_get_available_languages(self):
+        languages = helpers.orgportals_get_available_languages()
 
-    #     assert organizations[0]['text'] == 'None'
-    #     assert organizations[0]['value'] == 'none'
+        assert len(languages) > 0
 
-    #     assert organizations[1]['text'] == 'Test Organization'
-    #     assert organizations[1]['value'] == 'another_organization'
+        assert languages[0]['text'] == 'None'
+        assert languages[0]['value'] == 'none'
 
-    # def test_get_available_languages(self):
-    #     languages = helpers.orgportals_get_available_languages()
+        assert {'text': 'English', 'value': 'en'} in languages
 
-    #     assert len(languages) > 0
+    def test_get_maps(self):
+        resource_name = id_generator()
+        resource = upload_json_resource(
+            self.mock_data['dataset_name'],
+            resource_name)
+        maps = helpers.orgportals_get_org_map_views(
+            self.mock_data['organization_name'])
+        resource_found = False
 
-    #     assert languages[0]['text'] == 'None'
-    #     assert languages[0]['value'] == 'none'
+        assert len(maps) > 0
 
-    #     assert {'text': 'English', 'value': 'en'} in languages
+        for item in maps:
+            if item['text'] == resource_name and\
+               item['value'] == resource['id']:
+                resource_found = True
 
-    # # def test_get_maps(self):
-    # #     resource_name = id_generator()
-    # #     resource = upload_json_resource(
-    # #         self.mock_data['dataset_name'],
-    # #         resource_name)
-    # #     maps = helpers.org_views.get_maps(self.mock_data['organization_name'])
-    # #     resource_found = False
+        assert resource_found is True
 
-    # #     assert len(maps) > 0
+    def test_get_resource_url(self):
+        url = helpers.orgportals_get_resource_url(
+            self.mock_data['resource_id'])
 
-    # #     for item in maps:
-    # #         if item['text'] == resource_name and\
-    # #            item['value'] == resource['id']:
-    # #             resource_found = True
+        assert url == self.mock_data['resource']['url']
 
-    # #     assert resource_found is True
+    def test_get_geojson_properties(self):
+        resource_name = id_generator()
+        resource = upload_json_resource(
+            self.mock_data['dataset_name'],
+            resource_name)
+        map_properties = helpers.orgportals_get_geojson_properties(
+            resource['id'])
 
-    # def test_get_resource_url(self):
-    #     url = helpers.orgportals_get_resource_url(
-    #         self.mock_data['resource_id'])
+        assert len(map_properties) == 4
 
-    #     assert url == self.mock_data['resource']['url']
-
-    # # def test_get_geojson_properties(self):
-    # #     resource_name = id_generator()
-    # #     resource = upload_json_resource(
-    # #         self.mock_data['dataset_name'],
-    # #         resource_name)
-    # #     map_properties = helpers.orgportals_get_geojson_properties(
-    # #         resource['id'])
-
-    # #     assert len(map_properties) == 4
-
-    # #     for i, item in enumerate(mock_map_properties.iteritems()):
-    # #         assert map_properties[i]['value'] == item[0]
-    # #         assert map_properties[i]['text'] == item[0]
-
-    # # def test_resource_show_map_properties(self):
-    # #     resource_name = id_generator()
-    # #     resource = upload_json_resource(
-    # #         self.mock_data['dataset_name'],
-    # #         resource_name)
-    # #     map_properties = helpers.orgportals_resource_show_map_properties(
-    # #         resource['id'])
-
-    # #     assert len(map_properties) == 4
-
-    # #     for i, item in enumerate(mock_map_properties.iteritems()):
-    # #         assert map_properties[i]['value'] == item[0]
-    # #         assert map_properties[i]['text'] == item[0]
-
-    # def test_convert_to_list(self):
-    #     resource_id = self.mock_data['resource_id']
-    #     resources = helpers.orgportals_convert_to_list(resource_id)
-
-    #     assert len(resources) == 1
-
-    #     assert resources[0] == resource_id
-
-    #     resource_ids = '{' + self.mock_data['resource_id'] + ',' +\
-    #         self.mock_data['resource_id'] + '}'
-    #     resources = helpers.orgportals_convert_to_list(resource_ids)
-
-    #     assert len(resources) == 2
-
-    #     assert resources[0] == resource_id
-    #     assert resources[1] == resource_id
-
-    # def test_get_resource_names_from_ids(self):
-    #     resource_ids = [self.mock_data['resource_id']]
-    #     resource_names = helpers.orgportals_get_resource_names_from_ids(
-    #         resource_ids)
-
-    #     assert len(resource_names) == 1
-
-    #     assert resource_names[0] == self.mock_data['resource_name']
-
-    # def test_smart_truncate(self):
-    #     text = 'this is some text'
-
-    #     truncated_text = helpers.orgportals_smart_truncate(text)
-
-    #     assert truncated_text == 'this is some text'
-
-    #     # Create a 850 characters long string
-    #     text = 'this is some text' * 50
-
-    #     truncated_text = helpers.orgportals_smart_truncate(text)
-
-    #     text = text[:794]
-
-    #     assert truncated_text == text
-
-    #     text = 'this is some text'
-
-    #     truncated_text = helpers.orgportals_smart_truncate(text, length=12)
-
-    #     assert truncated_text == 'this is'
-
-    # def test_get_secondary_language(self):
-    #     secondary_language = helpers.orgportals_get_secondary_language(
-    #         self.mock_data['organization_name'])
-
-    #     assert secondary_language == 'none'
-
-    #     data_dict = {
-    #         'id': self.mock_data['organization_id'],
-    #         'orgportals_secondary_language': 'fr'
-    #     }
-
-    #     toolkit.get_action('organization_patch')(
-    #         self.mock_data['context'],
-    #         data_dict)
-
-    #     secondary_language = helpers.orgportals_get_secondary_language(
-    #         self.mock_data['organization_name'])
-
-    #     assert secondary_language == 'fr'
-
-    # def test_get_secondary_dashboard(self):
-    #     secondary_dashboard = helpers.orgportals_get_secondary_dashboard(
-    #         self.mock_data['organization_name'])
-
-    #     assert secondary_dashboard == 'none'
-
-    #     data_dict = {
-    #         'id': self.mock_data['organization_id'],
-    #         'orgportals_secondary_dashboard': 'some_dashboard'
-    #     }
-
-    #     toolkit.get_action('organization_patch')(
-    #         self.mock_data['context'],
-    #         data_dict)
-
-    #     secondary_dashboard = helpers.orgportals_get_secondary_dashboard(
-    #         self.mock_data['organization_name'])
-
-    #     assert secondary_dashboard == 'some_dashboard'
-
-    # def test_get_current_url(self):
-    #     controller =\
-    #         'ckanext.orgportals.controllers.dashboard:DashboardsController'
-    #     action = 'preview_dashboard'
-    #     name = self.mock_data['organization_name']
-    #     page = 5
-
-    #     current_url = helpers.orgportals_get_current_url(
-    #         page=page,
-    #         params=[],
-    #         controller=controller,
-    #         action=action,
-    #         name=name,
-    #         exclude_param='page')
-
-    #     assert current_url == '/organization/{0}/dashboard?page={1}'.format(
-    #         self.mock_data['organization_name'],
-    #         page)
-
-    # def test_get_country_short_name(self):
-    #     country_short_name = helpers.orgportals_get_country_short_name('en')
-
-    #     assert country_short_name == 'Eng'
-
-    #     country_short_name = helpers.orgportals_get_country_short_name('fr')
-
-    #     assert country_short_name == 'Fre'
-
-    # def orgportals_get_organization_entity_name(self):
-    #     entity_name = helpers.orgportals_get_organization_entity_name()
-
-    #     assert entity_name == 'organization'
-
-    #     config.set('ckanext.orgportals.organization_entity_name',
-    #                'some_entity')
-
-    #     entity_name = helpers.orgportals_get_organization_entity_name()
-
-    #     assert entity_name == 'some_entity'
-
-    # def orgportals_get_group_entity_name(self):
-    #     entity_name = helpers.orgportals_get_group_entity_name()
-
-    #     assert entity_name == 'group'
-
-    #     config.set('ckanext.orgportals.group_entity_name',
-    #                'some_entity')
-
-    #     entity_name = helpers.orgportals_get_group_entity_name()
-
-    #     assert entity_name == 'some_entity'
+        for i, item in enumerate(mock_map_properties.iteritems()):
+            assert map_properties[i]['value'] == item[0]
+            assert map_properties[i]['text'] == item[0]
+
+    def test_resource_show_map_properties(self):
+        resource_name = id_generator()
+        resource = upload_json_resource(
+            self.mock_data['dataset_name'],
+            resource_name)
+        map_properties = helpers.orgportals_resource_show_map_properties(
+            resource['id'])
+
+        assert len(map_properties) == 4
+
+        for i, item in enumerate(mock_map_properties.iteritems()):
+            assert map_properties[i]['value'] == item[0]
+            assert map_properties[i]['text'] == item[0]
+
+    def test_convert_to_list(self):
+        resource_id = self.mock_data['resource_id']
+        resources = helpers.orgportals_convert_to_list(resource_id)
+
+        assert len(resources) == 1
+
+        assert resources[0] == resource_id
+
+        resource_ids = self.mock_data['resource_id'] + ';' +\
+            self.mock_data['resource_id']
+        resources = helpers.orgportals_convert_to_list(resource_ids)
+
+        assert len(resources) == 2
+
+        assert resources[0] == resource_id
+        assert resources[1] == resource_id
+
+    def test_get_resource_names_from_ids(self):
+        resource_ids = [self.mock_data['resource_id']]
+        resource_names = helpers.orgportals_get_resource_names_from_ids(
+            resource_ids)
+
+        assert len(resource_names) == 1
+
+        assert resource_names[0] == self.mock_data['resource_name']
+
+    def test_get_secondary_language(self):
+        secondary_language = helpers.orgportals_get_secondary_language(
+            self.mock_data['organization_name'])
+
+        assert secondary_language == 'none'
+
+        data_dict = {
+            'id': self.mock_data['organization_id'],
+            'orgportals_secondary_language': 'fr'
+        }
+
+        toolkit.get_action('organization_patch')(
+            self.mock_data['context'],
+            data_dict)
+
+        secondary_language = helpers.orgportals_get_secondary_language(
+            self.mock_data['organization_name'])
+
+        assert secondary_language == 'fr'
+
+    def test_get_current_url(self):
+        controller =\
+            'ckanext.orgportals.controllers.portals:OrgportalsController'
+        name = self.mock_data['organization_name']
+        page = 5
+        subdashboard_name = self.subdashboard['name']
+        organization_name = self.mock_data['organization_name']
+
+        action = 'show_portal_datapage'
+        current_url = helpers.orgportals_get_current_url(
+            page=page,
+            params=[],
+            controller=controller,
+            action=action,
+            name=name,
+            subdashboard_name=None,
+            source=None,
+            exclude_param='page')
+        assert current_url == '/data?page={0}'.format(page)
+
+        action = 'show_portal_subdashboardpage'
+        current_url = helpers.orgportals_get_current_url(
+            page=page,
+            params=[],
+            controller=controller,
+            action=action,
+            name=name,
+            subdashboard_name=subdashboard_name,
+            source=None,
+            exclude_param='page')
+        assert current_url == '/subdashboard/{0}?page={1}'.format(
+            subdashboard_name, page)
+
+        action = 'datapage_show'
+        current_url = helpers.orgportals_get_current_url(
+            page=page,
+            params=[],
+            controller=controller,
+            action=action,
+            name=name,
+            subdashboard_name=None,
+            source='admin',
+            exclude_param='page')
+        assert current_url == '/organization/{0}/portal/data?page={1}'.format(
+            organization_name, page)
+
+        action = 'subdashboardpage_show'
+        current_url = helpers.orgportals_get_current_url(
+            page=page,
+            params=[],
+            controller=controller,
+            action=action,
+            name=name,
+            subdashboard_name=subdashboard_name,
+            source='admin',
+            exclude_param='page')
+        assert current_url ==\
+            '/organization/{0}/portal/subdashboard/{1}?page={2}'.format(
+                organization_name, subdashboard_name, page)
+
+    def test_get_country_short_name(self):
+        country_short_name = helpers.orgportals_get_country_short_name('en')
+
+        assert country_short_name == 'Eng'
+
+        country_short_name = helpers.orgportals_get_country_short_name('fr')
+
+        assert country_short_name == 'Fre'
+
+    def orgportals_get_organization_entity_name(self):
+        entity_name = helpers.orgportals_get_organization_entity_name()
+
+        assert entity_name == 'organization'
+
+        config.set('ckanext.orgportals.organization_entity_name',
+                   'country')
+
+        entity_name = helpers.orgportals_get_organization_entity_name()
+
+        assert entity_name == 'country'
+
+    def orgportals_get_group_entity_name(self):
+        entity_name = helpers.orgportals_get_group_entity_name()
+
+        assert entity_name == 'group'
+
+        config.set('ckanext.orgportals.group_entity_name',
+                   'theme')
+
+        entity_name = helpers.orgportals_get_group_entity_name()
+
+        assert entity_name == 'theme'
