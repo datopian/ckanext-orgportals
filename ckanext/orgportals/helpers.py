@@ -427,6 +427,7 @@ def orgportals_get_twitter_consumer_keys():
         'twitter_consumer_secret': twitter_consumer_secret
     }
 
+
 def orgportals_get_portal_page_url(org_name, current_locale):
 
     org = _get_action('organization_show', {}, {'id': org_name})
@@ -446,3 +447,9 @@ def orgportals_get_portal_page_url(org_name, current_locale):
         return url
     else:
         return ''
+
+
+def orgportals_get_organization_image(org_name):
+    org = toolkit.get_action('organization_show')({}, {'id': org_name})
+
+    return org['image_display_url']

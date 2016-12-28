@@ -180,7 +180,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_get_twitter_consumer_keys':
                 helpers.orgportals_get_twitter_consumer_keys,
             'orgportals_get_portal_page_url':
-                helpers.orgportals_get_portal_page_url
+                helpers.orgportals_get_portal_page_url,
+            'orgportals_get_organization_image':
+                helpers.orgportals_get_organization_image
         }
 
     # IGroupForm

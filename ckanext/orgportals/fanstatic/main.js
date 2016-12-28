@@ -146,6 +146,8 @@
     }
   });
 
+  _focusSearchData();
+
 })();
 
 function toggleResources(resourceId) {
@@ -200,4 +202,33 @@ function convertSVGGraphToImage(svg, graphTitle, callback) {
 
     callback(canvas.toDataURL('image/png'));
   };
+}
+
+function _focusSearchData() {
+  var current_url = location.toString();
+  var parameters = {};
+  var parameter;
+  var query;
+
+  try {
+    query = current_url.match(/\?(.+)$/)[1].split('&');
+    parameters = {};
+    parameter;
+
+    for (var i = 0; i < query.length; i++) {
+      parameter = query[i].split('=');
+
+      if (parameter.length === 1) {
+          parameter[1] = '';
+      }
+
+      parameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
+    }
+
+    if (parameters.q && parameters.q.indexOf('#search-data') === -1) {
+      window.location.href = window.location.href + '#search-data';
+    }
+  } catch(error) {
+
+  }
 }
