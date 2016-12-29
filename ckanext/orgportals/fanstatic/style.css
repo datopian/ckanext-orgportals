@@ -7773,3 +7773,8 @@ div[data-section="media"] {
   right: 25px;
   z-index: 10;
 }
+
+.leaflet-touch .leaflet-bar a {
+    width: initial !important;
+    height: initial !important;
+}
