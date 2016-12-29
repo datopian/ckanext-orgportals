@@ -7297,6 +7297,10 @@ main:after {
     margin-top: 0
 }
 
+.new-data {
+    height: 70px;
+}
+
 .new-data .data-block-heading {
     margin-left: 15px;
     margin-right: 15px
