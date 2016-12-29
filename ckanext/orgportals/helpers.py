@@ -319,7 +319,6 @@ def orgportals_get_resourceview_resource_package(resource_view_id):
     return [resource_view, resource, package]
 
 def orgportals_show_exit_button(params):
-    print params
     for item in params.items():
         if item[0] == 'q':
             return True

@@ -1,6 +1,7 @@
 import datetime
 
 from nose.tools import assert_raises
+from webob.multidict import UnicodeMultiDict
 
 from ckan.tests.helpers import reset_db
 from ckan import plugins
@@ -246,6 +247,7 @@ class TestHelpers():
         resource = upload_json_resource(
             self.mock_data['dataset_name'],
             resource_name)
+
         map_properties = helpers.orgportals_resource_show_map_properties(
             resource['id'])
 
@@ -370,26 +372,121 @@ class TestHelpers():
 
         assert country_short_name == 'Fre'
 
-    def orgportals_get_organization_entity_name(self):
+    def test_orgportals_get_organization_entity_name(self):
         entity_name = helpers.orgportals_get_organization_entity_name()
 
         assert entity_name == 'organization'
 
-        config.set('ckanext.orgportals.organization_entity_name',
-                   'country')
+        config['ckanext.orgportals.organization_entity_name'] = 'country'
 
         entity_name = helpers.orgportals_get_organization_entity_name()
 
         assert entity_name == 'country'
 
-    def orgportals_get_group_entity_name(self):
+    def test_orgportals_get_group_entity_name(self):
         entity_name = helpers.orgportals_get_group_entity_name()
 
         assert entity_name == 'group'
 
-        config.set('ckanext.orgportals.group_entity_name',
-                   'topic')
+        config['ckanext.orgportals.group_entity_name'] = 'topic'
 
         entity_name = helpers.orgportals_get_group_entity_name()
 
         assert entity_name == 'topic'
+
+    def test_orgportals_get_resource_view_url(self):
+        id = self.mock_data['resource_id']
+        dataset = self.mock_data['dataset_name']
+
+        url = helpers.orgportals_get_resource_view_url(id, dataset)
+
+        assert url == '/dataset/{0}/resource/{1}'.format(dataset, id)
+
+    def test_orgportals_get_copyright_text(self):
+        org_name = self.mock_data['organization_name']
+        copyright = helpers.orgportals_get_copyright_text(org_name)
+
+        assert copyright == '2016'
+
+    def test_orgportals_get_pages(self):
+        org_name = self.mock_data['organization_name']
+        pages = helpers.orgportals_get_pages(org_name)
+
+        assert len(pages) > 0
+
+    def test_orgportals_show_exit_button(self):
+        params = UnicodeMultiDict({'author': 'John Doe'})
+        show_button = helpers.orgportals_show_exit_button(params)
+        assert show_button is False
+
+        params = UnicodeMultiDict({'q': 'test'})
+        show_button = helpers.orgportals_show_exit_button(params)
+        assert show_button is True
+
+    def test_orgportals_is_subdashboard_active(self):
+        org_name = self.mock_data['organization_name']
+        subdashboard_name = self.mock_data['group_name']
+
+        is_active = helpers.orgportals_is_subdashboard_active(
+            org_name, subdashboard_name)
+
+        assert is_active is True
+
+    def test_orgportals_get_current_organization(self):
+        org_name = self.mock_data['organization_name']
+        org = helpers.orgportals_get_current_organization(org_name)
+
+        assert org['name'] == org_name
+
+    def test_get_secondary_portal(self):
+        secondary_portal = helpers.orgportals_get_secondary_portal(
+            self.mock_data['organization_name'])
+
+        assert secondary_portal == 'none'
+
+        data_dict = {
+            'id': self.mock_data['organization_id'],
+            'orgportals_secondary_portal': 'some_portal'
+        }
+
+        toolkit.get_action('organization_patch')(
+            self.mock_data['context'],
+            data_dict)
+
+        secondary_portal = helpers.orgportals_get_secondary_portal(
+            self.mock_data['organization_name'])
+
+        assert secondary_portal == 'some_portal'
+
+    def test_orgportals_get_facebook_app_id(self):
+        config['ckanext.orgportals.facebook_app_id'] = 123456
+        id = helpers.orgportals_get_facebook_app_id()
+
+        assert id == 123456
+
+    def test_orgportals_get_countries(self):
+        countries = helpers.orgportals_get_countries()
+
+        assert len(countries) > 0
+        assert {'text': u'Macedonia', 'value': u'Macedonia'} in countries
+
+    def test_orgportals_get_twitter_consumer_keys(self):
+        config['ckanext.orgportals.twitter_consumer_key'] = 123456
+        config['ckanext.orgportals.twitter_consumer_secret'] = 123456
+
+        keys = helpers.orgportals_get_twitter_consumer_keys()
+        twitter_keys = {
+            'twitter_consumer_key': 123456,
+            'twitter_consumer_secret': 123456
+        }
+
+        assert keys['twitter_consumer_key'] ==\
+            twitter_keys['twitter_consumer_key']
+        assert keys['twitter_consumer_secret'] ==\
+            twitter_keys['twitter_consumer_secret']
+
+    def test_orgportals_get_organization_image(self):
+        org_name = self.mock_data['organization_name']
+        image = helpers.orgportals_get_organization_image(org_name)
+
+        assert image == self.mock_data['organization_image']

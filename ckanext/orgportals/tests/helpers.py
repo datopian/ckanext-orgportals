@@ -23,9 +23,12 @@ def create_mock_data(organization_name, dataset_name, group_name,
                      resource_name, resource_view_title, **kwargs):
     mock_data = {}
 
-    mock_data['organization'] = factories.Organization(name=organization_name)
+    mock_data['organization'] = factories.Organization(
+        name=organization_name, orgportals_copyright='2016')
     mock_data['organization_name'] = organization_name
     mock_data['organization_id'] = mock_data['organization']['id']
+    org_image = mock_data['organization']['image_display_url']
+    mock_data['organization_image'] = org_image
 
     mock_data['group'] = factories.Group(name=group_name)
     mock_data['group_name'] = mock_data['group']['name']
