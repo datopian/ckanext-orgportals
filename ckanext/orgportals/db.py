@@ -64,7 +64,7 @@ def _create_pages_table():
         sa.Column('map', sa.types.UnicodeText, default=u''),
         sa.Column('map_main_property', sa.types.UnicodeText, default=u''),
         sa.Column('map_enabled', sa.types.Boolean, default=False),
-        sa.Column('themes', sa.types.UnicodeText, default=u''),
+        sa.Column('topics', sa.types.UnicodeText, default=u''),
         sa.Column('datasets_per_page', sa.types.INT, default=5),
         sa.Column('survey_enabled', sa.types.Boolean, default=False),
         sa.Column('survey_text', sa.types.UnicodeText, default=u''),

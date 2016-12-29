@@ -47,10 +47,10 @@
     %}
   {% endif %}
 
-  <div data-section="themes">
+  <div data-section="topics">
     {% snippet 'portals/snippets/goto_next_section.html' %}
     <div class="subdashboards-container container">
-      {% for item in data_page.themes %}
+      {% for item in data_page.topics %}
         {% snippet 'portals/snippets/subdashboard_item.html', item=item, org_name=organization.name %}
       {% endfor %}
     </div>

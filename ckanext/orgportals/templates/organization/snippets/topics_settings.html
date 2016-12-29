@@ -1,0 +1,115 @@
+{% set uploads_enabled = h.uploads_enabled() %}
+
+<fieldset class="topics-properties" data-uploads-enabled="{{ uploads_enabled }}">
+  <legend>{{ _('Topics settings') }}</legend>
+
+  <div class="topics-settings-item-fields">
+    <div class="topics-settings-item-fields__item">
+      {{ form.input('title', id='topic_title', label=_('Title'), value='', classes=['control-full']) }}
+      {{ form.select('subdashboard', 'topic_subdashboard', _('Subdashboard'), options=data.subdashboards, selected='$none$') }}
+
+      {% if uploads_enabled %}
+        <div
+          class="image-upload"
+          data-module="custom-image-upload"
+          data-module-is_url="false"
+          data-module-is_upload="false"
+          data-module-field_url="topic_image_url_1"
+          data-module-field_upload="topic_image_upload_1"
+          data-module-field_clear="topic_clear_upload_1"
+          data-module-upload_label="Image">
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-url">Image URL</label>
+              <div class="controls ">
+                <input id="field-image-url" type="text" name="topic_image_url_1" value="" placeholder="http://example.com/my-image.jpg">
+              </div>
+            </div>
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-upload">Image</label>
+              <div class="controls ">
+                <input id="field-image-upload" type="file" name="topic_image_upload_1" value="" placeholder="">
+              </div>
+            </div>
+        </div>
+      {% else %}
+        <div class="control-group control-full">
+          <label class="control-label" for="field-image-url">Image URL</label>
+          <div class="controls ">
+            <input id="field-image-url" type="text" name="topic_image_url_1" value="" placeholder="http://example.com/my-image.jpg">
+          </div>
+        </div>
+      {% endif %}
+
+      {{ form.select('enabled', 'topic_enabled', _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected='') }}
+      <input id="topic_order" type="hidden" name="topic_order" value="0" />
+      <a class="btn btn-danger topics-settings-item-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <hr>
+      <span class="grippy"></span>
+    </div>
+  </div>
+
+  {% for topic in data.topics %}
+    <div class="topics-settings-item-fields__item">
+      {% set topic_title = 'topic_title_' + loop.index|string %}
+      {% set topic_subdashboard = 'topic_subdashboard_' + loop.index|string %}
+      {% set topic_enabled = 'topic_enabled_' + loop.index|string %}
+      {% set topic_order = 'topic_order_' + loop.index|string %}
+      {% set topic_image_url = 'topic_image_url_' + loop.index|string %}
+      {% set topic_image_upload = 'topic_image_upload_' + loop.index|string %}
+      {% set topic_clear_upload = 'topic_clear_upload_' + loop.index|string %}
+
+      {{ form.input(topic_title, id=topic_title, label=_('Title'), value=topic.title, classes=['control-full'], attrs={'required': 'true'}) }}
+      {{ form.select(topic_subdashboard, topic_subdashboard, _('Subdashboard'), options=data.subdashboards, selected=topic.subdashboard) }}
+
+      {% set is_upload = topic.image_url and not topic.image_url.startswith('http') %}
+      {% set is_url = topic.image_url and topic.image_url.startswith('http') %}
+
+      {% if uploads_enabled %}
+        <div
+          class="image-upload"
+          data-module="image-upload"
+          data-module-is_url="{{ is_url or 'false' }}"
+          data-module-is_upload="{{ is_upload or 'false' }}"
+          data-module-field_url="{{ topic_image_url }}"
+          data-module-field_upload="{{ topic_image_upload }}"
+          data-module-field_clear="{{ topic_clear_upload }}"
+          data-module-upload_label="Image">
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-url">Image URL</label>
+              <div class="controls ">
+                <input id="field-image-url" type="text" name="{{ topic_image_url }}" value="{{ topic.image_url }}" placeholder="http://example.com/my-image.jpg">
+              </div>
+            </div>
+            <div class="control-group control-full">
+              <label class="control-label" for="field-image-upload">Image</label>
+              <div class="controls ">
+                <input id="field-image-upload" type="file" name="{{ topic_image_upload }}" value="{{ topic.image_url }}" placeholder="">
+              </div>
+            </div>
+        </div>
+      {% else %}
+        <div class="control-group control-full">
+          <label class="control-label" for="field-image-url">Image URL</label>
+          <div class="controls ">
+            <input id="field-image-url" type="text" name="{{ topic_image_url }}" value="{{ topic.image_url }}" placeholder="http://example.com/my-image.jpg">
+          </div>
+        </div>
+      {% endif %}
+      {{ form.select(topic_enabled, topic_enabled, _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected=topic.enabled) }}
+      <input id="topic_order" type="hidden" name="{{ topic_order }}" value="{{ topic.order }}" />
+      <a class="btn btn-danger topics-settings-item-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <hr>
+      <span class="grippy"></span>
+    </div>
+  {% endfor %}
+</fieldset>
+
+{% if data.topics|length < 6 %}
+  {% set btn_display = 'initial' %}
+{% else %}
+  {% set btn_display = 'none' %}
+{% endif %}
+
+<a id="create-item-btn" class="new-field-btn btn btn-default" style="display: {{ btn_display  }}">Create item</a>
+<br><br><br>
+<b><p style="font-size: 12px;">Hint: Drag the handle to rearrange the items.</p></b>

@@ -108,35 +108,35 @@ class OrgportalsController(PackageController):
                 _page['map'] = ';'.join(_page['map'])
                 _page['map_main_property'] = ';'.join(_page['map_main_property'])
 
-                themes = []
+                topics = []
 
                 for k, v in data.items():
                     item = {}
 
-                    if k.startswith('theme_title'):
+                    if k.startswith('topic_title'):
                         id = k[-1]
-                        item['title'] = data['theme_title_{}'.format(id)]
-                        item['enabled'] = data['theme_enabled_{}'.format(id)]
-                        item['subdashboard'] = data['theme_subdashboard_{}'.format(id)]
-                        item['order'] = data['theme_order_{}'.format(id)]
+                        item['title'] = data['topic_title_{}'.format(id)]
+                        item['enabled'] = data['topic_enabled_{}'.format(id)]
+                        item['subdashboard'] = data['topic_subdashboard_{}'.format(id)]
+                        item['order'] = data['topic_order_{}'.format(id)]
 
-                        image_url = data['theme_image_url_{}'.format(id)]
+                        image_url = data['topic_image_url_{}'.format(id)]
 
-                        # Upload images for themes
+                        # Upload images for topics
                         if h.uploads_enabled():
-                            image_upload = data['theme_image_upload_{}'.format(id)]
+                            image_upload = data['topic_image_upload_{}'.format(id)]
 
                             if isinstance(image_upload, cgi.FieldStorage):
                                 upload = uploader.get_uploader('portal', image_url)
-                                upload.update_data_dict(data, 'theme_image_url_{}'.format(id), 'theme_image_upload_{}'.format(id), 'theme_clear_upload_{}'.format(id))
+                                upload.update_data_dict(data, 'topic_image_url_{}'.format(id), 'topic_image_upload_{}'.format(id), 'topic_clear_upload_{}'.format(id))
                                 upload.upload(uploader.get_max_image_size())
                                 image_url = upload.filename
 
                         item['image_url'] = image_url
 
-                        themes.append(item)
+                        topics.append(item)
 
-                _page['themes'] = json.dumps(themes)
+                _page['topics'] = json.dumps(topics)
 
             _page.update(data)
             _page['org_name'] = org_name
@@ -166,9 +166,9 @@ class OrgportalsController(PackageController):
         errors = errors or {}
         error_summary = error_summary or {}
 
-        if 'themes' in data and len(data['themes']) > 0:
-            data['themes'] = json.loads(data['themes'])
-            data['themes'].sort(key=itemgetter('order'))
+        if 'topics' in data and len(data['topics']) > 0:
+            data['topics'] = json.loads(data['topics'])
+            data['topics'].sort(key=itemgetter('order'))
 
         if _page:
             data_dict = {'org_name': org_name}
@@ -483,18 +483,18 @@ class OrgportalsController(PackageController):
         }
         data_page = p.toolkit.get_action('orgportals_pages_show')({}, data_dict)
 
-        if len(data_page['themes']) > 0:
-            data_page['themes'] = json.loads(data_page['themes'])
-            data_page['themes'].sort(key=itemgetter('order'))
+        if len(data_page['topics']) > 0:
+            data_page['topics'] = json.loads(data_page['topics'])
+            data_page['topics'].sort(key=itemgetter('order'))
         else:
-            data_page['themes'] = []
+            data_page['topics'] = []
 
 
-        for theme in data_page['themes']:
-            is_upload = theme['image_url'] and not theme['image_url'].startswith('http')
+        for topic in data_page['topics']:
+            is_upload = topic['image_url'] and not topic['image_url'].startswith('http')
 
             if is_upload:
-                theme['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, theme['image_url'])
+                topic['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, topic['image_url'])
 
         extra_vars = {
             'organization': org,
@@ -649,7 +649,7 @@ class OrgportalsController(PackageController):
 
                         image_url = data['media_image_url_{}'.format(id)]
 
-                        # Upload images for themes
+                        # Upload images for topics
                         if h.uploads_enabled():
                             image_upload = data['media_image_upload_{}'.format(id)]
 
@@ -739,13 +739,13 @@ class OrgportalsController(PackageController):
 
                 page = get_action('orgportals_pages_show')({}, data_dict)
 
-                themes = page['themes']
+                topics = page['topics']
 
-                if len(themes) > 0:
-                    themes = json.loads(themes)
-                    themes = [item for item in themes if item['subdashboard'] != subdashboard]
+                if len(topics) > 0:
+                    topics = json.loads(topics)
+                    topics = [item for item in topics if item['subdashboard'] != subdashboard]
 
-                    page['themes'] = json.dumps(themes)
+                    page['topics'] = json.dumps(topics)
                     page['page_name'] = 'data'
 
                     p.toolkit.get_action('orgportals_pages_update')({}, page)

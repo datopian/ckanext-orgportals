@@ -301,7 +301,7 @@ msgid "A little information about the subdashboard..."
 msgstr ""
 
 #: ckanext/orgportals/templates/organization/subdashboards_form.html:42
-msgid "Theme"
+msgid "Topic"
 msgstr ""
 
 #: ckanext/orgportals/templates/organization/subdashboards_form.html:46
@@ -425,22 +425,22 @@ msgstr ""
 msgid "There are currently no subdashboars here"
 msgstr ""
 
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:4
-msgid "Themes settings"
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:4
+msgid "Topics settings"
 msgstr ""
 
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:8
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:61
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:8
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:61
 msgid "Title"
 msgstr ""
 
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:9
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:62
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:9
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:62
 msgid "Subdashboard"
 msgstr ""
 
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:43
-#: ckanext/orgportals/templates/organization/snippets/themes_settings.html:98
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:43
+#: ckanext/orgportals/templates/organization/snippets/topics_settings.html:98
 msgid "Enabled"
 msgstr ""
 
@@ -473,7 +473,7 @@ msgid "Download as Image"
 msgstr ""
 
 #: ckanext/orgportals/templates/portals/snippets/all_data.html:7
-msgid "Themes"
+msgid "Topics"
 msgstr ""
 
 #: ckanext/orgportals/templates/portals/snippets/all_data.html:11

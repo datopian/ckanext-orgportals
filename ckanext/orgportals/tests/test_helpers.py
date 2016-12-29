@@ -388,8 +388,8 @@ class TestHelpers():
         assert entity_name == 'group'
 
         config.set('ckanext.orgportals.group_entity_name',
-                   'theme')
+                   'topic')
 
         entity_name = helpers.orgportals_get_group_entity_name()
 
-        assert entity_name == 'theme'
+        assert entity_name == 'topic'

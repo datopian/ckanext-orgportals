@@ -32,13 +32,13 @@ the templates.
 
     ckanext.orgdashboards.organization_entity_name = country
 
-Add entity name for group (default is group). This setting can either be set to ``group`` or ``theme``. If you set
-it to ``theme`` it will use text references for "Theme/Themes" instead of
+Add entity name for group (default is group). This setting can either be set to ``group`` or ``topic``. If you set
+it to ``topic`` it will use text references for "Topic/Topics" instead of
 "Group/Groups" throughout the web interface. Though, this only applies to
 certain parts of the UI. For some, you have to manually override/extend the
 templates.::
 
-    ckanext.orgdashboards.group_entity_name = theme
+    ckanext.orgdashboards.group_entity_name = topic
 
 Add Facebook App ID to share a graph on Facebook::
 

@@ -1,12 +1,12 @@
-.themes-settings-item-fields {
+.topics-settings-item-fields {
   display: none;
 }
 
-.themes-settings-item-fields__item {
+.topics-settings-item-fields__item {
   position: relative;
 }
 
-.themes-settings-item-fields__remove-btn {
+.topics-settings-item-fields__remove-btn {
   position: absolute;
   right: 0;
   bottom: 20px;

@@ -39,7 +39,7 @@
 
   {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the subdashboard...'), value=subdashboard.description, error=errors.description) }}
 
-  {{ form.select('group', 'group', _('Theme'), options=data.groups, selected=subdashboard.group) }}
+  {{ form.select('group', 'group', _('Topic'), options=data.groups, selected=subdashboard.group) }}
 
   {{ form.select('map_enabled', 'map_enabled', _('Is map enabled?'), options=[{'value': True, 'text': 'Yes'}, {'value': False, 'text': 'No'}], selected=subdashboard.map_enabled) }}
 
