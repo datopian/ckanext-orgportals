@@ -678,7 +678,7 @@ class OrgportalsController(PackageController):
 
             _subdashboard.update(data)
             _subdashboard['org_name'] = org_name
-            _subdashboard['subashboard_name'] = subdashboard
+            _subdashboard['subdashboard_name'] = subdashboard
 
             try:
                 junk = p.toolkit.get_action('orgportals_subdashboards_update')(

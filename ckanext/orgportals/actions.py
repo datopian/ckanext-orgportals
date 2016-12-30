@@ -62,7 +62,7 @@ def page_name_validator(key, data, errors, context):
 
 def subdashboard_name_validator(key, data, errors, context):
     session = context['session']
-    name = context.get('subashboard_name')
+    name = context.get('subdashboard_name')
     org_name = context.get('org_name')
 
     if name and name == data[key]:
@@ -216,10 +216,10 @@ def _subdashboards_show(context, data_dict):
 def _subdashboards_update(context, data_dict):
 
     org_name = data_dict.get('org_name')
-    subashboard_name = data_dict.get('subashboard_name')
+    subdashboard_name = data_dict.get('subdashboard_name')
     name = data_dict.get('name')
     # we need the subdashboard in the context for name validation
-    context['subashboard_name'] = subashboard_name
+    context['subdashboard_name'] = subdashboard_name
     context['org_name'] = org_name
 
     session = context['session']
@@ -229,7 +229,7 @@ def _subdashboards_update(context, data_dict):
     if errors:
         raise p.toolkit.ValidationError(errors)
 
-    out = db.Subdashboard.get_subdashboard_for_org(org_name, subashboard_name)
+    out = db.Subdashboard.get_subdashboard_for_org(org_name, subdashboard_name)
 
     if not out:
         out = db.Subdashboard()
