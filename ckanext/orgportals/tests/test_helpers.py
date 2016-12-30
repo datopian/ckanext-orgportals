@@ -471,13 +471,15 @@ class TestHelpers():
         assert {'text': u'Macedonia', 'value': u'Macedonia'} in countries
 
     def test_orgportals_get_twitter_consumer_keys(self):
-        config['ckanext.orgportals.twitter_consumer_key'] = 123456
-        config['ckanext.orgportals.twitter_consumer_secret'] = 123456
+        twitter_consumer_key =\
+            config['ckanext.orgportals.twitter_consumer_key']
+        twitter_consumer_secret =\
+            config['ckanext.orgportals.twitter_consumer_secret']
 
         keys = helpers.orgportals_get_twitter_consumer_keys()
         twitter_keys = {
-            'twitter_consumer_key': 123456,
-            'twitter_consumer_secret': 123456
+            'twitter_consumer_key': twitter_consumer_key,
+            'twitter_consumer_secret': twitter_consumer_secret
         }
 
         assert keys['twitter_consumer_key'] ==\
