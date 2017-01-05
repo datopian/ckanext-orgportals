@@ -7,7 +7,7 @@
 
   {% set organization_name = c.org_name %}
 
-  <div id="newly-released-data" class="hidden" style="border-top: 3px solid {{ base_color }}; border-bottom: 3px solid {{ base_color }}">
+  <div id="newly-released-data" class="newly-released-data hidden" style="border-top: 3px solid {{ base_color }}; border-bottom: 3px solid {{ base_color }}">
     {{ h.snippet('portals/snippets/show_datasets.html',
           packages=h.orgportals_get_newly_released_data(organization_name, subdashboard_group_name),
           datasets_group_name='newdata',

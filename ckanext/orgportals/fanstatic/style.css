@@ -7297,8 +7297,11 @@ main:after {
     margin-top: 0
 }
 
-.new-data {
-    height: 70px;
+@media (min-width: 343px) and (max-width: 376px) {
+    .newly-released-data,
+    .all-data {
+        margin-top: 35px;
+    }
 }
 
 .new-data .data-block-heading {
