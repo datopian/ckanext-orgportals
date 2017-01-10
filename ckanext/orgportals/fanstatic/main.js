@@ -75,7 +75,7 @@
 
     _hideElementsBeforeDownload();
 
-    html2canvas($('body')[0]).then(function(canvas) {
+    html2canvas($('body')[0], {useCORS: true}).then(function(canvas) {
       var image = canvas.toDataURL('image/png');
       var doc;
       var link;
