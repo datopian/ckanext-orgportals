@@ -7751,6 +7751,10 @@ div[data-section="media"] {
   padding-top: 50px;
 }
 
+.content-image-container {
+  margin-top: -18px;
+}
+
 .youtube-video-container,
 .content-image-container {
   position: relative;
