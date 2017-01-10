@@ -5,6 +5,7 @@
     {% set n =  data.order %}
     {% set media_type =  data.media_type %}
     {% set image_url =  data.image_url %}
+    {% set image_title =  data.image_title %}
 
     {% set media_image_url = 'media_image_url_' + n %}
     {% set media_image_upload = 'media_image_upload_' + n %}
@@ -14,6 +15,15 @@
     {% set is_url = image_url and image_url.startswith('http') %}
 
     <legend>{{ _('Item') }} {{ n }}</legend>
+
+    <div class="control-group ">
+      <label class="control-label" for="media_image_title_{{ n }}">Image title</label>
+      <div class="controls ">
+        <input id="media_image_title_{{ n }}" name="media_image_title_{{ n }}"
+               value="{{ image_title }}"
+               placeholder="Enter image title" type="text">
+      </div>
+    </div>
 
     {% if uploads_enabled %}
       <div
@@ -48,6 +58,16 @@
     {% endif %}
   {% else %}
     <legend>{{ _('Item') }} {{ n }}</legend>
+
+    <div class="control-group ">
+      <label class="control-label" for="media_image_title_{{ n }}">Image title</label>
+      <div class="controls ">
+        <input id="media_image_title_{{ n }}" name="media_image_title_{{ n }}"
+               value=""
+               placeholder="Enter image title" type="text">
+      </div>
+    </div>
+
     {% if uploads_enabled %}
       <div
         class="image-upload"
@@ -88,6 +108,7 @@
   <input type="hidden" id="image_upload_{{ n }}" name="image_upload_{{ n }}" value="{{ image_upload }}"/>
   <input type="hidden" id="image_clear_upload_{{ n }}" name="image_clear_upload_{{ n }}" value="{{ image_clear_upload }}"/>
   <input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
+  <input type="hidden" id="image_title_{{ n }}" name="image_title_{{ n }}" value="{{ image_title }}"/>
 
   <span class="grippy"></span>
 </fieldset>

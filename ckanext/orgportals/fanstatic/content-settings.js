@@ -211,6 +211,7 @@
     var save_video_source_input;
     var image_url_input;
     var image_upload_input;
+    var image_title_input;
 
     var mediaItems = $('.orgportal-media-item');
 
@@ -254,12 +255,16 @@
         media_type_input =  $(item).find('[id*=media_type_]');
         image_url_input =  $(item).find('[name*=media_image_url_]');
         image_upload_input =  $(item).find('[name*=media_image_upload_]');
+        image_title_input =  $(item).find('[name*=media_image_title_]');
 
         media_type_input.attr('id', 'media_type_' + media_order);
         media_type_input.attr('name', 'media_type_' + media_order);
 
         image_url_input.attr('name', 'media_image_url_' + media_order);
         image_upload_input.attr('name', 'media_image_upload_' + media_order);
+
+        image_title_input.attr('id', 'media_image_title_' + media_order);
+        image_title_input.attr('name', 'media_image_title_' + media_order);
       }
 
     });
@@ -280,6 +285,7 @@
     var image_url_inputs;
     var remove_url_inputs;
     var image_upload_inputs;
+    var image_title_inputs;
 
     if (item_id) {
       item = contentContainerChildren.last();
@@ -307,9 +313,11 @@
     if (item_id) {
       image_url_inputs = $('[name=media_image_url_'+ item_id +']');
       image_upload_inputs = $('[name=media_image_upload_'+ item_id +']');
+      image_title_inputs = $('[name=media_image_title_'+ item_id +']');
     } else {
       image_url_inputs = $('[name*=media_image_url_]');
       image_upload_inputs = $('[name*=media_image_upload_]');
+      image_title_inputs = $('[name*=media_image_title_]');
     }
 
     image_url_inputs.on('change keyup paste', function onMediaImageChange() {
@@ -328,6 +336,15 @@
       var imageUpload = $('#image_upload_' + image_id);
 
       imageUpload.val(elem.val());
+    });
+
+    image_title_inputs.on('change keyup paste', function onMediaImageChange() {
+      var elem = $(this);
+      var image_title_id = elem.attr('name');
+      var image_id = image_title_id.substr(image_title_id.lastIndexOf('_') + 1);
+      var imageTitle = $('#image_title_' + image_id);
+
+      imageTitle.val(elem.val());
     });
 
     setTimeout(function() {

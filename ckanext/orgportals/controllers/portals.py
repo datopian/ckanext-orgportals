@@ -646,6 +646,7 @@ class OrgportalsController(PackageController):
 
                         item['order'] = id
                         item['media_type'] = data['media_type_{}'.format(id)]
+                        item['image_title'] = data['media_image_title_{}'.format(id)]
 
                         image_url = data['media_image_url_{}'.format(id)]
 
@@ -660,7 +661,6 @@ class OrgportalsController(PackageController):
                                 image_url = upload.filename
 
                         item['image_url'] = image_url
-
                         media_items.append(item)
 
             _subdashboard['media'] = json.dumps(media_items)
