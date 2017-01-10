@@ -106,7 +106,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
           data.features.some(function(feature) {
             if (feature.properties.name === countryName && countryName !== 'none') {
               country = L.geoJson(feature);
-              country.setStyle({fill: false})
+              country.setStyle({fill: false, color: '#154289'})
               map.addLayer(country);
               map.fitBounds(country.getBounds());
               fitBounds = false;
