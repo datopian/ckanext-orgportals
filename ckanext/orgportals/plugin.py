@@ -86,6 +86,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('/organization/{org_name}/portal/{page_name}', controller=ctrl,
                     action='custompage_show', source='admin')
 
+        # Proxy used for external images
+        map.connect('/proxy_images', controller=ctrl, action='proxy_images')
+
         return map
 
     # IActions

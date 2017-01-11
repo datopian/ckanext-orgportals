@@ -4,6 +4,7 @@ import cgi
 import json
 from operator import itemgetter
 from urlparse import urlparse
+import requests
 
 from pylons import config
 from paste.deploy.converters import asbool
@@ -1028,7 +1029,18 @@ class OrgportalsController(PackageController):
         else:
             return p.toolkit.render('home/index.html')
 
+    def proxy_images(self):
+        data = dict(p.toolkit.request.GET)
 
+        if 'url' in data:
+            response_data = requests.get(data['url'], stream=True)
+
+            if 'image/' in response_data.headers['content-type']:
+                return response_data.raw
+            else:
+                return 'Only images are supported'
+
+        return 'Missing parameter: url'
 
 def _is_portal_active(orgnization_name):
     data_dict = {'id': orgnization_name, 'include_extras': True}
