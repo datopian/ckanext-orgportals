@@ -96,7 +96,7 @@
   });
 
   function _hideElementsBeforeDownload() {
-    snapshotDashboardMenu.parent().toggleClass('open');
+    // snapshotDashboardMenu.parent().toggleClass('open');
     heroMap.hide();
     newData.hide();
     allData.hide();
@@ -147,6 +147,29 @@
   });
 
   _focusSearchData();
+
+  var current_url = location.toString();
+  var query = current_url.match(/\?(.+)$/);
+
+  if (query) {
+    query = query[1].split('&');
+    var parameters = {};
+    var parameter;
+
+    for (var i = 0; i < query.length; i++) {
+      parameter = query[i].split('=');
+
+      if (parameter.length === 1) {
+          parameter[1] = '';
+      }
+
+      parameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
+    }
+
+    if (parameters.download_dashboard) {
+      _hideElementsBeforeDownload()
+    }
+  }
 
 })();
 
