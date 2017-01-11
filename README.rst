@@ -146,4 +146,26 @@ documentation on CKAN.
 
 Additional flags for countries can be taken from http://flag-icon-css.lip.is
 
-pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
+-----------------
+Running the Tests
+-----------------
+
+Some of the tests require that you run a CKAN server, the one where the
+orgdashboards extension is installed.
+
+First create a new database called ``ckan_test`` if you haven't already, and
+in the config file for the server change the ``sqlalchemy.url`` to point to the
+database ``ckan_test``. This database will be used by the tests.
+
+And second, set a storage path in the config file where uploaded resources will
+be stored.
+
+ckan.storage_path = /path/to/storage
+
+Also, make sure to install the dev requirements for running the tests::
+
+    pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
+
+To run the tests, change the current working directory to the extension and do::
+
+    nosetests --ckan --with-pylons=test.ini
