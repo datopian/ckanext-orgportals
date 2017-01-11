@@ -1038,7 +1038,7 @@ class OrgportalsController(PackageController):
             if 'image/' in response_data.headers['content-type']:
                 return response_data.raw
             else:
-                return 'Only images are supported'
+                return ''
 
         return 'Missing parameter: url'
 
