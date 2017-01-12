@@ -34,9 +34,7 @@
   {% if page.id is undefined or (page.type != 'data') %}
     {{ form.input('page_title', id='field-title', label=_('Page title'), placeholder=title_placeholder, value=page.page_title, error=errors.page_title, classes=['control-full', 'control-large'], is_required=true, attrs={'required': 'true'}) }}
 
-    {% if page.name != 'contact' %}
-      {{ form.input('content_title', id='field-title', label=_('Content title'), value=page.content_title, error=errors.content_title, classes=['control-full']) }}
-    {% endif %}
+    {{ form.input('content_title', id='field-title', label=_('Content title'), value=page.content_title, error=errors.content_title, classes=['control-full']) }}
   {% endif %}
 
   {% if page.type == 'home' %}
