@@ -7769,6 +7769,10 @@ div[data-section="media"] {
   margin-top: 8px;
 }
 
+.email-subscription-container form {
+  width: 80%;
+}
+
 @media (min-width: 992px) {
   .subscribe-button {
     float: right;
@@ -7780,6 +7784,10 @@ div[data-section="media"] {
 @media (max-width: 991px) {
   .email-subscription-container {
     margin-top: 35px;
+  }
+
+  .email-subscription-container form {
+    width: 100%;
   }
 }
 
