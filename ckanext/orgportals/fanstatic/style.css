@@ -7425,7 +7425,7 @@ footer:before {
     }
 
     .copyright {
-      margin-top: 85px;
+      margin-top: 35px;
     }
 }
 
@@ -7767,7 +7767,20 @@ div[data-section="media"] {
 
 .email-subscription-container {
   margin-top: 8px;
-  float: left !important;
+}
+
+@media (min-width: 992px) {
+  .subscribe-button {
+    float: right;
+    margin-right: -87px;
+    margin-top: -35px;
+  }
+}
+
+@media (max-width: 991px) {
+  .email-subscription-container {
+    margin-top: 35px;
+  }
 }
 
 .list-footer-logos,

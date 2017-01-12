@@ -73,11 +73,15 @@
           </li>
         </ul>
 
-        <div class="input-group email-subscription-container col-md-4">
-          <input type="text" class="form-control" placeholder="example@mail.com">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Subscribe</button>
-          </span>
+        <div class="email-subscription-container col-md-4">
+          <form action="https://usedata.us14.list-manage.com/subscribe/post" method="POST" target="_blank">
+            <input type="email" name="MERGE0" id="MERGE0" class="form-control" placeholder="example@mail.com">
+            <input type="hidden" name="u" value="67941644d03c85a673bb79d88">
+            <input type="hidden" name="id" value="0dbdee8b5b">
+            <!-- <span class="input-group-btn"> -->
+              <button class="btn btn-default subscribe-button" type="submit">Subscribe</button>
+            <!-- </span> -->
+          </form>
         </div>
         <div class="copyright col-md-4">© {{ h.orgportals_get_copyright_text(c.org_name) }}</div>
       </div>
