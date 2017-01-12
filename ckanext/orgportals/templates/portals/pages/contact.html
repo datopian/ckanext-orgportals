@@ -3,9 +3,10 @@
 {% set action_url = h.url_for(controller='ckanext.orgportals.controllers.portals:OrgportalsController', action='contentpage_show', page_name=page.name, org_name=page.org_name) %}
 
 {% block content %}
+  <div class="content-page-container__text">{{ h.render_markdown(page.content) }}</div>
+
   <div class="contact-form-container">
     <form id="contact-form-container__form" method="post" action="{{ action_url }}">
-      {# <h3>{{ page.content_title }}</h3> #}
       <h3>Contact</h3>
       <fieldset>
         <input type="text" placeholder="{{ _('Your name') }}" name="contact_name" tabindex="1" required autofocus />

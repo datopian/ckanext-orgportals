@@ -50,8 +50,15 @@
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-page'), value=page.name, error=errors.name, attrs=attrs, is_required=true) }}
   {% endif %}
 
-  {% if page.id is undefined or page.type == 'custom' or (page.type == 'default' and page.name != 'contact') %}
-    {{ form.markdown('content', id='field-content', label=_('Content'), placeholder=_('Enter content here'), value=page.content) }}
+  {% if page.id is undefined or page.type == 'custom' or page.name == 'contact' %}
+    {% if page.name == 'contact' %}
+      {% set label = _('Description') %}
+      {% set placeholder = _('Enter description here') %}
+    {% else %}
+      {% set label = _('Content') %}
+      {% set placeholder = _('Enter content here') %}
+    {% endif %}
+    {{ form.markdown('content', id='field-content', label=label, placeholder=placeholder, value=page.content) }}
   {% endif %}
 
   {% set is_upload = page.image_url and not page.image_url.startswith('http') %}
