@@ -1,1 +1,2 @@
 python-twitter==3.2
+selenium==3.0.2
