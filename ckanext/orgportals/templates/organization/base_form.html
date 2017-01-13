@@ -48,7 +48,7 @@
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-page'), value=page.name, error=errors.name, attrs=attrs, is_required=true) }}
   {% endif %}
 
-  {% if page.id is undefined or page.type == 'custom' or page.name == 'contact' %}
+  {% if page.id is undefined or page.type == 'custom' or page.type == 'default' %}
     {% if page.name == 'contact' %}
       {% set label = _('Description') %}
       {% set placeholder = _('Enter description here') %}
