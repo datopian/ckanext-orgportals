@@ -12,6 +12,20 @@
     }
   });
 
+  var api = {
+    get: function (action, params, api_ver=3) {
+      var base_url = ckan.sandbox().client.endpoint;
+      params = $.param(params);
+      var url = base_url + '/api/' + api_ver + '/action/' + action + '?' + params;
+      return $.getJSON(url);
+    },
+    post: function (action, data, api_ver=3) {
+      var base_url = ckan.sandbox().client.endpoint;
+      var url = base_url + '/api/' + api_ver + '/action/' + action;
+      return $.post(url, JSON.stringify(data), "json");
+    }
+  };
+
   $('.orgportals-filters').on('change', function () {
     var url = $(this).val();
 
@@ -48,79 +62,58 @@
     }
   }
 
-  var snapshotDashboardMenu = $('.snapshot-dashboard-menu');
+  var downloadAsPdfBtn = $('#download-as-pdf');
   var subdashboardMeta = $('#subdashboard-meta');
   var orgName = subdashboardMeta.attr('data-org-name') || 'org-name';
   var subdashboardName = subdashboardMeta.attr('data-subdashboard-name') || 'subdashboard-name';
   var date = new Date().toJSON().slice(0, 10);
   var subdashboardFileName = 'dashboard-[org-name]-[subdashboard-name]-[date]'.replace('[org-name]', orgName).replace('[subdashboard-name]', subdashboardName).replace('[date]', date);
 
-  var heroMap = $('.hero-map-wrap');
-  var newData = $('.new-data');
-  var allData = $('.all-data');
-  var goDownArrows = $('.go-down-arrow');
-  var downloadAsBtn = $('#download-as-pdf');
-  var mediaSection = $('[data-section="media"]');
-  var downloadGraphBtns = $('.download-graph-btn');
-  var shareGraphFb = $('.share-graph-fb-btn');
-  var shareGraphTwitter = $('.share-graph-twitter-btn');
+  downloadAsPdfBtn.on('click', function(event) {
+    var data = {
+      url: window.location.href + '?download_dashboard=true'
+    };
+    var socialMediaShareAlert = $('.social-media-share-alert');
 
-  snapshotDashboardMenu.on('click', function(event) {
-    var target = event.target;
-    var dataAttribute = target.getAttribute('data-download-as');
-    var renderedCanvas;
+    socialMediaShareAlert.find('.alert-text').text('Creating snapshot...');
+    socialMediaShareAlert.addClass('alert-info');
+    socialMediaShareAlert.show();
 
-    // Scroll the window to top, in order to capture the entire screen
-    window.scrollTo(0, 0);
+    api.get('orgportals_download_dashboard', data)
+      .done(function(data) {
+        var imageData = data.result.image_data;
+        var link;
 
-    _hideElementsBeforeDownload();
+        if (imageData) {
+          socialMediaShareAlert.hide();
+          link = document.createElement('a');
+          link.download = subdashboardFileName;
+          link.href = 'data:image/png;base64,' + imageData;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          socialMediaShareAlert.removeClass('alert-info');
+          socialMediaShareAlert.addClass('alert-danger');
+          socialMediaShareAlert.find('.alert-text').text('Error while creating snapshot...');
 
-    html2canvas($('body')[0], {proxy:  window.location.origin + '/proxy_images'}).then(function(canvas) {
-      var image = canvas.toDataURL('image/png');
-      var doc;
-      var link;
+          setTimeout(function() {
+            socialMediaShareAlert.hide();
+            socialMediaShareAlert.removeClass('alert-danger');
+          }, 2000);
+        }
+      })
+      .error(function(error) {
+        socialMediaShareAlert.removeClass('alert-info');
+        socialMediaShareAlert.addClass('alert-danger');
+        socialMediaShareAlert.find('.alert-text').text('Error while creating snapshot...');
 
-      if (dataAttribute === 'pdf') {
-        doc = new jsPDF('portrait', 'mm', [document.body.offsetWidth / 3.85, document.body.offsetHeight * 0.9]);
-        doc.addImage(canvas, 'PNG', 0, 0, 0, 0);
-        doc.save(subdashboardFileName + '.pdf');
-      } else if (dataAttribute === 'image') {
-        link = document.createElement('a');
-        link.download = subdashboardFileName;
-        link.href = image;
-        link.click();
-      }
-
-      _showElementsAfterDownload();
-    });
+        setTimeout(function() {
+          socialMediaShareAlert.hide();
+          socialMediaShareAlert.removeClass('alert-danger');
+        }, 2000);
+      });
   });
-
-  function _hideElementsBeforeDownload() {
-    snapshotDashboardMenu.parent().toggleClass('open');
-    heroMap.hide();
-    newData.hide();
-    allData.hide();
-    goDownArrows.hide();
-    downloadAsBtn.hide();
-    downloadGraphBtns.hide();
-    shareGraphFb.hide();
-    shareGraphTwitter.hide();
-
-    mediaSection.css('margin-bottom', '70px');
-  }
-
-  function _showElementsAfterDownload() {
-    heroMap.show();
-    newData.show();
-    allData.show();
-    goDownArrows.show();
-    downloadAsBtn.show();
-    downloadGraphBtns.show();
-    shareGraphFb.show();
-    shareGraphTwitter.show();
-
-    mediaSection.css('margin-bottom', 'initial');
-  }
 
   var mediaContainer = $('div[data-section="media"]');
 

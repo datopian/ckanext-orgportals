@@ -86,9 +86,6 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('/organization/{org_name}/portal/{page_name}', controller=ctrl,
                     action='custompage_show', source='admin')
 
-        # Proxy used for external images
-        map.connect('/proxy_images', controller=ctrl, action='proxy_images')
-
         return map
 
     # IActions
@@ -108,7 +105,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_show_datasets': actions.orgportals_show_datasets,
             'orgportals_dataset_show_resources': actions.orgportals_dataset_show_resources,
             'orgportals_resource_show_resource_views': actions.orgportals_resource_show_resource_views,
-            'orgportals_share_graph_on_twitter': actions.orgportals_share_graph_on_twitter
+            'orgportals_share_graph_on_twitter': actions.orgportals_share_graph_on_twitter,
+            'orgportals_download_dashboard': actions.orgportals_download_dashboard
         }
         return actions_dict
 

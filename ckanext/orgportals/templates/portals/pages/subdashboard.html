@@ -4,7 +4,6 @@
   {{ super() }}
 
   {% resource 'orgportals/map' %}
-  {% resource 'orgportals/jspdf' %}
   {% resource 'orgportals/subdashboard' %}
 {% endblock %}
 
@@ -82,11 +81,7 @@
   {% endif %}
 
   <div class="snapshot-dashboard">
-    <i id="download-as-pdf" class="fa fa-download fa-lg" data-toggle="dropdown" aria-hidden="true" title="{{ _('Download dashboard') }}"></i>
-    <ul class="dropdown-menu snapshot-dashboard-menu">
-      <li><a href="#" data-download-as="pdf">{{ _('Download as PDF') }}</a></li>
-      <li><a href="#" data-download-as="image">{{ _('Download as Image') }}</a></li>
-    </ul>
+    <i id="download-as-pdf" class="fa fa-download fa-lg" aria-hidden="true" title="{{ _('Download dashboard') }}"></i>
   </div>
 
   {% if subdashboard.map_enabled %}
@@ -126,5 +121,65 @@
       subdashboard=subdashboard
     %}
   {% endif %}
+
+  <script type="text/javascript">
+
+    var heroMap = document.querySelector('.hero-map-wrap');
+    var newData = document.querySelector('.new-data');
+    var allData = document.querySelector('.all-data');
+    var goDownArrows = [].slice.call(document.querySelectorAll('.go-down-arrow'));
+    var downloadAsBtn = document.querySelector('#download-as-pdf');
+    var mediaSection = document.querySelector('[data-section="media"]');
+    var downloadGraphBtns = [].slice.call(document.querySelectorAll('.download-graph-btn'));
+    var shareGraphFbIcons = [].slice.call(document.querySelectorAll('.share-graph-fb-btn'));
+    var shareGraphTwitterIcons = [].slice.call(document.querySelectorAll('.share-graph-twitter-btn'));
+
+    function _hideElementsBeforeDownload() {
+      heroMap.style.display = 'none';
+      newData.style.display = 'none';
+      allData.style.display = 'none';
+      downloadAsBtn.style.display = 'none';
+
+      goDownArrows.forEach(function(arrow) {
+        arrow.style.display = 'none';
+      });
+
+      downloadGraphBtns.forEach(function(btn) {
+        btn.style.display = 'none';
+      });
+
+      shareGraphFbIcons.forEach(function(btn) {
+        btn.style.display = 'none';
+      });
+
+      shareGraphTwitterIcons.forEach(function(btn) {
+        btn.style.display = 'none';
+      });
+    }
+
+    var current_url = location.toString();
+    var query = current_url.match(/\?(.+)$/);
+
+    if (query) {
+      query = query[1].split('&');
+      var parameters = {};
+      var parameter;
+
+      for (var i = 0; i < query.length; i++) {
+        parameter = query[i].split('=');
+
+        if (parameter.length === 1) {
+            parameter[1] = '';
+        }
+
+        parameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
+      }
+
+      if (parameters.download_dashboard) {
+        _hideElementsBeforeDownload()
+      }
+    }
+
+  </script>
 {% endblock %}
 
