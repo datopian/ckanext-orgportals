@@ -433,9 +433,12 @@ def orgportals_download_dashboard(context, data_dict):
         image = '{0}/montrose-dashboard.png'.format(image_path)
 
         driver.set_window_size(1320, 1080)
+        log.debug('get url: ', url)
         driver.get(url)
+        log.debug('save_screenshot: ', image)
         driver.save_screenshot(image)
 
+        log.debug('remove image')
         os.remove(image)
 
         image_data = driver.get_screenshot_as_base64()

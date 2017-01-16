@@ -81,6 +81,7 @@
 
     api.get('orgportals_download_dashboard', data)
       .done(function(data) {
+        console.log('data ', data);
         var imageData = data.result.image_data;
         var link;
 
@@ -104,6 +105,7 @@
         }
       })
       .error(function(error) {
+        console.log('error ', error);
         socialMediaShareAlert.removeClass('alert-info');
         socialMediaShareAlert.addClass('alert-danger');
         socialMediaShareAlert.find('.alert-text').text('Error while creating snapshot...');
