@@ -428,17 +428,19 @@ def orgportals_download_dashboard(context, data_dict):
         }
 
     try:
+        print 'get instance of PhantomJS'
         driver = webdriver.PhantomJS()
+        print 'get image_path'
         image_path = os.path.dirname(os.path.realpath(__file__))
         image = '{0}/montrose-dashboard.png'.format(image_path)
 
         driver.set_window_size(1320, 1080)
-        log.debug('get url: ', url)
+        print 'get url: ', url
         driver.get(url)
-        log.debug('save_screenshot: ', image)
+        print 'save_screenshot: ', image
         driver.save_screenshot(image)
 
-        log.debug('remove image')
+        print 'remove image'
         os.remove(image)
 
         image_data = driver.get_screenshot_as_base64()
