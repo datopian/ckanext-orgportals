@@ -429,7 +429,8 @@ def orgportals_download_dashboard(context, data_dict):
 
     try:
         print 'get instance of PhantomJS'
-        log_path = '{0}/phantomjs.log'.format(os.path.dirname(os.path.realpath(__file__)))
+        fallback_storage_path = os.path.dirname(os.path.realpath(__file__))
+        log_path = '{0}/phantomjs.log'.format(config.get('ckan.storage_path', fallback_storage_path))
         print 'log_path', log_path
         driver = webdriver.PhantomJS(service_log_path=log_path)
         print 'get image_path'
