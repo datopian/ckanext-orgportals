@@ -429,7 +429,9 @@ def orgportals_download_dashboard(context, data_dict):
 
     try:
         print 'get instance of PhantomJS'
-        driver = webdriver.PhantomJS()
+        log_path = '{0}/phantomjs.log'.format(os.path.dirname(os.path.realpath(__file__)))
+        print 'log_path', log_path
+        driver = webdriver.PhantomJS(service_log_path=log_path)
         print 'get image_path'
         image_path = os.path.dirname(os.path.realpath(__file__))
         image = '{0}/montrose-dashboard.png'.format(image_path)
@@ -448,7 +450,9 @@ def orgportals_download_dashboard(context, data_dict):
         return {
             'image_data': image_data
         }
-    except:
+    except Exception, e:
+        log.error(e)
+
         return {
             'error': 'Cannot create snapshot'
         }
