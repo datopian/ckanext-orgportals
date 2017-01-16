@@ -434,8 +434,7 @@ def orgportals_download_dashboard(context, data_dict):
         print 'log_path', log_path
         driver = webdriver.PhantomJS(service_log_path=log_path)
         print 'get image_path'
-        image_path = os.path.dirname(os.path.realpath(__file__))
-        image = '{0}/montrose-dashboard.png'.format(image_path)
+        image = '{0}/montrose-dashboard.png'.format(config.get('ckan.storage_path', fallback_storage_path))
 
         driver.set_window_size(1320, 1080)
         print 'get url: ', url
