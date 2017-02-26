@@ -767,8 +767,13 @@ class OrgportalsController(PackageController):
         data_dict = {'id': org_name, 'include_extras': True}
         org = get_action('organization_show')({}, data_dict)
 
+        subdashboards_list = get_action('orgportals_pages_show')({}, {'org_name': org_name, 'page_name': 'data'})
+        subdashboards_topics = json.loads(subdashboards_list['topics'])
+        subdashboards_dict = {x['subdashboard']: x for x in subdashboards_topics}
+
         data_dict = {'org_name': org_name, 'subdashboard_name': subdashboard_name}
         subdashboard = get_action('orgportals_subdashboards_show')({}, data_dict)
+        subdashboard['subdashboard_title'] = subdashboards_dict[subdashboard['name']]['title']
 
         if not _is_portal_active(org_name):
             extra_vars = {'type': 'portal'}

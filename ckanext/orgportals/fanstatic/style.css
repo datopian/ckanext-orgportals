@@ -7720,6 +7720,12 @@ a[data-page-active="true"] {
   margin-bottom: 10px;
   position: relative;
   z-index: 10;
+  display:inline;
+}
+
+.subdashboard-title {
+    margin-left: 1em;
+    display: inline-block;
 }
 
 .go-down-arrow {

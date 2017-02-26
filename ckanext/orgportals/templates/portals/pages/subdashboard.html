@@ -83,6 +83,9 @@
   <div class="snapshot-dashboard">
     <i id="download-as-pdf" class="fa fa-download fa-lg" aria-hidden="true" title="{{ _('Download dashboard') }}"></i>
   </div>
+  <div class="subdashboard-title">
+      <h3>{{ subdashboard.subdashboard_title }}</h3>
+  </div>
 
   {% if subdashboard.map_enabled %}
     {% snippet 'portals/snippets/map.html',
