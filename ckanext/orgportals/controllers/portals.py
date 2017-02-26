@@ -490,12 +490,15 @@ class OrgportalsController(PackageController):
         else:
             data_page['topics'] = []
 
-
+        subdashboards_list = p.toolkit.get_action('orgportals_subdashboards_list')(context, {'org_name': org['name']})
+        subdashboards_dict = {x['name']: x for x in subdashboards_list}
         for topic in data_page['topics']:
             is_upload = topic['image_url'] and not topic['image_url'].startswith('http')
 
             if is_upload:
                 topic['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, topic['image_url'])
+
+            topic['full_attributes'] = subdashboards_dict[topic['subdashboard']]
 
         extra_vars = {
             'organization': org,
