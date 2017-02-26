@@ -204,9 +204,9 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
             function datasetsClick(a) {
               var selected = $('#dataset option:selected').text();
               for (var elem in layers) {
-                if (layers[elem].name == selected) {
-                  layers[elem].openPopup();
-                }
+                  if (layers[elem].feature.geometry.type != 'Polygon' &&  layers[elem].name == selected) {
+                      layers[elem].openPopup();
+                  }
               }
             }
           );
