@@ -34,7 +34,17 @@ name
             {% endif %}
           {% endif %}
 
-          <option value="{{ h.remove_url_param(key=name.value, controller=c.controller, action=c.action, extras=extras) }}">{{ name.name }}</option>
+          {% set selected = {'value': False} %}
+          {% for item in items %}
+            {% if item.active %}
+              <option value="{{ h.remove_url_param(key=name.value, controller=c.controller, action=c.action, extras=extras) }}"></option>
+              {% if selected.update({'value': True}) %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if not selected.value %}
+            <option value="{{ h.remove_url_param(key=name.value, controller=c.controller, action=c.action, extras=extras) }}">{{ name.name }}</option>
+          {% endif %}
           {% if items %}
             {% for item in items %}
               {% set href = h.orgportals_replace_or_add_url_param(name=name.value, value=item.name, params=request.params.items(), controller=c.controller, action=c.action, context_name=c.org_name, subdashboard_name=subdashboard_name, source=c.source) %}
