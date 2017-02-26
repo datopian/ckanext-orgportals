@@ -26,6 +26,10 @@
     }
   };
 
+    $('#select_subdashboard').change(function () {
+        window.location.href = '../' + this.value;
+    });
+
   $('.orgportals-filters').on('change', function () {
     var url = $(this).val();
 

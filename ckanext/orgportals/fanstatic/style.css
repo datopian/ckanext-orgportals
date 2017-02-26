@@ -7571,8 +7571,7 @@ footer .container {
 }
 
 .subdashboards-container img {
-  width: 250px;
-  height: 170px;
+  width: 260px;
 }
 
 .subdashboards-container li a {
@@ -7623,6 +7622,11 @@ footer .container {
   margin: 5px 0 15px;
   display: block;
   font-size: 13px;
+}
+
+.subdashboard-selector {
+    float: right;
+    margin-top: 1em;
 }
 
 fieldset {
