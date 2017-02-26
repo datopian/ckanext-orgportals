@@ -72,9 +72,9 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
       if (fitBounds) {
         if (!mapURLS && mainProperties.length === 0) {
-          map = new L.Map(elementId, {scrollWheelZoom: false, inertiaMaxSpeed: 200}).setView([lat, lng], zoom);
+          map = new L.Map(elementId, {scrollWheelZoom: true, inertiaMaxSpeed: 200}).setView([lat, lng], zoom);
         } else {
-          map = new L.Map(elementId, {scrollWheelZoom: false, inertiaMaxSpeed: 200});
+          map = new L.Map(elementId, {scrollWheelZoom: true, inertiaMaxSpeed: 200});
         }
       } else {
         map = new L.Map(elementId, {scrollWheelZoom: false, inertiaMaxSpeed: 200}).setView([lat, lng], zoom);
