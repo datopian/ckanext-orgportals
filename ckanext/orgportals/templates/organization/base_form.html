@@ -3,6 +3,10 @@
 {% block scripts %}
   {% resource 'orgportals/map-settings.js' %}
   {% resource 'orgportals/topics' %}
+  {% resource 'orgportals/vendor/ckeditor/ckeditor.js' %}
+  {% resource 'orgportals/vendor/ckeditor/adapters/jquery.js' %}
+  {% resource 'orgportals/editor/ckedit.js' %}
+  {% resource 'orgportals/editor/ckedit.css' %}
 {% endblock %}
 
 {% set data = data or {} %}
@@ -56,7 +60,12 @@
       {% set label = _('Content') %}
       {% set placeholder = _('Enter content here') %}
     {% endif %}
-    {{ form.markdown('content', id='field-content', label=label, placeholder=placeholder, value=page.content) }}
+    <div class="control-group">
+        <label for="field-content" class="control-label">{{ _('Content') }}</label>
+    </div>
+    <textarea id="field-content" name="content" placeholder="{{_('My content')}}" data-module="textbox" style="height:400px" data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=true)) }}"> {{ page.content }}</textarea>
+    <br>
+   {# {{ form.markdown('content', id='field-content', label=label, placeholder=placeholder, value=page.content) }} #}
   {% endif %}
 
   {% set is_upload = page.image_url and not page.image_url.startswith('http') %}

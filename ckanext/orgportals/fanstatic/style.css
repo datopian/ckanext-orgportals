@@ -7807,6 +7807,10 @@ div[data-section="media"] {
   text-align: center;
 }
 
+.copyright > p{
+    display: inline;
+}
+
 .social-media-share-alert {
   display: none;
   position: fixed;

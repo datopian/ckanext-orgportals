@@ -51,6 +51,12 @@
     {% snippet 'portals/snippets/goto_next_section.html' %}
     <div class="subdashboards-container container">
       {% for item in data_page.topics %}
+        {% if ((loop.index - 1) is divisibleby(3) or loop.index == 1)  %}
+          {% if loop.index != 1 %}
+            </div>
+          {% endif %}
+          <div class="row">
+        {% endif %}
         {% snippet 'portals/snippets/subdashboard_item.html', item=item, org_name=organization.name %}
       {% endfor %}
     </div>
