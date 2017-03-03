@@ -77,7 +77,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
           map = new L.Map(elementId, {scrollWheelZoom: true, inertiaMaxSpeed: 200});
         }
       } else {
-        map = new L.Map(elementId, {scrollWheelZoom: false, inertiaMaxSpeed: 200}).setView([lat, lng], zoom);
+        map = new L.Map(elementId, {scrollWheelZoom: true, inertiaMaxSpeed: 200}).setView([lat, lng], zoom);
       }
 
       var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
