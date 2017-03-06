@@ -418,6 +418,33 @@ def orgportals_share_graph_on_twitter(context, data_dict):
 
     return {'share_status_success': True}
 
+
+def orgportals_share_image_on_twitter(context, data_dict):
+    access_token_key = data_dict['oauth_token']
+    access_token_secret = data_dict['oauth_token_secret']
+    image_url = data_dict['image_url']
+    image_title = data_dict['image_title']
+    subdashboard_url = data_dict['subdashboard_url']
+
+    twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
+
+    try:
+        api = twitter.Api(consumer_key=twitter_keys['twitter_consumer_key'],
+                          consumer_secret=twitter_keys['twitter_consumer_secret'],
+                          access_token_key=access_token_key,
+                          access_token_secret=access_token_secret)
+
+        api.PostUpdate('{0} {1}'.format(image_title, subdashboard_url), media=image_url)
+
+    except Exception, e:
+        log.error(e)
+
+        return {'share_status_success': False}
+
+    return {'share_status_success': True}
+
+
+
 @p.toolkit.side_effect_free
 def orgportals_download_dashboard(context, data_dict):
     try:
