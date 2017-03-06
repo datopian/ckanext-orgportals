@@ -7521,7 +7521,11 @@ footer .container {
 .footer-container {
   margin-top: 70px;
   padding-bottom: 60px;
-  padding-left: 56px;
+}
+
+.footer-container > .row {
+    width:85%;
+    margin:auto;
 }
 
 .hero-content-container__header {
