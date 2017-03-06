@@ -7000,6 +7000,12 @@ button.close {
     }
 }
 
+@media screen and (max-width: 1000px) {
+    #hero_map {
+        min-height: 80vmin;
+    }
+}
+
 .leaflet-container {
     font-family: inherit
 }
