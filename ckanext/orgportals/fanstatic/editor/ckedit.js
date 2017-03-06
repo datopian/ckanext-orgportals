@@ -24,6 +24,7 @@ this.ckan.module('textbox', function (jQuery, _) {
         { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
         { name: 'paragraph',   groups: [ 'list', 'blocks', 'align', 'bidi' ] },
         { name: 'styles' },
+        { name: 'colors' }
       ];
 
       // Remove some buttons, provided by the standard plugins, which we don't
@@ -36,7 +37,7 @@ this.ckan.module('textbox', function (jQuery, _) {
       // Make dialogs simpler.
       config.removeDialogTabs = 'image:advanced;link:advanced';
       config.filebrowserUploadUrl = this.options.site_url + 'pages_upload';
-      config.extraPlugins = 'divarea';
+        config.extraPlugins = 'divarea,colorbutton,dialog,dialogui,colordialog,panelbutton,button';
       config.height = '400px';
       config.customConfig = false;
 
