@@ -14,6 +14,7 @@
       %}
     {% elif item.media_type == 'image' %}
       {% snippet 'portals/snippets/image_container.html',
+        image=item,
         image_url=item.image_url,
         image_title=item.image_title
       %}

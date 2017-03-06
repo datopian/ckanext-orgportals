@@ -1,9 +1,25 @@
-<div class="col-md-4 content-image-container">
-  <h3>{{ image_title }}</h3>
-  <p>Yoooo</p>
-  <img src="{{ image_url }}" width="100%" height="320px" />
+{% if image is not none %}
+    {% if image.image_size == 'single' %}
+        {% set image_size = 'col-md-4' %}
+    {% elif image.image_size == 'double' %}
+        {% set image_size = 'col-md-8' %}
+    {% elif image.image_size == 'square' %}
+        {% set image_size = 'col-md-12' %}
+    {% else %}
+        {% set image_size = 'col-md-4' %}
+    {% endif%}
 
-  <i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download image') }}"></i>
-  <a href="{{ image_url }}"><i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a>
-  <i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i>
+<div class="{{ image_size }} content-image-container">
+    <div class="inner-image">
+        <h3>{{ image_title }}</h3>
+        <p>Yoooo</p>
+        <img src="{{ image_url }}" width="100%" />
+    </div>
+
+  <div class="social-buttons">
+      <a href="{{ image_url }}" class="twitter-url" download='{{ image_url }}' target="_blank"><i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download image') }}"></i></a>
+    <a href="{{ image_url }}" class="fb-url"><i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a>
+    <i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i>
+  </div>
 </div>
+{% endif %}

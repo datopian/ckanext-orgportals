@@ -6,6 +6,7 @@
     {% set media_type =  data.media_type %}
     {% set image_url =  data.image_url %}
     {% set image_title =  data.image_title %}
+    {% set image_size = data.image_size %}
 
     {% set media_image_url = 'media_image_url_' + n %}
     {% set media_image_upload = 'media_image_upload_' + n %}
@@ -23,6 +24,16 @@
                value="{{ image_title }}"
                placeholder="Enter image title" type="text">
       </div>
+      <label class="control-label" for="media_image_size_{{ n }}">Image size</label>
+      <div class="controls ">
+        <select id="media_image_size_{{ n }}" name="media_image_size_{{ n }}">
+            <option value="">Choose size</option>
+            <option value="single" {% if image_size == 'single' %} selected {% endif %}>Single</option>
+            <option value="double" {% if image_size == 'double' %} selected {% endif %}>Double</option>
+            <option value="square" {% if image_size == 'square' %} selected {% endif %}>Square</option>
+        </select>
+      </div>
+
     </div>
 
     {% if uploads_enabled %}
@@ -66,6 +77,15 @@
                value=""
                placeholder="Enter image title" type="text">
       </div>
+      <label class="control-label" for="media_image_size_{{ n }}">Image size</label>
+      <div class="controls ">
+        <select id="media_image_size_{{ n }}" name="media_image_size_{{ n }}">
+            <option value="">Choose size</option>
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+            <option value="square">Square</option>
+        </select>
+
     </div>
 
     {% if uploads_enabled %}
