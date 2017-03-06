@@ -124,7 +124,7 @@
 
   var mediaContainer = $('div[data-section="media"]');
 
-  mediaContainer.on('click', function onMediaContainerClick(event) {
+    $('.graph-container').on('click', function onMediaContainerClick(event) {
     var target = $(event.target);
     var graphTitle = target.siblings('.graph-title').text();
     var graphFileName = 'USEDATA-[graph-name]-[date]'.replace('[graph-name]', graphTitle).replace('[date]', date);
