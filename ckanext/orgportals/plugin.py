@@ -107,7 +107,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_resource_show_resource_views': actions.orgportals_resource_show_resource_views,
             'orgportals_share_graph_on_twitter': actions.orgportals_share_graph_on_twitter,
             'orgportals_download_dashboard': actions.orgportals_download_dashboard,
-            'orgportals_share_image_on_twitter': actions.orgportals_share_image_on_twitter
+            'orgportals_share_link_on_twitter': actions.orgportals_share_link_on_twitter
         }
         return actions_dict
 

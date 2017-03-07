@@ -49,14 +49,15 @@
         }
 
         if (twitterOAuthToken && twitterOAuthTokenSecret) {
-            cb.setToken(twitterOAuthToken, twitterOAuthTokenSecret)
+            cb.setToken(twitterOAuthToken, twitterOAuthTokenSecret);
         }
     }
 
-    $('.content-image-container').on('click', '.share-graph-twitter-btn', function(e) {
+    $('.content-container').on('click', '.share-graph-twitter-btn', function(e) {
         var target = $(event.target);
-        var container = target.parents('.content-image-container');
+        var container = target.parents('.content-container');
         var message, className, duration;
+        e.preventDefault();
 
         if (cb) {
             if (!localStorage.twitter_oauth_token) {
@@ -66,7 +67,7 @@
 
                 _showAlert(message, className, duration);
 
-                requestParams = {
+                var requestParams = {
                     oauth_callback: location.href
                 };
 
@@ -103,7 +104,7 @@
 
                 _showAlert(message, className, duration);
 
-                _shareImageOnTwitter(container);
+                _shareLinkOnTwitter(container);
             }
         }
     });
@@ -238,28 +239,27 @@
         }
     }
 
-    function _shareImageOnTwitter(container) {
+    function _shareLinkOnTwitter(container) {
         var message, className, duration;
-        var imageTitle, imageUrl;
-        console.log(container);
+        var title, url;
 
         twitterUserToken = localStorage.twitter_user_oauth_token;
         twitterUserTokenSecret = localStorage.twitter_user_oauth_token_secret;
 
         if (twitterUserToken && twitterUserTokenSecret) {
             console.log(container);
-            imageUrl = container.find('.twitter-url').attr('href');
-            imageTitle = container.find('h3').text();
+            url = container.find('.twitter-url').attr('data-twitter-url');
+            title = container.find('h3').text();
 
             var params = {
                 oauth_token: twitterUserToken,
                 oauth_token_secret: twitterUserTokenSecret,
-                image_url: imageUrl,
-                image_title: imageTitle,
+                url: url,
+                title: title,
                 subdashboard_url: location.origin + location.pathname
             };
 
-            api.post('orgportals_share_image_on_twitter', params)
+            api.post('orgportals_share_link_on_twitter', params)
                 .done(function(data) {
                     if (data.success && data.result.share_status_success) {
                         message = 'The image is successfully shared on Twitter!';

@@ -419,11 +419,11 @@ def orgportals_share_graph_on_twitter(context, data_dict):
     return {'share_status_success': True}
 
 
-def orgportals_share_image_on_twitter(context, data_dict):
+def orgportals_share_link_on_twitter(context, data_dict):
     access_token_key = data_dict['oauth_token']
     access_token_secret = data_dict['oauth_token_secret']
-    image_url = data_dict['image_url']
-    image_title = data_dict['image_title']
+    url = data_dict['url']
+    title = data_dict['title']
     subdashboard_url = data_dict['subdashboard_url']
 
     twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
@@ -434,7 +434,7 @@ def orgportals_share_image_on_twitter(context, data_dict):
                           access_token_key=access_token_key,
                           access_token_secret=access_token_secret)
 
-        api.PostUpdate('{0} {1}'.format(image_title, subdashboard_url), media=image_url)
+        api.PostUpdate('{0} {1}'.format(title, subdashboard_url), media=url)
 
     except Exception, e:
         log.error(e)
