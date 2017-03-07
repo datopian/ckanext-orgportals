@@ -7575,6 +7575,11 @@ footer .container {
   margin-top: 80px;
 }
 
+.subdashboards-row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .subdashboards-container__item {
   text-align: center;
   margin-bottom: 70px;
