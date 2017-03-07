@@ -118,7 +118,7 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
 
       function initDatasetMarkers(mapURL, mainField) {
 
-        var layers = [];
+          var layers = [];
 
         $.getJSON(mapURL).done(function (data) {
           geoL = L.geoJson(data, {
@@ -174,6 +174,9 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
               }
               popup.appendChild(header);
               popup.appendChild(list);
+                if (layer.feature.geometry.type == 'Polygon') {
+                    $(popup).attr('data-geometry-type', 'polygon');
+                }
               layer.bindPopup(popup);
               layer.name = feature.properties[mainField];
               layers.push(layer);
@@ -181,14 +184,17 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
           }).addTo(map);
 
           map.on('popupopen', function (e) {
-            if (map._zoom == 10) {
-              var px = map.project(e.popup._latlng, 10);
-              px.y -= e.popup._container.clientHeight / 2;
-              map.flyTo(map.unproject(px), 10, {animate: true, duration: 1});
-            } else {
-              map.flyTo(e.popup._latlng, 10, {animate: true, duration: 1})
-            }
-            $('.leaflet-popup-content-wrapper').css({'border-top': '5px solid ' + color});
+              var isPolygon = $(e.popup._content).attr('data-geometry-type');
+              if (!isPolygon) {
+                  if (map._zoom == 10) {
+                      var px = map.project(e.popup._latlng, 10);
+                      px.y -= e.popup._container.clientHeight / 2;
+                      map.flyTo(map.unproject(px), 10, {animate: true, duration: 1});
+                  } else {
+                      map.flyTo(e.popup._latlng, 10, {animate: true, duration: 1});
+                  }
+              }
+              $('.leaflet-popup-content-wrapper').css({'border-top': '5px solid ' + color});
           });
 
           var select_dataset = $('#dataset');
@@ -200,11 +206,12 @@ this.ckan.orgportals.dashboardmap = this.ckan.dashboardmap || {};
           }
 
 
+          select_dataset.off('change');  // remove previous event handler so the don't pile up
           select_dataset.change(
             function datasetsClick(a) {
               var selected = $('#dataset option:selected').text();
               for (var elem in layers) {
-                  if (layers[elem].feature.geometry.type != 'Polygon' &&  layers[elem].name == selected) {
+                  if (layers[elem].name == selected) {
                       layers[elem].openPopup();
                   }
               }
