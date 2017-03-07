@@ -7637,6 +7637,7 @@ footer .container {
 .subdashboard-selector {
     float: right;
     margin-top: 1em;
+    margin-right: 0.5em;
 }
 
 fieldset {
