@@ -10,7 +10,7 @@
       %}
     {% elif item.media_type == 'youtube_video' %}
       {% snippet 'portals/snippets/youtube_video_container.html',
-        video_source=item.video_source
+        video_source=item.video_source, video=item
       %}
     {% elif item.media_type == 'image' %}
       {% snippet 'portals/snippets/image_container.html',

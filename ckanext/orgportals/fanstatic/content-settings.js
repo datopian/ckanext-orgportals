@@ -177,10 +177,16 @@
 
     // Videos source event handlers
       var video_source_inputs;
+      var video_title;
+      var video_size;
       if (item_id) {
         video_source_inputs = $('[id=video_source_'+ item_id +']');
+        video_title = $('[id=video_title_' + item_id + ']');
+        video_size = $('[id=video_size_' + item_id +']');
       } else {
         video_source_inputs = $('[id*=video_source_]');
+        video_title = $('[id*=video_title_]');
+        video_size = $('[id*=video_size_]');
       }
 
       video_source_inputs.on('change paste keyup', function () {
@@ -209,9 +215,12 @@
     var chart_resourceview_input;
     var chart_subheader_input;
     var save_video_source_input;
+    var video_title_input;
+    var video_size_input;
     var image_url_input;
     var image_upload_input;
     var image_title_input;
+    var image_size_input;
 
     var mediaItems = $('.orgportal-media-item');
 
@@ -243,19 +252,27 @@
 
         media_type_input =  $(item).find('[id*=media_type_]');
         save_video_source_input =  $(item).find('[id*=save_video_source_]');
-
+        video_title_input = $(item).find('[id*=video_title_]');
+        video_size_input = $(item).find('[id*=video_size_]');
 
         media_type_input.attr('id', 'media_type_' + media_order);
         media_type_input.attr('name', 'media_type_' + media_order);
 
         save_video_source_input.attr('id', 'save_video_source_' + media_order);
         save_video_source_input.attr('name', 'video_source_' + media_order);
+
+        video_title_input.attr('id', 'video_title_' + media_order);
+        video_title_input.attr('name', 'video_title_' + media_order);
+
+        video_size_input.attr('id', 'video_size_' + media_order);
+        video_size_input.attr('name', 'video_size_' + media_order);
       } else if (media_type === 'image') {
 
         media_type_input =  $(item).find('[id*=media_type_]');
         image_url_input =  $(item).find('[name*=media_image_url_]');
         image_upload_input =  $(item).find('[name*=media_image_upload_]');
         image_title_input =  $(item).find('[name*=media_image_title_]');
+        image_size_input = $(item).find('[name*=media_image_size_]');
 
         media_type_input.attr('id', 'media_type_' + media_order);
         media_type_input.attr('name', 'media_type_' + media_order);
@@ -265,6 +282,9 @@
 
         image_title_input.attr('id', 'media_image_title_' + media_order);
         image_title_input.attr('name', 'media_image_title_' + media_order);
+
+        image_size_input.attr('id', 'media_image_size_' + media_order);
+        image_size_input.attr('name', 'media_image_size_' + media_order);
       }
 
     });
@@ -286,6 +306,7 @@
     var remove_url_inputs;
     var image_upload_inputs;
     var image_title_inputs;
+    var image_size_inputs;
 
     if (item_id) {
       item = contentContainerChildren.last();
@@ -314,10 +335,12 @@
       image_url_inputs = $('[name=media_image_url_'+ item_id +']');
       image_upload_inputs = $('[name=media_image_upload_'+ item_id +']');
       image_title_inputs = $('[name=media_image_title_'+ item_id +']');
+      image_size_inputs = $('[name=media_image_size_' + item_id + ']');
     } else {
       image_url_inputs = $('[name*=media_image_url_]');
       image_upload_inputs = $('[name*=media_image_upload_]');
       image_title_inputs = $('[name*=media_image_title_]');
+      image_size_inputs = $('[name*=media_image_size_]');
     }
 
     image_url_inputs.on('change keyup paste', function onMediaImageChange() {

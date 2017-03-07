@@ -9,17 +9,16 @@
         {% set image_size = 'col-md-4' %}
     {% endif%}
 
-<div class="{{ image_size }} content-image-container">
+<div class="{{ image_size }} content-container">
     <div class="inner-image">
         <h3>{{ image_title }}</h3>
-        <p>Yoooo</p>
         <img src="{{ image_url }}" width="100%" />
     </div>
 
   <div class="social-buttons">
-      <a href="{{ image_url }}" class="twitter-url" download='{{ image_url }}' target="_blank"><i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download image') }}"></i></a>
+      <a href="{{ image_url }}" download='{{ image_url }}' target="_blank"><i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download image') }}"></i></a>
     <a href="{{ image_url }}" class="fb-url"><i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a>
-    <i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i>
+    <a href="" class="twitter-url" data-twitter-url="{{ image_url }}"><i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i></a>
   </div>
 </div>
 {% endif %}

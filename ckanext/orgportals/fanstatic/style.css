@@ -7785,6 +7785,10 @@ div[data-section="media"] {
     width: 98%;
 }
 
+.inner-video {
+    width: 98%;
+}
+
 .youtube-video-container {
   margin-top: 35px;
 }

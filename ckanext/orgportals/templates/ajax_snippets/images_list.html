@@ -77,6 +77,8 @@
                value=""
                placeholder="Enter image title" type="text">
       </div>
+    </div>
+    <div class="control-group">
       <label class="control-label" for="media_image_size_{{ n }}">Image size</label>
       <div class="controls ">
         <select id="media_image_size_{{ n }}" name="media_image_size_{{ n }}">
@@ -85,7 +87,7 @@
             <option value="double">Double</option>
             <option value="square">Square</option>
         </select>
-
+      </div>
     </div>
 
     {% if uploads_enabled %}
@@ -129,6 +131,7 @@
   <input type="hidden" id="image_clear_upload_{{ n }}" name="image_clear_upload_{{ n }}" value="{{ image_clear_upload }}"/>
   <input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
   <input type="hidden" id="image_title_{{ n }}" name="image_title_{{ n }}" value="{{ image_title }}"/>
+  <input type="hidden" id="image_size_{{ n }}" name="image_size_{{ n }}" value="{{ image_size }}" />
 
   <span class="grippy"></span>
 </fieldset>

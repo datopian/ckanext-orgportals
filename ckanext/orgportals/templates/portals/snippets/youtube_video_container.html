@@ -1,3 +1,20 @@
-<div class="col-md-4 youtube-video-container">
-  <iframe width="100%" height="320" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
+{% if video is not none %}
+{% if video.video_size == 'single' %}
+{% set video_size = 'col-md-4' %}
+{% elif video.video_size == 'double' %}
+{% set video_size = 'col-md-8' %}
+{% else %}
+{% set video_size = 'col-md-4' %}
+{% endif %}
+
+<div class="{{ video_size }} youtube-video-container content-container">
+    <div class="inner-video">
+        <h3><a href="{{ video.video_source }}" target="_blank">{{ video.video_title }}</a></h3>
+        <iframe width="100%" height="315" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="social-buttons">
+        <a href="{{ video.video_source }}" class="fb-url"><i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a>
+        <a data-twitter-url="{{ video.video_source }}" class="twitter-url" ><i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i></a>
+    </div>
 </div>
+{% endif %}
