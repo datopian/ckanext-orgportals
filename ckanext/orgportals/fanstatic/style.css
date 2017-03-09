@@ -7797,16 +7797,6 @@ div[data-section="media"] {
     width: 98%;
 }
 
-.youtube-video-container {
-  margin-top: 35px;
-}
-
-.youtube-video-container,
-.content-image-container {
-  position: relative;
-  top: 20px;
-}
-
 .email-subscription-container {
   margin-top: 8px;
 }
