@@ -5,11 +5,18 @@
     {% set media_type =  data['media_type'] %}
     {% set video_source =  data['video_source'] %}
     {% set title_input = ['video_title_', n]|join('') %}
+    {% set title_url_input = ['video_title_url_', n]|join('') %}
     {% if data['video_title'] %}
         {% set video_title = data['video_title'] %}
     {% else %}
         {% set video_title = '' %}
     {% endif %}
+    {% if data['video_title_url'] %}
+        {% set video_title_url = data['video_title_url'] %}
+    {% else %}
+        {% set video_title_url = '' %}
+    {% endif %}
+
     {% set video_size = data.video_size %}
     <legend>{{ _('Item') }} {{ n }}</legend>
 
@@ -28,6 +35,8 @@
         {{ form.input(source_input_name, source_input_id, label=_('URL'), type='url', placeholder=url_placeholder, value='', error='', is_required=true) }}
 
         {{ form.input(title_input, label=_('Title'), type='text', placeholder='Input your video title here', value=video_title, error='', is_required=true) }}
+
+        {{ form.input(title_url_input, label=_('Title URL'), type='url', placeholder=url_placeholder, value=video_title_url, error='', is_required=true) }}
 
         <div class="control-group">
       <label class="control-label" for="video_size_{{ n }}">Video size</label>
@@ -54,6 +63,8 @@
     {{ form.input(source_input_name, source_input_id, label=_('URL'), type='url', placeholder=url_placeholder, value='', error='', is_required=true, attrs={'required':'required'}) }}
 
     {{ form.input(title_input, label=_('Title'), type='text', placeholder='Input your video title here', value='', error='', is_required=true, attrs={'required':'required'}) }}
+
+    {{ form.input(title_url_input, label=_('Title URL'), type='url', placeholder=url_placeholder, value='', error='', is_required=true, attrs={'required':'required'}) }}
 
     <div class="control-group">
         <label class="control-label" for="video_size_{{ n }}">Video size</label>

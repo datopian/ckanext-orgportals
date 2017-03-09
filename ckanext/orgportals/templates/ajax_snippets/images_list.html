@@ -6,6 +6,7 @@
     {% set media_type =  data.media_type %}
     {% set image_url =  data.image_url %}
     {% set image_title =  data.image_title %}
+    {% set image_title_url = data.image_title_url %}
     {% set image_size = data.image_size %}
 
     {% set media_image_url = 'media_image_url_' + n %}
@@ -24,6 +25,14 @@
                value="{{ image_title }}"
                placeholder="Enter image title" type="text">
       </div>
+
+      <label class="control-label" for="media_image_title_url_{{ n }}">Image title URL</label>
+      <div class="controls ">
+        <input id="media_image_title_url_{{ n }}" name="media_image_title_url_{{ n }}"
+               value="{{ image_title_url }}"
+               placeholder="Enter image title URL" type="url">
+      </div>
+
       <label class="control-label" for="media_image_size_{{ n }}">Image size</label>
       <div class="controls ">
         <select id="media_image_size_{{ n }}" name="media_image_size_{{ n }}">
@@ -78,6 +87,16 @@
                placeholder="Enter image title" type="text">
       </div>
     </div>
+
+    <div class="control-group ">
+      <label class="control-label" for="media_image_title_url_{{ n }}">Image title</label>
+      <div class="controls ">
+        <input id="media_image_title_url_{{ n }}" name="media_image_title_url_{{ n }}"
+               value=""
+               placeholder="Enter image title URL" type="text">
+      </div>
+    </div>
+
     <div class="control-group">
       <label class="control-label" for="media_image_size_{{ n }}">Image size</label>
       <div class="controls ">
@@ -131,6 +150,7 @@
   <input type="hidden" id="image_clear_upload_{{ n }}" name="image_clear_upload_{{ n }}" value="{{ image_clear_upload }}"/>
   <input type="hidden" id="media_type_{{ n }}" name="media_type_{{ n }}" value="{{ media_type }}"/>
   <input type="hidden" id="image_title_{{ n }}" name="image_title_{{ n }}" value="{{ image_title }}"/>
+  <input type="hidden" id="image_title_url_{{ n }}" name="image_title_url_{{ n }}" value="{{ image_title_url }}"/>
   <input type="hidden" id="image_size_{{ n }}" name="image_size_{{ n }}" value="{{ image_size }}" />
 
   <span class="grippy"></span>
