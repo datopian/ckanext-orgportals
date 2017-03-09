@@ -425,6 +425,7 @@ def orgportals_share_link_on_twitter(context, data_dict):
     url = data_dict['url']
     title = data_dict['title']
     subdashboard_url = data_dict['subdashboard_url']
+    url_type = data_dict['url_type']
 
     twitter_keys = helpers.orgportals_get_twitter_consumer_keys()
 
@@ -434,7 +435,10 @@ def orgportals_share_link_on_twitter(context, data_dict):
                           access_token_key=access_token_key,
                           access_token_secret=access_token_secret)
 
-        api.PostUpdate('{0} {1}'.format(title, subdashboard_url), media=url)
+        if url_type == 'image':
+            api.PostUpdate('{0} {1}'.format(title, subdashboard_url), media=url)
+        elif url_type == 'video':
+            api.PostUpdate('{0} {1} {2}'.format(title, subdashboard_url, url))
 
     except Exception, e:
         log.error(e)

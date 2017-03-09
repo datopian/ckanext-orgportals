@@ -14,9 +14,10 @@
         <h3><a href="{{ video.video_source }}" target="_blank">{{ video.video_title }}</a></h3>
         <iframe width="100%" height="{{ video_height }}px" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
     </div>
+
     <div class="social-buttons">
-        <a href="{{ video.video_source }}" class="fb-url"><i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a>
-        <a data-twitter-url="{{ video.video_source }}" class="twitter-url" ><i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i></a>
+        <a href="" data-fb-url="{{ video.video_source }}" class="fb-url" ><i class="fa fa-facebook-square fa-lg share-video-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a>
+        <a href="" data-url-type="video" data-twitter-url="{{ video.video_source }}" class="twitter-url" ><i class="fa fa-twitter-square fa-lg share-video-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i></a>
     </div>
 </div>
 {% endif %}

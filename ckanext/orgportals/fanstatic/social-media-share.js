@@ -53,7 +53,43 @@
         }
     }
 
-    $('.content-container').on('click', '.share-graph-twitter-btn', function(e) {
+    $('.content-container').on('click', '.fb-url', function(e) {
+        e.preventDefault();
+        var target = $(event.target);
+        var container = target.parents('.content-container');
+        FB.login(function(response) {
+            if (response.authResponse) {
+                var accessToken = FB.getAuthResponse()['accessToken'];
+                var userID = FB.getAuthResponse()['userID'];
+
+                var linkTitle = container.find('h3').text();
+                var url = container.find('.fb-url').attr('data-fb-url');
+                fbShareLink(accessToken, userID, linkTitle, url);
+            }
+        },{
+            scope: 'publish_actions'
+        });
+    });
+
+    $('.content_container').on('click', '.share-video-fb-btn', function(e) {
+        e.preventDefault();
+        var target = $(event.target);
+        var container = target.parents('.content-container');
+        FB.login(function(response) {
+            if (response.authResponse) {
+                var accessToken = FB.getAuthResponse()['accessToken'];
+                var userID = FB.getAuthResponse()['userID'];
+
+                var linkTitle = container.find('h3').text();
+                var url = container.find('.fb-url').attr('data-fb-url');
+                fbShareLink(accessToken, userID, linkTitle, url);
+            }
+        },{
+            scope: 'publish_actions'
+        });
+    });
+
+    $('.content-container').on('click', '.twitter-url', function(e) {
         var target = $(event.target);
         var container = target.parents('.content-container');
         var message, className, duration;
@@ -104,7 +140,9 @@
 
                 _showAlert(message, className, duration);
 
-                _shareLinkOnTwitter(container);
+                var url_type = container.find('.twitter-url').attr('data-url-type');
+
+                _shareLinkOnTwitter(container, url_type);
             }
         }
     });
@@ -239,7 +277,7 @@
         }
     }
 
-    function _shareLinkOnTwitter(container) {
+    function _shareLinkOnTwitter(container, url_type) {
         var message, className, duration;
         var title, url;
 
@@ -256,19 +294,20 @@
                 oauth_token_secret: twitterUserTokenSecret,
                 url: url,
                 title: title,
-                subdashboard_url: location.origin + location.pathname
+                subdashboard_url: location.origin + location.pathname,
+                url_type: url_type
             };
 
             api.post('orgportals_share_link_on_twitter', params)
                 .done(function(data) {
                     if (data.success && data.result.share_status_success) {
-                        message = 'The image is successfully shared on Twitter!';
+                        message = 'The ' + url_type + ' is successfully shared on Twitter!';
                         className = 'alert-success';
                         duration = 3000;
 
                         _showAlert(message, className, duration);
                     } else {
-                        message = 'Error while sharing the image on Twitter.';
+                        message = 'Error while sharing the ' + url_type + ' on Twitter.';
                         className = 'alert-danger';
                         duration = 3000;
 
@@ -276,7 +315,7 @@
                     }
                 })
                 .error(function(error) {
-                    message = 'Error while sharing the image on Twitter.';
+                    message = 'Error while sharing the ' + url_type + 'on Twitter.';
                     className = 'alert-danger';
                     duration = 3000;
 
@@ -456,5 +495,22 @@ function dataURItoBlob(dataURI) {
     }
     return new Blob([ab], {
         type: 'image/png'
+    });
+}
+
+function fbShareLink(accessToken, userID, linkTitle, url) {
+    FB.api(
+        '/me/feed',
+        'POST',
+        {
+            'message': linkTitle + ' ' + window.location.href,
+            'link': url
+        }, function(response){
+            if (response && !response.error) {
+                _showAlert('Successfully shared on Facebook!', 'alert-success', 3000);
+            } else {
+                console.log(response.error);
+                _showAlert('Error sharing on Facebook!', 'alert-danger', 3000);
+            }
     });
 }

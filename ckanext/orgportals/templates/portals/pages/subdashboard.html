@@ -1,5 +1,13 @@
 {% extends 'portals/index.html' %}
 
+{% block meta %}
+<meta property="og:url" content="localhost:5000" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Montrose - {{ subdashboard.subdashboard_title }}" />
+<meta property="og:description" content="{{ subdashboard.description }}" />
+<meta property="og:image" content="{{ organization.image_url }}" />
+{% endblock %}
+
 {% block scripts %}
   {{ super() }}
 
