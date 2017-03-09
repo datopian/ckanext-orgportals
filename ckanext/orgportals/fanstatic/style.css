@@ -7117,14 +7117,22 @@ button.close {
   top: 60px;
 }
 
-.share-graph-fb-btn {
-  top: 85px;
-  color: #3b5998;
+.share-graph-fb-btn,
+.share-image-fb-btn,
+.share-video-fb-btn {
+    position: absolute;
+    right: 10px;
+    top: 85px;
+    color: #3b5998;
 }
 
-.share-graph-twitter-btn {
-  top: 110px;
-  color: #0099CC;
+.share-graph-twitter-btn,
+.share-image-twitter-btn,
+.share-video-twitter-btn {
+    position: absolute;
+    right: 10px;
+    top: 110px;
+    color: #0099CC;
 }
 
 .graph-flex {
