@@ -7109,7 +7109,7 @@ button.close {
 .share-graph-fb-btn,
 .share-graph-twitter-btn {
   position: absolute;
-  right: 10px;
+  right: 0px;
   cursor: pointer;
 }
 
@@ -7121,7 +7121,7 @@ button.close {
 .share-image-fb-btn,
 .share-video-fb-btn {
     position: absolute;
-    right: 10px;
+    right: 0px;
     top: 85px;
     color: #3b5998;
 }
@@ -7130,7 +7130,7 @@ button.close {
 .share-image-twitter-btn,
 .share-video-twitter-btn {
     position: absolute;
-    right: 10px;
+    right: 0px;
     top: 110px;
     color: #0099CC;
 }
@@ -7790,11 +7790,11 @@ div[data-section="media"] {
 }
 
 .inner-image {
-    width: 98%;
+    width: 99%;
 }
 
 .inner-video {
-    width: 98%;
+    width: 99%;
 }
 
 .email-subscription-container {
