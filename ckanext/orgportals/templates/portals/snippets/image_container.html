@@ -1,18 +1,21 @@
 {% if image is not none %}
     {% if image.image_size == 'single' %}
         {% set image_size = 'col-md-4' %}
+        {% set image_height = '394px' %}
     {% elif image.image_size == 'double' %}
         {% set image_size = 'col-md-8' %}
+        {% set image_height = '394px' %}
     {% elif image.image_size == 'square' %}
         {% set image_size = 'col-md-12' %}
     {% else %}
         {% set image_size = 'col-md-4' %}
+        {% set image_height = '394px' %}
     {% endif%}
 
 <div class="{{ image_size }} content-container">
     <div class="inner-image">
         <h3><a href="{{ image.image_title_url }}" target="_blank">{{ image_title }}</a></h3>
-        <img src="{{ image_url }}" width="100%" />
+        <img src="{{ image_url }}" width="100%" height="{{ image_height }}"/>
     </div>
 
     <div class="social-buttons">

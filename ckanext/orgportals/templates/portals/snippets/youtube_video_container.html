@@ -1,12 +1,13 @@
 {% if video is not none %}
 {% if video.video_size == 'single' %}
 {% set video_size = 'col-md-4' %}
-{% set video_height = '385px' %}
+{% set video_height = '394px' %}
 {% elif video.video_size == 'double' %}
 {% set video_size = 'col-md-8' %}
-{% set video_height = '385px' %}
+{% set video_height = '394px' %}
 {% else %}
 {% set video_size = 'col-md-4' %}
+{% set video_height = '394px' %}
 {% endif %}
 
 <div class="{{ video_size }} youtube-video-container content-container">
