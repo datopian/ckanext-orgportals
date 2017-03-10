@@ -7845,9 +7845,3 @@ div[data-section="media"] {
     width: initial !important;
     height: initial !important;
 }
-
-.graph-container,
-.content-image-container,
-.youtube-video-container {
-  margin-bottom: 30px;
-}
