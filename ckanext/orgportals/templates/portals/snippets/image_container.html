@@ -8,6 +8,8 @@
     {% elif image.image_size == 'square' %}
         {% set image_size = 'col-md-8' %}
         {% set image_height = '850px' %}
+    {% elif image.image_size == 'quad' %}
+        {% set image_size = 'col-md-12' %}
     {% else %}
         {% set image_size = 'col-md-4' %}
         {% set image_height = '394px' %}
