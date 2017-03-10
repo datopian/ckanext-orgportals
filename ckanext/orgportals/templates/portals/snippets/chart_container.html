@@ -3,10 +3,10 @@
 {% if chart is not none %}
   {% if media_size == 'single' %}
     {% set graph_size = 'col-md-4' %}
-    {% set graph_height = 290 %}
+    {% set graph_height = 390 %}
   {% elif media_size == 'double' %}
     {% set graph_size = 'col-md-8' %}
-    {% set graph_height = 290 %}
+    {% set graph_height = 390 %}
   {% elif media_size == 'square' %}
     {% set graph_size = 'col-md-8' %}
     {% set graph_height = 740 %}
@@ -23,7 +23,7 @@
     <p class="graph-description">{{ chart[0].description }}</p>
 
     <i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download graph') }}"></i>
-    <i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share graph on Facebook"></i>
+   {# <i class="fa fa-facebook-square fa-lg share-graph-fb-btn" aria-hidden="true" title="Share graph on Facebook"></i> #}
     <i class="fa fa-twitter-square fa-lg share-graph-twitter-btn" aria-hidden="true" title="Share graph on Twitter"></i>
   </div>
 {% endif %}
