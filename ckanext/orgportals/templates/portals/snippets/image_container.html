@@ -1,19 +1,16 @@
 {% if image is not none %}
     {% if image.image_size == 'single' %}
         {% set image_size = 'col-md-4' %}
-        {% set image_height = '394px' %}
     {% elif image.image_size == 'double' %}
         {% set image_size = 'col-md-8' %}
-        {% set image_height = '394px' %}
     {% elif image.image_size == 'square' %}
         {% set image_size = 'col-md-8' %}
-        {% set image_height = '850px' %}
     {% elif image.image_size == 'quad' %}
         {% set image_size = 'col-md-12' %}
     {% else %}
         {% set image_size = 'col-md-4' %}
-        {% set image_height = '394px' %}
     {% endif%}
+    {% set image_height = 'auto' %}
 
 <div class="{{ image_size }} content-container">
     <div class="inner-image">
