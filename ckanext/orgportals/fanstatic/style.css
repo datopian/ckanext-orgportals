@@ -7760,7 +7760,7 @@ a[data-page-active="true"] {
   float: right;
   position: absolute;
   right: 15px;
-  top: 15px;
+  top: 50px;
   cursor: pointer;
   z-index: 401;
 }
