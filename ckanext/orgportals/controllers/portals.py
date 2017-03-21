@@ -631,7 +631,7 @@ class OrgportalsController(PackageController):
                     id = k.split('_')[-1]
                     if data['media_type_{}'.format(id)] == 'chart':
 
-                        item['order'] = id
+                        item['order'] = int(id)
                         item['media_type'] = data['media_type_{}'.format(id)]
                         item['media_size'] = data['media_size_{}'.format(id)]
                         item['chart_resourceview'] = data['chart_resourceview_{}'.format(id)]
@@ -639,7 +639,7 @@ class OrgportalsController(PackageController):
 
                         media_items.append(item)
                     elif data['media_type_{}'.format(id)] == 'youtube_video':
-                        item['order'] = id
+                        item['order'] = int(id)
                         item['media_type'] = data['media_type_{}'.format(id)]
                         item['video_source'] = data['video_source_{}'.format(id)]
                         item['video_title'] = data['video_title_{}'.format(id)]
@@ -649,7 +649,7 @@ class OrgportalsController(PackageController):
                         media_items.append(item)
                     elif data['media_type_{}'.format(id)] == 'image':
 
-                        item['order'] = id
+                        item['order'] = int(id)
                         item['media_type'] = data['media_type_{}'.format(id)]
                         item['image_title'] = data['media_image_title_{}'.format(id)]
                         item['image_size'] = data.get('media_image_size_{}'.format(id), 'single')
