@@ -7845,3 +7845,9 @@ div[data-section="media"] {
     width: initial !important;
     height: initial !important;
 }
+
+.social-buttons {
+    position: absolute;
+    right: 0.15em;
+    top: 1em;
+}
