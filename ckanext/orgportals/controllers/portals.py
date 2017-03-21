@@ -628,7 +628,7 @@ class OrgportalsController(PackageController):
                 item = {}
 
                 if k.startswith('media_type'):
-                    id = k[-1]
+                    id = k.split('_')[-1]
                     if data['media_type_{}'.format(id)] == 'chart':
 
                         item['order'] = id
