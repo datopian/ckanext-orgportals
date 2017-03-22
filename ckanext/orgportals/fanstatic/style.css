@@ -7114,7 +7114,7 @@ button.close {
 }
 
 .download-graph-btn {
-  top: 60px;
+  top: 25px;
 }
 
 .share-graph-fb-btn,
@@ -7131,7 +7131,7 @@ button.close {
 .share-video-twitter-btn {
     position: absolute;
     right: 0px;
-    top: 110px;
+    top: 50px;
     color: #0099CC;
 }
 
