@@ -7443,6 +7443,13 @@ footer:before {
     }
 }
 
+@media (min-width: 992px) {
+    .copyright {
+      position: absolute;
+      right: -12px;
+    }
+}
+
 footer .container {
     padding: 60px 30px
 }
