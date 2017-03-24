@@ -7851,3 +7851,9 @@ div[data-section="media"] {
     right: 0.15em;
     top: 2em;
 }
+
+.subdashboard-description {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
