@@ -14,13 +14,13 @@
 <div class="{{ image_size }} content-container">
     <div class="inner-image">
         <h3><a href="{{ image.image_title_url }}" target="_blank">{{ image_title }}</a></h3>
-        <img src="{{ image_url }}" width="100%" class="content-image-{{ image.image_size }}" />
+      <div class="social-buttons">
+          <a href="{{ image_url }}" download='{{ image_url }}' target="_blank"><i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download image') }}"></i></a>
+         {# <a href="" class="fb-url" data-fb-url="{{ image_url }}"><i class="fa fa-facebook-square fa-lg share-image-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a> #}
+          <a href="" class="twitter-url" data-twitter-url="{{ image_url }}" data-url-type="image"><i class="fa fa-twitter-square fa-lg share-image-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i></a>
+    </div>
+        <img src="{{ image_url }}" width="97%" class="content-image-{{ image.image_size }}" />
     </div>
 
-    <div class="social-buttons">
-        <a href="{{ image_url }}" download='{{ image_url }}' target="_blank"><i class="fa fa-download fa-lg download-graph-btn" aria-hidden="true" title="{{ _('Download image') }}"></i></a>
-       {# <a href="" class="fb-url" data-fb-url="{{ image_url }}"><i class="fa fa-facebook-square fa-lg share-image-fb-btn" aria-hidden="true" title="Share image on Facebook"></i></a> #}
-        <a href="" class="twitter-url" data-twitter-url="{{ image_url }}" data-url-type="image"><i class="fa fa-twitter-square fa-lg share-image-twitter-btn" aria-hidden="true" title="Share image on Twitter"></i></a>
-  </div>
 </div>
 {% endif %}

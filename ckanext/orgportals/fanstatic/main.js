@@ -126,12 +126,12 @@
 
     $('.graph-container').on('click', function onMediaContainerClick(event) {
     var target = $(event.target);
-    var graphTitle = target.siblings('.graph-title').text();
+    var graphTitle = target.parent().parent().find('.graph-title').text();
     var graphFileName = 'USEDATA-[graph-name]-[date]'.replace('[graph-name]', graphTitle).replace('[date]', date);
     var svg;
 
     if (target.hasClass('download-graph-btn')) {
-      svg = target.parent('.graph-container').find('svg')[0];
+      svg = target.parent().parent().find('svg')[0];
 
       convertSVGGraphToImage(svg, graphTitle, function(imageData) {
         var link = document.createElement('a');

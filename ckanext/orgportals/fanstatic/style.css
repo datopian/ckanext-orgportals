@@ -7108,31 +7108,32 @@ button.close {
 .download-graph-btn,
 .share-graph-fb-btn,
 .share-graph-twitter-btn {
-  position: absolute;
-  right: 0px;
+  display: block;
   cursor: pointer;
-}
-
-.download-graph-btn {
-  top: 25px;
 }
 
 .share-graph-fb-btn,
 .share-image-fb-btn,
 .share-video-fb-btn {
-    position: absolute;
-    right: 0px;
-    top: 85px;
+    display: block;
     color: #3b5998;
 }
 
 .share-graph-twitter-btn,
 .share-image-twitter-btn,
 .share-video-twitter-btn {
-    position: absolute;
-    right: 0px;
-    top: 50px;
+    display: block;
     color: #0099CC;
+}
+
+.download-graph-btn,
+.share-graph-fb-btn,
+.share-graph-twitter-btn,
+.share-image-fb-btn,
+.share-image-twitter-btn,
+.share-video-twitter-btn ,
+.share-video-fb-btn {
+  margin-bottom: 15px;
 }
 
 .graph-flex {
@@ -7855,8 +7856,15 @@ div[data-section="media"] {
 
 .social-buttons {
     position: absolute;
-    right: 0.15em;
-    top: 2em;
+    right: 5px;
+    top: 57px;
+}
+
+@media (max-width: 991px) {
+  .social-buttons {
+      top: 37px;
+      right: 8px;
+  }
 }
 
 .subdashboard-description {
