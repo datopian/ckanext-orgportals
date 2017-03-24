@@ -7857,3 +7857,33 @@ div[data-section="media"] {
   margin-left: 20px;
   margin-bottom: 10px;
 }
+
+.content-image-single {
+  max-height: 705px;
+}
+
+@media (min-width: 992px) {
+  .content-image-single {
+    max-height: 277px;
+  }
+}
+
+@media (min-width: 1320px) {
+  .content-image-single {
+    max-height: 383px;
+  }
+}
+
+.content-image-double {
+  max-height: 277px;
+}
+
+@media (min-width: 1320px) {
+  .content-image-double {
+    max-height: 383px;
+  }
+}
+
+.content-image-square {
+  max-height: 819px;
+}
