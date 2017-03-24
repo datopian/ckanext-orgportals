@@ -440,7 +440,7 @@ class OrgportalsController(PackageController):
 
             # Override the "author" list, to include full name authors
             query['search_facets']['author']['items'] =\
-                self._get_full_name_authors(context, org_name)
+                self._get_full_name_authors(context, org_name, None)
 
             c.sort_by_selected = query['sort']
 
@@ -566,7 +566,7 @@ class OrgportalsController(PackageController):
 
         return p.toolkit.render('portals/pages/custom.html', extra_vars=extra_vars)
 
-    def _get_full_name_authors(self, context, org_name):
+    def _get_full_name_authors(self, context, org_name, group):
 
         # "rows" is set to a big number because by default Solr will
         # return only 10 rows, and we need all datasets
@@ -574,6 +574,9 @@ class OrgportalsController(PackageController):
             'fq': '+dataset_type:dataset +organization:' + org_name,
             'rows': 10000000
         }
+
+        if group:
+            all_packages_dict.update({'fq': all_packages_dict['fq'] + ' +groups:' + group})
 
         # Find all datasets for the current organization
         datasets_query = get_action('package_search')(context,
@@ -942,7 +945,9 @@ class OrgportalsController(PackageController):
 
             # Override the "author" list, to include full name authors
             query['search_facets']['author']['items'] =\
-                self._get_full_name_authors(context, org_name)
+                self._get_full_name_authors(context, org_name, subdashboard['group'])
+
+            print 'authotrs', self._get_full_name_authors(context, org_name, subdashboard['group'])
 
             c.sort_by_selected = query['sort']
 
