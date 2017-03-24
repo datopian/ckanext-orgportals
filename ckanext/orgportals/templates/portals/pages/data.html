@@ -58,6 +58,9 @@
           <div class="row subdashboards-row">
         {% endif %}
         {% snippet 'portals/snippets/subdashboard_item.html', item=item, org_name=organization.name %}
+        {% if loop.last %}
+          </div>
+        {% endif %}
       {% endfor %}
     </div>
   </div>
