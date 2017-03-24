@@ -7887,3 +7887,29 @@ div[data-section="media"] {
 .content-image-square {
   max-height: 819px;
 }
+
+.content-video-single {
+  max-height: 705px;
+}
+
+@media (min-width: 992px) {
+  .content-video-single {
+    max-height: 277px;
+  }
+}
+
+@media (min-width: 1320px) {
+  .content-video-single {
+    max-height: 383px;
+  }
+}
+
+.content-video-double {
+  max-height: 277px;
+}
+
+@media (min-width: 1320px) {
+  .content-video-double {
+    max-height: 383px;
+  }
+}

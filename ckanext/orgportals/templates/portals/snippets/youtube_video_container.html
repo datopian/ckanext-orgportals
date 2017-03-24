@@ -1,19 +1,19 @@
 {% if video is not none %}
 {% if video.video_size == 'single' %}
 {% set video_size = 'col-md-4' %}
-{% set video_height = '394px' %}
+{% set video_height = '383px' %}
 {% elif video.video_size == 'double' %}
 {% set video_size = 'col-md-8' %}
-{% set video_height = '394px' %}
+{% set video_height = '383px' %}
 {% else %}
 {% set video_size = 'col-md-4' %}
-{% set video_height = '394px' %}
+{% set video_height = '383px' %}
 {% endif %}
 
 <div class="{{ video_size }} youtube-video-container content-container">
     <div class="inner-video">
         <h3><a href="{{ video.video_title_url }}" target="_blank">{{ video.video_title }}</a></h3>
-        <iframe width="100%" height="{{ video_height }}" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
+        <iframe width="100%" height="{{ video_height }}" class="content-video-{{ video.video_size }}" src="{{ video_source }}" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <div class="social-buttons">
