@@ -18,12 +18,14 @@
   $(document).ready(function () {
     // Map select event handler
 
-    function changeMainPropertyValues(element) {
+    function changeMainPropertyValues(element, is_new) {
       var map_main_property = $(element).parent().parent().parent()
         .find($('select[id="map_main_property"]'));
 
-      element.attr('name', 'map_' + numResources);
-      map_main_property.attr('name', 'map_main_property_' + numResources);
+      if (is_new) {
+        element.attr('name', 'map_' + numResources);
+        map_main_property.attr('name', 'map_main_property_' + numResources);
+      }
 
       if ($(element).find('option').length > 0)
         map_main_property.empty();
@@ -64,7 +66,7 @@
       numResources++;
       resourceField.attr('id', 'map-field_' + numResources);
       resourceField.appendTo($('.map-properties'));
-      changeMainPropertyValues(resourceField.find($('select[id="map"]')));
+      changeMainPropertyValues(resourceField.find($('select[id="map"]')), true);
     });
 
     $('.map-properties').on('click', 'a', function (e) {

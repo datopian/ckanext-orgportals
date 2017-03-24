@@ -100,7 +100,7 @@ class OrgportalsController(PackageController):
                 _page['map'] = []
                 _page['map_main_property'] = []
 
-                for k, v in data.items():
+                for k, v in sorted(data.items()):
                     if k.startswith('map_main_property'):
                         _page['map_main_property'].append(v)
                     elif k.startswith('map_') and not k.startswith('map_enabled'):
@@ -674,7 +674,7 @@ class OrgportalsController(PackageController):
             _subdashboard['map'] = []
             _subdashboard['map_main_property'] = []
 
-            for k, v in data.items():
+            for k, v in sorted(data.items()):
                 if k.startswith('map_main_property'):
                     _subdashboard['map_main_property'].append(v)
                 elif k.startswith('map_') and not k.startswith('map_enabled'):
