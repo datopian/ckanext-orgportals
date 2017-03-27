@@ -37,7 +37,9 @@
 
   {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-subdashboard'), value=subdashboard.name, error=errors.name, attrs=attrs, is_required=true) }}
 
-  {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the subdashboard...'), value=subdashboard.description, error=errors.description) }}
+  {{ form.markdown('subdashboard_description', label=_('Subdashboard description'), id='field-description', placeholder=_('A little information about the subdashboard...'), value=subdashboard.subdashboard_description, error=errors.subdashboard_description) }}
+
+  {{ form.markdown('icon_description', label=_('Icon description'), id='field-description', placeholder=_('A little information about the icon...'), value=subdashboard.icon_description, error=errors.icon_description) }}
 
   {{ form.select('group', 'group', _('Topic'), options=data.groups, selected=subdashboard.group) }}
 
