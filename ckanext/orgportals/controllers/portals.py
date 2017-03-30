@@ -273,6 +273,10 @@ class OrgportalsController(PackageController):
         c.org_name = org_name
         c.page_name = 'home'
 
+        org = logic.get_action('organization_show')(None, {'id': org_name})
+        if 'orgportals_gtm' in org:
+            extra_vars['ga_code'] = org['orgportals_gtm']
+
         return p.toolkit.render('portals/pages/home.html', extra_vars=extra_vars)
 
     def datapage_show(self, org_name):

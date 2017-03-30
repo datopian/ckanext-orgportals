@@ -251,7 +251,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_secondary_portal': default_validators,
             'orgportals_secondary_language': default_validators,
             'orgportals_portal_url': [_ignore_missing, _convert_to_extras, _domain_validator],
-            'orgportals_country': default_validators
+            'orgportals_country': default_validators,
+            'orgportals_gtm': default_validators
         })
 
         return schema
@@ -281,7 +282,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'num_followers': [_not_empty],
             'package_count': [_not_empty],
             'orgportals_portal_url': [_convert_from_extras, _ignore_missing, _domain_validator],
-            'orgportals_country': default_validators
+            'orgportals_country': default_validators,
+            'orgportals_gtm': default_validators
         })
 
         return schema

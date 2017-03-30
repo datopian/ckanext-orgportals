@@ -105,6 +105,8 @@
 
     {{ form.select('orgportals_secondary_portal', 'orgportals_secondary_portal', _('Choose secondary portal'), options=h.orgportals_get_all_organizations(data.name), selected=data.orgportals_secondary_portal) }}
 
+    {{ form.input('orgportals_gtm', 'orgportals_gtm', label=_('Google Analytics site ID'), type='text', value=data.orgportals_gtm, error=errors.orgportals_gtm) }}
+
     {% if data.orgportals_secondary_portal and data.orgportals_secondary_portal != 'none' %}
       {{ form.select('orgportals_secondary_language', 'orgportals_secondary_language', _('Choose secondary language'), options=h.orgportals_get_available_languages(), selected=data.orgportals_secondary_language) }}
     {% endif %}

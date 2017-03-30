@@ -1,5 +1,9 @@
 {% extends 'page.html' %}
-
+{% block head_extras %}
+    {% if ga_code %}
+        {% snippet 'portals/snippets/gtm_head.html', ga=ga_code %}
+    {% endif %}
+{% endblock %}
 {% block styles %}
   {% resource 'orgportals/style' %}
 {% endblock %}
@@ -9,6 +13,9 @@
 {% endblock %}
 
 {% block page %}
+  {% if ga_code %}
+        {% snippet 'portals/snippets/gtm_body.html', ga=ga_code %}
+  {% endif %}
   <div class="boxed-layout">
 
     {% block header %}
