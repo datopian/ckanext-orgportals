@@ -48,7 +48,11 @@
   {% endif %}
 
   <div data-section="topics">
-    <div id="org-description">{{ organization.description }}</div>
+    {% if organization.description %}
+      <div id="org-description">
+        {{ h.markdown_extract(organization.description, 0) }}
+      </div>
+    {% endif %}
     {% snippet 'portals/snippets/goto_next_section.html' %}
     <div class="subdashboards-container container">
       {% for item in data_page.topics %}
