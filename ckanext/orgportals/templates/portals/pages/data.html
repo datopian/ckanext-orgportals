@@ -48,6 +48,7 @@
   {% endif %}
 
   <div data-section="topics">
+    <div id="org-description">{{ organization.description }}</div>
     {% snippet 'portals/snippets/goto_next_section.html' %}
     <div class="subdashboards-container container">
       {% for item in data_page.topics %}
