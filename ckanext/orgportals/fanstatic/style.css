@@ -7931,4 +7931,7 @@ div[data-section="media"] {
 
 #org-description {
     text-align: center;
+    padding-top: 20px;
+    margin: auto;
+    max-width: 60%;
 }
