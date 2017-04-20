@@ -3,6 +3,11 @@ ckan.module('orgportals_goto_next_section', function ($, _) {
 
   return {
     initialize: function() {
+      //We don't need to go to the next section if there is only one section
+      if ($("[data-section]").length === 1) {
+        $(".next-section-container").hide()
+      }
+
       var nextSectionBtn = this.el;
 
       nextSectionBtn.on('click', function onNextSectionBtnClick() {
