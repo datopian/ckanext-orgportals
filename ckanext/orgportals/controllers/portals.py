@@ -502,7 +502,8 @@ class OrgportalsController(PackageController):
             if is_upload:
                 topic['image_url'] = '{0}/uploads/portal/{1}'.format(p.toolkit.request.host_url, topic['image_url'])
 
-            topic['full_attributes'] = subdashboards_dict[topic['subdashboard']]
+            if topic['subdashboard'] in subdashboards_dict:
+                topic['full_attributes'] = subdashboards_dict[topic['subdashboard']]
 
         extra_vars = {
             'organization': org,

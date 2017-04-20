@@ -13,6 +13,8 @@
       <img src="{{ image_url }}">
     </span>
     <h3>{{ item.title }}</h3>
-    <p>{{ item.full_attributes.icon_description }}</p>
+    {% if item.full_attributes %}
+        <p>{{ item.full_attributes.icon_description }}</p>
+    {% endif %}
   </a>
 </div>
