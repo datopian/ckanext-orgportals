@@ -7931,7 +7931,9 @@ div[data-section="media"] {
 
 #org-description {
     text-align: center;
-    padding-top: 20px;
+    padding: 20px 100px;
     margin: auto;
-    max-width: 60%;
+    border-bottom-color: rgb(211, 211, 211);
+    border-bottom-style: solid;
+    border-bottom-width: initial;
 }
