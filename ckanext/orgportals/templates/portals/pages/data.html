@@ -50,7 +50,7 @@
   <div data-section="topics">
     {% if organization.description %}
       <div id="org-description">
-        {{ h.render_markdown(organization.description, 0) }}
+        {{ h.render_markdown(organization.description) }}
       </div>
     {% endif %}
     {% snippet 'portals/snippets/goto_next_section.html' %}
