@@ -7930,7 +7930,8 @@ div[data-section="media"] {
 }
 
 #org-description {
-    text-align: center;
+    text-align: justify;
+    text-align-last: left;
     padding: 20px 10px;
     margin: auto;
     border-bottom-color: rgb(211, 211, 211);
