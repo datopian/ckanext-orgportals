@@ -307,7 +307,12 @@ class OrgportalsController(PackageController):
         # unicode format (decoded from utf8)
         q = c.q = request.params.get('q', u'')
         c.query_error = False
-        page = self._get_page_number(request.params)
+
+        # check ckan version and call appropriate get_page number
+        if p.toolkit.check_ckan_version(min_version='2.5.0', max_version='2.5.3'):
+            page = self._get_page_number(request.params)
+        else:
+            page = h.get_page_number(request.params)
 
         try:
             limit = int(org['orgportals_datasets_per_page'])
