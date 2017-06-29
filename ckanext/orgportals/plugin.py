@@ -192,8 +192,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
     def is_fallback(self):
         return True
 
-    #ef group_types(self):
-    #   return ['organization']
+    def group_types(self):
+        return ['organization']
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
