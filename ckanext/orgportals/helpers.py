@@ -12,6 +12,7 @@ from pylons import config
 from ckan.plugins import toolkit
 from ckan.lib import search
 import ckan.lib.helpers as lib_helpers
+import ckan.lib.i18n as i18n
 from ckan.logic.validators import resource_id_exists
 from ckan import model
 from ckan.common import json
@@ -358,7 +359,7 @@ def orgportals_get_all_organizations(current_org_name):
 def orgportals_get_available_languages():
     languages = []
 
-    for locale in lib_helpers.get_available_locales():
+    for locale in i18n.get_available_locales():
         languages.append({'value': locale, 'text': locale.english_name})
 
     languages.sort()
@@ -393,7 +394,7 @@ def orgportals_get_secondary_language(organization_name):
         return 'none'
 
 def orgportals_get_country_short_name(current_locale):
-    for locale in lib_helpers.get_available_locales():
+    for locale in i18n.get_available_locales():
         if current_locale == str(locale):
             return locale.english_name[:3]
 
