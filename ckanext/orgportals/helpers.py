@@ -365,9 +365,9 @@ def orgportals_get_available_languages():
     locales = []
 
     if toolkit.check_ckan_version(min_version='2.5.0', max_version='2.5.3'):
-        locales = i18n.get_available_locales()
-    else:
         locales = lib_helpers.get_available_locales()
+    else:
+        locales = i18n.get_available_locales()
 
     for locale in locales:
         languages.append({'value': locale, 'text': locale.english_name})
@@ -409,9 +409,9 @@ def orgportals_get_country_short_name(current_locale):
     locales = []
 
     if toolkit.check_ckan_version(min_version='2.5.0', max_version='2.5.3'):
-        locales = i18n.get_available_locales()
-    else:
         locales = lib_helpers.get_available_locales()
+    else:
+        locales = i18n.get_available_locales()
 
     for locale in locales:
         if current_locale == str(locale):
