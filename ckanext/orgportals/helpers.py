@@ -28,6 +28,7 @@ def _get_ctx():
         'user': 'sysadmin'
     }
 
+
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
 
@@ -76,8 +77,10 @@ def orgportals_get_resource_view_url(id, dataset):
 def orgportals_get_group_entity_name():
     return config.get('ckanext.orgportals.group_entity_name', 'group')
 
+
 def orgportals_get_organization_entity_name():
     return config.get('ckanext.orgportals.organization_entity_name', 'organization')
+
 
 def orgportals_get_facet_items_dict(value):
     try:
@@ -356,10 +359,17 @@ def orgportals_get_all_organizations(current_org_name):
 
     return organizations
 
+
 def orgportals_get_available_languages():
     languages = []
+    locales = []
 
-    for locale in i18n.get_available_locales():
+    if toolkit.check_ckan_version(min_version='2.5.0', max_version='2.5.3'):
+        locales = i18n.get_available_locales()
+    else:
+        locales = lib_helpers.get_available_locales()
+
+    for locale in locales:
         languages.append({'value': locale, 'text': locale.english_name})
 
     languages.sort()
@@ -367,6 +377,7 @@ def orgportals_get_available_languages():
     languages.insert(0, {'value': 'none', 'text': 'None'})
 
     return languages
+
 
 def orgportals_get_current_organization(org_name):
     data_dict = {
@@ -376,6 +387,7 @@ def orgportals_get_current_organization(org_name):
     organization = toolkit.get_action('organization_show')(data_dict=data_dict)
 
     return organization
+
 
 def orgportals_get_secondary_portal(organization_name):
     organization = _get_action('organization_show', {}, {'id': organization_name})
@@ -394,12 +406,21 @@ def orgportals_get_secondary_language(organization_name):
         return 'none'
 
 def orgportals_get_country_short_name(current_locale):
-    for locale in i18n.get_available_locales():
+    locales = []
+
+    if toolkit.check_ckan_version(min_version='2.5.0', max_version='2.5.3'):
+        locales = i18n.get_available_locales()
+    else:
+        locales = lib_helpers.get_available_locales()
+
+    for locale in locales:
         if current_locale == str(locale):
             return locale.english_name[:3]
 
+
 def orgportals_get_facebook_app_id():
     return config.get('ckanext.orgportals.facebook_app_id', '')
+
 
 def orgportals_get_countries():
     get_countries_path = lambda: os.path.join(os.path.dirname(os.path.realpath(__file__)),
@@ -417,6 +438,7 @@ def orgportals_get_countries():
     result.insert(0, {'value': 'none', 'text': 'None'})
 
     return result
+
 
 def orgportals_get_twitter_consumer_keys():
     twitter_consumer_key = config.get('ckanext.orgportals.twitter_consumer_key', '')
