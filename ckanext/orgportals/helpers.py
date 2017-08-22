@@ -347,7 +347,7 @@ def orgportals_get_all_organizations(current_org_name):
     organizations = map(lambda item:
                         {
                             'value': item['name'],
-                            'text': item['display_name']
+                            'text': item['title']
                         },
                         organizations
                     )
