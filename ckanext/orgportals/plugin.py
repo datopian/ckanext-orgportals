@@ -62,7 +62,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         map.connect('/help', controller=ctrl, action='show_portal_contentpage', page_name='help')
         map.connect('/resources', controller=ctrl, action='show_portal_contentpage', page_name='resources')
         map.connect('/glossary', controller=ctrl, action='show_portal_contentpage', page_name='glossary')
-        map.connect('/pages/{page_name}', controller=ctrl, action='show_portal_custompage')
+        map.connect('/portal_pages/{page_name}', controller=ctrl, action='show_portal_custompage')
         map.connect('/subdashboard/{subdashboard_name}', controller=ctrl, action='show_portal_subdashboardpage')
 
 
