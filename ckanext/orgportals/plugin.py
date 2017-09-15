@@ -235,6 +235,7 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
         # Import core converters and validators
         _convert_to_extras = toolkit.get_converter('convert_to_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')
+        email_validator = toolkit.get_validator('email_validator')
 
         default_validators = [_ignore_missing, _convert_to_extras]
 
@@ -252,7 +253,9 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'orgportals_secondary_language': default_validators,
             'orgportals_portal_url': [_ignore_missing, _convert_to_extras, _domain_validator],
             'orgportals_country': default_validators,
-            'orgportals_gtm': default_validators
+            'orgportals_gtm': default_validators,
+            'organization_email': [_ignore_missing, email_validator,
+                                   _convert_to_extras]
         })
 
         return schema
@@ -283,7 +286,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
             'package_count': [_not_empty],
             'orgportals_portal_url': [_convert_from_extras, _ignore_missing, _domain_validator],
             'orgportals_country': default_validators,
-            'orgportals_gtm': default_validators
+            'orgportals_gtm': default_validators,
+            'organization_email': [_convert_from_extras, _ignore_missing]
         })
 
         return schema
