@@ -3,6 +3,8 @@ import ckan.plugins.toolkit as toolkit
 import ckan.lib.plugins as lib_plugins
 from ckan import model as m
 from sqlalchemy import and_
+from paste.deploy.converters import asbool
+from pylons import config
 
 import helpers
 import db
@@ -55,7 +57,10 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                     action='orgportals_subdashboards_delete', ckan_icon='delete', controller=ctrl)
 
         #portal routes for custom domain
-        map.connect('/', controller=ctrl, action='show_portal_homepage')
+
+        if asbool(config.get('ckanext.orgdashboards.custom_dns_active')):
+            map.connect('/', controller=ctrl, action='show_portal_homepage')
+
         map.connect('/data', controller=ctrl, action='show_portal_datapage')
         map.connect('/contact', controller=ctrl, action='show_portal_contentpage', page_name='contact')
         map.connect('/aboutportal', controller=ctrl, action='show_portal_contentpage', page_name='about')
