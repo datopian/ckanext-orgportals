@@ -42,7 +42,7 @@
 
       {{ form.select('enabled', 'topic_enabled', _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected='') }}
       <input id="topic_order" type="hidden" name="topic_order" value="0" />
-      <a class="btn btn-danger topics-settings-item-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <a class="btn btn-danger topics-settings-item-fields__remove-btn"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove </a>
       <hr>
       <span class="grippy"></span>
     </div>
@@ -97,7 +97,7 @@
       {% endif %}
       {{ form.select(topic_enabled, topic_enabled, _('Enabled'), options=[{'value': 'True', 'text': 'Yes'}, {'value': 'False', 'text': 'No'}], selected=topic.enabled) }}
       <input id="topic_order" type="hidden" name="{{ topic_order }}" value="{{ topic.order }}" />
-      <a class="btn btn-danger topics-settings-item-fields__remove-btn"><i class="fa fa-trash" aria-hidden="true"></i> Remove </a>
+      <a class="btn btn-danger topics-settings-item-fields__remove-btn"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove </a>
       <hr>
       <span class="grippy"></span>
     </div>
