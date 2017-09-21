@@ -4,7 +4,12 @@ def sysadmin(context, data_dict):
     return {'success':  False}
 
 def org_admin(context, data_dict):
-    return p.toolkit.check_access('group_update', context, data_dict)
+    is_authorized = p.toolkit.check_access('group_update', context, data_dict)
+
+    if isinstance(is_authorized, bool):
+        return {'success': is_authorized}
+    else:
+        return is_authorized
 
 def anyone(context, data_dict):
     return {'success': True}
