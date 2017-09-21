@@ -141,11 +141,13 @@ class OrgportalsController(PackageController):
 
             _page.update(data)
             _page['org_name'] = org_name
+            _page['id'] = org_name
             _page['page_name'] = page
             _page['image_url'] = image_url
 
             try:
                 junk = p.toolkit.get_action('orgportals_pages_update')(
+                    {'user': p.toolkit.c.user or p.toolkit.c.author},
                     data_dict=_page
                 )
             except p.toolkit.ValidationError, e:
@@ -157,7 +159,7 @@ class OrgportalsController(PackageController):
             p.toolkit.redirect_to(p.toolkit.url_for('orgportals_pages_index', org_name=org_name))
 
         try:
-            p.toolkit.check_access('orgportals_pages_update', {'user': p.toolkit.c.user or p.toolkit.c.author})
+            p.toolkit.check_access('orgportals_pages_update', {'user': p.toolkit.c.user or p.toolkit.c.author}, {'id': org_name})
         except p.toolkit.NotAuthorized:
             p.toolkit.abort(401, _('Unauthorized to create or edit a page'))
 
@@ -241,6 +243,7 @@ class OrgportalsController(PackageController):
 
                     page['order'] = int(v)
                     page['org_name'] = org_name
+                    page['id'] = org_name
                     page['page_name'] = page_name
 
                     p.toolkit.get_action('orgportals_pages_update')({}, data_dict=page)
@@ -709,7 +712,7 @@ class OrgportalsController(PackageController):
             p.toolkit.redirect_to(p.toolkit.url_for('orgportals_subdashboards_index', org_name=org_name))
 
         try:
-            p.toolkit.check_access('orgportals_subdashboards_update', {'user': p.toolkit.c.user or p.toolkit.c.author})
+            p.toolkit.check_access('orgportals_subdashboards_update', {'user': p.toolkit.c.user or p.toolkit.c.author}, {'id': org_name})
         except p.toolkit.NotAuthorized:
             p.toolkit.abort(401, _('Unauthorized to create or edit a subdashboard'))
 
