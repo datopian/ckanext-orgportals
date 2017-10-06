@@ -60,6 +60,13 @@ Add number of datasets to show in data section in the portal (default is 5)::
 
     ckanext.orgdashboards.datasets_per_page = 10
 
+Add ``ckanext.orgdashboards.custom_dns_active`` as a setting in the
+config file::
+
+    ckanext.orgdashboards.custom_dns_active = true
+
+This setting enables functionality for adding custom domain for individual dashboards.
+
 ------------------------------
 Installation of a new language
 ------------------------------
