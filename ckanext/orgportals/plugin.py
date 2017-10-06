@@ -57,10 +57,8 @@ class OrgportalsPlugin(plugins.SingletonPlugin,
                     action='orgportals_subdashboards_delete', ckan_icon='delete', controller=ctrl)
 
         #portal routes for custom domain
-
         if asbool(config.get('ckanext.orgdashboards.custom_dns_active')):
             map.connect('/', controller=ctrl, action='show_portal_homepage')
-
         map.connect('/data', controller=ctrl, action='show_portal_datapage')
         map.connect('/contact', controller=ctrl, action='show_portal_contentpage', page_name='contact')
         map.connect('/aboutportal', controller=ctrl, action='show_portal_contentpage', page_name='about')
