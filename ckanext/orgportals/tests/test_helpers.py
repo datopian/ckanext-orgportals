@@ -202,7 +202,7 @@ class TestHelpers():
         assert languages[0]['text'] == 'None'
         assert languages[0]['value'] == 'none'
 
-        assert {'text': u'English', 'value': Locale('en')}} in languages
+        assert {'text': u'English', 'value': Locale('en')} in languages
 
     def test_get_maps(self):
         resource_name = id_generator()
