@@ -29,7 +29,7 @@ cd -
 
 echo "Installing ckanext-orgportals and its requirements..."
 python setup.py develop
-pip install -r dev-requirements.txt
+pip install -r requirements.txt
 
 
 echo "travis-build.bash is done."
