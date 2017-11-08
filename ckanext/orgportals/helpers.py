@@ -322,12 +322,14 @@ def orgportals_get_resourceview_resource_package(resource_view_id):
 
     return [resource_view, resource, package]
 
+
 def orgportals_show_exit_button(params):
     for item in params.items():
         if item[0] == 'q':
             return True
 
     return False
+
 
 def orgportals_is_subdashboard_active(org_name, subdashboard_name):
     data_dict = {

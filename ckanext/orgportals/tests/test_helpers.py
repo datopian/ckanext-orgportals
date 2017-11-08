@@ -51,6 +51,7 @@ class TestHelpers():
         plugins.unload('image_view')
         plugins.unload('orgportals')
 
+
     def test_get_newly_released_data(self, **kwargs):
         dataset_found = False
 
@@ -198,11 +199,8 @@ class TestHelpers():
         languages = helpers.orgportals_get_available_languages()
 
         assert len(languages) > 0
-
-        assert languages[0]['text'] == 'None'
-        assert languages[0]['value'] == 'none'
-
-        assert {'text': u'English', 'value': Locale('en')} in languages
+        language = dict((i['text'], i['value']) for i in languages)
+        assert 'English' in language
 
     def test_get_maps(self):
         resource_name = id_generator()

@@ -68,26 +68,29 @@ def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
 
 def upload_json_resource(dataset_name, resource_name):
     sysadmin = factories.Sysadmin()
+    factories.Organization(name='test_org')
+    package = factories.Dataset(owner_org='test_org', name='test_dataset')
     resource = factories.Resource(name=resource_name)
     file_path = os.path.join(os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__))), 'data.geojson')
     site_base_url = get_site_base_url()
 
     data_dict = {
-        'package_id': dataset_name,
+        'package_id': package['id'],
         'name': resource['name'],
         'url': 'test_url',
         'format': 'geojson'
     }
-
     # Upload resource
     response = requests.post(
         '{0}/api/action/resource_create'.format(site_base_url),
         data=data_dict,
-        headers={'X-CKAN-API-Key': sysadmin['apikey']},
+        headers={'Authorization': sysadmin['apikey']},
         files=[('upload', file(file_path))])
-
-    return response.json()['result']
+    if response.json()['success']:
+        return response.json()['result']
+    else:
+        return response.json()['error']
 
 
 def get_site_base_url():
