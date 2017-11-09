@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/ViderumGlobal/ckanext-orgportals.svg?branch=master
+     :target: https://travis-ci.org/ViderumGlobal/ckanext-orgportals
+ 
 ------------------------
 Development installation
 ------------------------
