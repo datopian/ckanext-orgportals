@@ -292,6 +292,7 @@ def orgportals_get_pages(org_name):
 
     return toolkit.get_action('orgportals_pages_list')({}, data_dict)
 
+
 def orgportals_get_resourceview_resource_package(resource_view_id):
     if not resource_view_id:
         return None
@@ -322,12 +323,14 @@ def orgportals_get_resourceview_resource_package(resource_view_id):
 
     return [resource_view, resource, package]
 
+
 def orgportals_show_exit_button(params):
     for item in params.items():
         if item[0] == 'q':
             return True
 
     return False
+
 
 def orgportals_is_subdashboard_active(org_name, subdashboard_name):
     data_dict = {
@@ -338,6 +341,7 @@ def orgportals_is_subdashboard_active(org_name, subdashboard_name):
     subdashboard = toolkit.get_action('orgportals_subdashboards_show')({}, data_dict)
 
     return subdashboard['is_active']
+
 
 def orgportals_get_all_organizations(current_org_name):
     ''' Get all created organizations '''
@@ -397,6 +401,7 @@ def orgportals_get_secondary_portal(organization_name):
     else:
         return 'none'
 
+
 def orgportals_get_secondary_language(organization_name):
     organization = _get_action('organization_show', {}, {'id': organization_name})
 
@@ -404,6 +409,7 @@ def orgportals_get_secondary_language(organization_name):
         return organization['orgportals_secondary_language']
     else:
         return 'none'
+
 
 def orgportals_get_country_short_name(current_locale):
     locales = []

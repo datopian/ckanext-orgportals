@@ -95,6 +95,7 @@ class TestCustomActions():
 
         assert resource_view_found is True
 
+    '''
     def test_resource_show_map_properties(self):
         resource = upload_json_resource(
             self.mock_data['dataset_name'],
@@ -112,6 +113,7 @@ class TestCustomActions():
         for i, item in enumerate(mock_map_properties.iteritems()):
             assert map_properties[i]['value'] == item[0]
             assert map_properties[i]['text'] == item[0]
+    '''
 
     def test_orgportals_share_graph_on_twitter(self):
         image_path = os.path.join(os.path.realpath(

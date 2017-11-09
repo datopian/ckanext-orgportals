@@ -84,10 +84,12 @@ def upload_json_resource(dataset_name, resource_name):
     response = requests.post(
         '{0}/api/action/resource_create'.format(site_base_url),
         data=data_dict,
-        headers={'X-CKAN-API-Key': sysadmin['apikey']},
+        headers={'Authorization': sysadmin['apikey']},
         files=[('upload', file(file_path))])
-
-    return response.json()['result']
+    if response.json()['success']:
+        return response.json()['result']
+    else:
+        return response.json()['error']
 
 
 def get_site_base_url():

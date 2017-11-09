@@ -13,6 +13,7 @@ SMTP_SERVER = config.get('ckanext.orgportals.smtp.server', 'localhost')
 SMTP_USER = config.get('ckanext.orgportals.smtp.user', 'username')
 SMTP_PASSWORD = config.get('ckanext.orgportals.smtp.password', 'password')
 
+
 def send_email(content, subject, to, from_=FROM):
 
     msg = MIMEText(content,'plain','UTF-8')
